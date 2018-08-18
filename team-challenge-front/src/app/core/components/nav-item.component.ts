@@ -3,12 +3,19 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
   selector: 'app-nav-item',
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-      <i *ngIf="icon !== ''" class="anticon anticon-{{icon}}"></i>
-      {{title}} <nz-badge [nzCount]="badgeCount" [nzStyle]="{ boxShadow: '0 0 0 0px' }"></nz-badge>
-  `
+      <nz-badge [nzDot]="notify" [nzStyle]="{ boxShadow: '0 0 0 0px' }">
+        <i *ngIf="icon !== ''" class="anticon anticon-{{icon}}"></i> {{title}}
+      </nz-badge>
+  `,
+  styles: [`
+    nz-badge {
+      color: inherit;
+      padding: 3px;
+    }
+  `]
 })
 export class NavItemComponent {
-  @Input() badgeCount = 0;
+  @Input() notify = false;
   @Input() title: string;
   @Input() icon = '';
 }
