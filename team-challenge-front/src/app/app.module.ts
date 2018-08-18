@@ -14,7 +14,7 @@ import {CommonModule} from '@angular/common';
 
     CoreModule.forRoot()
   ],
-  providers: [],
+  providers: [ ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,1 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "assets/styles/theme.less";
+@import "assets/styles/layout.less";
+@import "assets/styles/navbar.less";
+
+.onlyDesktop {
+  display: none;
+}
+
+.onlyMobile {
+  display: block;
+}
+
+.fake-content {
+  margin: 20px;
+
+  p {
+    padding: 10px;
+  }
+}
+
+.pull-right {
+  float: right;
+}
+
+@media screen and (min-width: 992px) {
+  .onlyDesktop {
+    display: block;
+  }
+  
+  .onlyMobile {
+    display: none;
+  }
+}
