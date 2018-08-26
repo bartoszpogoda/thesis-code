@@ -11,6 +11,8 @@ import {FooterComponent} from './components/footer.component';
 import {NavItemComponent} from './components/nav-item.component';
 import {NotificationBellComponent} from './components/notification-bell.component';
 import {NotificationPanelComponent} from './containers/notification-panel.component';
+import {LoginComponent} from './containers/login.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 export const COMPONENTS = [
   AppComponent,
@@ -19,11 +21,12 @@ export const COMPONENTS = [
   FooterComponent,
   NavItemComponent,
   NotificationBellComponent,
-  NotificationPanelComponent
+  NotificationPanelComponent,
+  LoginComponent
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule, NgZorroAntdModule, BrowserAnimationsModule],
+  imports: [CommonModule, RouterModule, NgZorroAntdModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule],
   declarations: COMPONENTS,
   exports: COMPONENTS,
   providers: [{ provide: NZ_I18N, useValue: en_US }]

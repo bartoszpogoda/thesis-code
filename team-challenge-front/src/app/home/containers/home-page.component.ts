@@ -3,24 +3,35 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-home-page',
   template: `
-    <div nz-row nzGutter="16">
-      <div nz-col class="gutter-row" nzXs="24" nzSm="8">
-        <div class="box">
-          Col
+    <app-parallax-image [height]="400" imageUrl="/assets/images/home/basketball-background.jpg">
+      <div nz-row nzGutter="16">
+        <div nz-col nzXs="0" nzSm="6"></div>
+        <div nz-col nzXs="0" nzSm="6"></div>
+        <div nz-col  nzXs="24" nzSm="6">
+          <h3>“Talent wins games, but teamwork and intelligence win championships.”</h3>
+          <p class="pull-right">Michael Jordan</p>
         </div>
       </div>
-      <div nz-col class="gutter-row" nzXs="24" nzSm="8">
+    </app-parallax-image>
+    <div class="content-container">
+      <div nz-row nzGutter="16">
+        <div nz-col class="gutter-row" nzXs="24" nzSm="16">
+          <div class="box">
+            <h2>About ...</h2>
+            <p>
+              Welcome to the system...
+            </p>
+          </div>
+        </div>
+        <div nz-col class="gutter-row" nzXs="24" nzSm="8">
         <div class="box">
-          Col
+          <app-register></app-register>
+        </div>
         </div>
       </div>
-      <div nz-col class="gutter-row" nzXs="24" nzSm="8">
-        <div class="box">
-          Col
-        </div>
-      </div>
+      <div class="temp-content"></div>
     </div>
-    <div class="temp-content"></div>
+    <app-parallax-image [height]="200" imageUrl="/assets/images/home/basketball-background.jpg"></app-parallax-image>
     `,
   styles: [
     `
@@ -31,7 +42,7 @@ import { Component, OnInit } from '@angular/core';
         height: 100px;
       }
       .temp-content {
-        height: 300vh;
+        height: 150vh;
       }
     `
   ],
