@@ -1,6 +1,5 @@
-package com.github.bartoszpogoda.thesis.teamchallengeapi.auth.repository;
+package com.github.bartoszpogoda.thesis.teamchallengeapi.user;
 
-import com.github.bartoszpogoda.thesis.teamchallengeapi.auth.entity.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

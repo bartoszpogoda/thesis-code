@@ -1,20 +1,15 @@
-package com.github.bartoszpogoda.thesis.teamchallengeapi.auth.service;
+package com.github.bartoszpogoda.thesis.teamchallengeapi.auth;
 
-import com.github.bartoszpogoda.thesis.teamchallengeapi.auth.entity.Authority;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.auth.entity.User;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.auth.repository.UserRepository;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.user.User;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component("userDetailsService")
 public class DbUserDetailsService implements UserDetailsService {
@@ -29,6 +24,7 @@ public class DbUserDetailsService implements UserDetailsService {
     /**
      * Loads user from the database based on his email.
      */
+    @Transactional
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
@@ -43,15 +39,10 @@ public class DbUserDetailsService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getEncodedPassword())
-                .authorities(extractAuthorities(user))
+                .authorities(SecurityUtil.getAuthoritiesOfUser(user))
                 .build();
     }
 
-    private Set<GrantedAuthority> extractAuthorities(User user) {
-        return user.getAuthorities().stream()
-                .map(Authority::getName)
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toSet());
-    }
+
 
 }

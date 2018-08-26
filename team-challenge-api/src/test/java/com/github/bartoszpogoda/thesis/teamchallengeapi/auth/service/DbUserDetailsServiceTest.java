@@ -1,9 +1,9 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.auth.service;
 
 import com.github.bartoszpogoda.thesis.teamchallengeapi.TeamChallengeApiApplication;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.auth.entity.Authority;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.auth.entity.User;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.auth.repository.UserRepository;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.user.Authority;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.user.User;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.user.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
@@ -45,6 +46,8 @@ public class DbUserDetailsServiceTest {
 
     private final List<String> TEST_ROLES = Arrays.asList("ROLE_USER", "ROLE_MOD");
 
+    private static final String NON_EXISTING_EMAIL = "notexisting@mail.com";
+
     private User testUser;
     private Set<Authority> testAuthorities;
 
@@ -54,6 +57,7 @@ public class DbUserDetailsServiceTest {
         initTestUser();
 
         when(userRepository.findUserByEmail(TEST_USER_EMAIL)).thenReturn(Optional.of(testUser));
+        when(userRepository.findUserByEmail(NON_EXISTING_EMAIL)).thenReturn(Optional.empty());
     }
 
     private void initTestAuthorities() {
@@ -84,5 +88,11 @@ public class DbUserDetailsServiceTest {
                 .collect(Collectors.toList());
 
         assertThat(authorityNames, containsInAnyOrder(TEST_ROLES.toArray()));
+    }
+
+    @Test(expected = UsernameNotFoundException.class)
+    public void shouldThrowExceptionWhenUserNotFound() {
+        // when
+        UserDetails userDetails = userDetailsService.loadUserByUsername(NON_EXISTING_EMAIL);
     }
 }

@@ -1,4 +1,4 @@
-package com.github.bartoszpogoda.thesis.teamchallengeapi.auth.entity;
+package com.github.bartoszpogoda.thesis.teamchallengeapi.user;
 
 
 import lombok.Data;
