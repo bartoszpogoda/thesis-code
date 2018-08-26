@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {NgProgress} from '@ngx-progressbar/core';
 
 @Component({
   selector: 'app-home-page',
   template: `
+    <ng-progress></ng-progress>
     <app-parallax-image [height]="400" imageUrl="/assets/images/home/basketball-background.jpg">
       <div nz-row nzGutter="16">
         <div nz-col nzXs="0" nzSm="6"></div>
@@ -47,8 +49,22 @@ import { Component, OnInit } from '@angular/core';
     `
   ],
 })
-export class HomePageComponent implements OnInit {
+export class HomePageComponent implements AfterViewInit {
 
-  ngOnInit() {}
+  constructor(public progress: NgProgress) {
+  }
+
+  ngAfterViewInit(): void {
+    // Temporary loading bar DEMO
+    setTimeout(() => {
+      this.progress.start();
+    }, 500);
+    setTimeout(() => {
+      this.progress.complete();
+    }, 2000);
+  }
+
+
+
 
 }

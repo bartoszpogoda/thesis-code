@@ -5,15 +5,22 @@ import { Component } from '@angular/core';
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nz-layout class="layout">
+      <ng-progress></ng-progress>
       <nz-header class="app-header" #top>
         <div>
         <div class="logo" routerLink="/"></div>
         <ul nz-menu class="onlyDesktop" [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 64px;">
-          <li nz-menu-item routerLink="/"><app-nav-item title="Home" icon="home"></app-nav-item></li>
-          <li *ngIf="loggedIn" nz-menu-item routerLink="challenges">
+          <li nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="/">
+            <app-nav-item title="Home" icon="home"></app-nav-item>
+          </li>
+          <li *ngIf="loggedIn" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="challenges">
             <app-nav-item title="Challenges" [notify]="true" icon="play-circle-o"></app-nav-item></li>
-          <li *ngIf="loggedIn" nz-menu-item routerLink="team"><app-nav-item title="Team" icon="team"></app-nav-item></li>
-          <li *ngIf="loggedIn" nz-menu-item routerLink="player"><app-nav-item title="Player" icon="user"></app-nav-item></li>
+          <li *ngIf="loggedIn" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="team">
+            <app-nav-item title="Team" icon="team"></app-nav-item>
+          </li>
+          <li *ngIf="loggedIn" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="player">
+            <app-nav-item title="Player" icon="user"></app-nav-item>
+          </li>
         </ul>
         </div>
         <app-login *ngIf="!loggedIn"></app-login>

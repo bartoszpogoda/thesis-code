@@ -13,6 +13,7 @@ import {NotificationBellComponent} from './components/notification-bell.componen
 import {NotificationPanelComponent} from './containers/notification-panel.component';
 import {LoginComponent} from './containers/login.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {NgProgressModule} from '@ngx-progressbar/core';
 
 export const COMPONENTS = [
   AppComponent,
@@ -26,7 +27,8 @@ export const COMPONENTS = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule, NgZorroAntdModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, NgZorroAntdModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule,
+    NgProgressModule.forRoot()],
   declarations: COMPONENTS,
   exports: COMPONENTS,
   providers: [{ provide: NZ_I18N, useValue: en_US }]

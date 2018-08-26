@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import {AppComponent} from './core/containers/app.component';
 import {CoreModule} from './core/core.module';
 import {CommonModule} from '@angular/common';
+import { NgProgressModule } from '@ngx-progressbar/core';
 
 @NgModule({
   imports: [
