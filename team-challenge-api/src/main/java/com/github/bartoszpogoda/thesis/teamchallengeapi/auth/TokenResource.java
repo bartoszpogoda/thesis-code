@@ -9,12 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping(TokenResource.TOKEN_RESOURCE_URL)
@@ -28,8 +28,15 @@ public class TokenResource {
 
     private UserService userService;
 
+    private Validator validator;
+
     @PostMapping
-    public ResponseEntity<JwtToken> create(@Valid  @RequestBody LoginForm loginForm) throws InvalidCredentialsException {
+    public ResponseEntity<JwtToken> create(@RequestBody LoginForm loginForm, BindingResult result) throws InvalidCredentialsException {
+        validator.validate(loginForm, result);
+        if(result.hasErrors()) {
+            throw new InvalidCredentialsException();
+        }
+
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -58,10 +65,11 @@ public class TokenResource {
     }
 
     @Autowired
-    public TokenResource(TokenService tokenService, AuthenticationManager authenticationManager, UserService userService) {
+    public TokenResource(TokenService tokenService, AuthenticationManager authenticationManager, UserService userService, Validator validator) {
         this.tokenService = tokenService;
         this.authenticationManager = authenticationManager;
         this.userService = userService;
+        this.validator = validator;
     }
 
 }

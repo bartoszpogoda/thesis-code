@@ -5,15 +5,18 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './containers/app.component';
 import {NotFoundPageComponent} from './containers/not-found-page.component';
 import {en_US, NgZorroAntdModule, NZ_I18N} from 'ng-zorro-antd';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BreadcrumbComponent} from './components/breadcrumb.component';
 import {FooterComponent} from './components/footer.component';
 import {NavItemComponent} from './components/nav-item.component';
 import {NotificationBellComponent} from './components/notification-bell.component';
 import {NotificationPanelComponent} from './containers/notification-panel.component';
-import {LoginComponent} from './containers/login.component';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgProgressModule} from '@ngx-progressbar/core';
+import {AuthModule} from '../auth/auth.module';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {ErrorInterceptor} from './services/error.interceptor';
+import {ApiErrorAlertComponent} from './components/api-error-alert.component';
+import {NavbarLoginComponent} from './containers/navbar-login.component';
+import {SuccessAlertComponent} from './components/success-alert.component';
 
 export const COMPONENTS = [
   AppComponent,
@@ -23,15 +26,21 @@ export const COMPONENTS = [
   NavItemComponent,
   NotificationBellComponent,
   NotificationPanelComponent,
-  LoginComponent
+  ApiErrorAlertComponent,
+  SuccessAlertComponent,
+  NavbarLoginComponent
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule, NgZorroAntdModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule,
+  imports: [CommonModule, RouterModule, NgZorroAntdModule, AuthModule,
     NgProgressModule.forRoot()],
   declarations: COMPONENTS,
   exports: COMPONENTS,
-  providers: [{ provide: NZ_I18N, useValue: en_US }]
+  providers: [{ provide: NZ_I18N, useValue: en_US }, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: ErrorInterceptor,
+    multi: true,
+  }]
 })
 export class CoreModule {
   static forRoot() {

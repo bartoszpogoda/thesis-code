@@ -1,30 +1,38 @@
 import { Component } from '@angular/core';
+import {select, Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
+
+import * as fromRoot from '../../reducers';
+import * as fromAuth from '../../auth/reducers';
+import * as LayoutActions from '../actions/layout.actions';
 
 @Component({
   selector: 'app-app',
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nz-layout class="layout">
-      <ng-progress></ng-progress>
       <nz-header class="app-header" #top>
         <div>
         <div class="logo" routerLink="/"></div>
         <ul nz-menu class="onlyDesktop" [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 64px;">
-          <li nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="/">
+          <li nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="/home" [routerLinkActiveOptions]="{exact: true}">
             <app-nav-item title="Home" icon="home"></app-nav-item>
           </li>
-          <li *ngIf="loggedIn" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="challenges">
+          <li *ngIf="!(loggedIn$ | async)" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="/home/register">
+            <app-nav-item title="Register"></app-nav-item></li>
+          <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="challenges">
             <app-nav-item title="Challenges" [notify]="true" icon="play-circle-o"></app-nav-item></li>
-          <li *ngIf="loggedIn" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="team">
+          <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="team">
             <app-nav-item title="Team" icon="team"></app-nav-item>
           </li>
-          <li *ngIf="loggedIn" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="player">
+          <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="player">
             <app-nav-item title="Player" icon="user"></app-nav-item>
           </li>
         </ul>
         </div>
-        <app-login *ngIf="!loggedIn"></app-login>
-        <ul *ngIf="loggedIn" nz-menu class="onlyDesktop" [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 64px;">
+        <!--<app-login *ngIf="!(loggedIn$ | async)"></app-login>-->
+        <app-navbar-login *ngIf="!(loggedIn$ | async)"></app-navbar-login>
+        <ul *ngIf="loggedIn$ | async" nz-menu class="onlyDesktop" [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 64px;">
           <li class="pull-right notification-bell">
             <app-notification-bell [badgeCount]="4" (bellClicked)="toggleNotificationPanel()"></app-notification-bell>
           </li>
@@ -33,7 +41,7 @@ import { Component } from '@angular/core';
       <nz-content>
         <!--<app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>-->
           <router-outlet></router-outlet>
-        <app-notification-panel [isVisible]="notificationPanelVisible"></app-notification-panel>
+        <app-notification-panel [isVisible]="notificationPanelVisible$ | async"></app-notification-panel>
         <nz-back-top></nz-back-top>
       </nz-content>
       <nz-footer><app-footer></app-footer></nz-footer>
@@ -42,10 +50,16 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   // breadcrumbItems = ['Home', 'App', 'Temp'];
-  notificationPanelVisible = false;
-  loggedIn = false;
+  loggedIn$: Observable<boolean>;
+
+  notificationPanelVisible$: Observable<boolean>;
+
+  constructor(private store: Store<fromRoot.State>) {
+    this.notificationPanelVisible$ = this.store.pipe(select(fromRoot.getShowNotificationsPanel));
+    this.loggedIn$ = this.store.pipe(select(fromAuth.selectLoggedIn));
+  }
 
   toggleNotificationPanel() {
-    this.notificationPanelVisible = !this.notificationPanelVisible;
+    this.store.dispatch(new LayoutActions.ToggleNotifications());
   }
 }

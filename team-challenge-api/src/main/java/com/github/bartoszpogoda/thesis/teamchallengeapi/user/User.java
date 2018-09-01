@@ -1,9 +1,8 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.user;
 
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -15,10 +14,12 @@ import java.util.Set;
 @Table(name = "Users")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "UserID")
     private String id;
 
@@ -27,6 +28,7 @@ public class User {
     private String email;
 
     @Column(name = "EncodedPassword")
+    @JsonIgnore
     private String encodedPassword;
 
     @ManyToMany
@@ -34,6 +36,7 @@ public class User {
             joinColumns = {@JoinColumn(name="UserID", referencedColumnName = "UserID")},
             inverseJoinColumns = {@JoinColumn(name="AuthorityName", referencedColumnName = "AuthorityName")})
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
     private Set<Authority> authorities = new HashSet<>();
 
 

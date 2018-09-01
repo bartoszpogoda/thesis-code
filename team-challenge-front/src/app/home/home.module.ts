@@ -2,15 +2,21 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import {HomePageComponent} from './containers/home-page.component';
 import {HomeRoutingModule} from './home-routing.module';
 import {NgZorroAntdModule} from 'ng-zorro-antd';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ParallaxImageComponent} from './components/parallax-image.component';
-import {RegisterComponent} from './containers/register.component';
 import {NgProgressModule} from '@ngx-progressbar/core';
+import {CoreModule} from '../core/core.module';
+import {AuthModule} from '../auth/auth.module';
+import {RegisterPageComponent} from './containers/register-page.component';
+import {CommonModule} from '@angular/common';
+import {ParallaxContentComponent} from './components/parallax-content.component';
+import {LoginFailedAlertComponent} from './components/login-failed-alert.component';
+import {RegisterSuccessAlertComponent} from './components/register-success-alert.component';
 
-export const COMPONENTS = [HomePageComponent, ParallaxImageComponent, RegisterComponent];
+export const COMPONENTS = [HomePageComponent, ParallaxImageComponent, ParallaxContentComponent, RegisterPageComponent,
+LoginFailedAlertComponent, RegisterSuccessAlertComponent];
 
 @NgModule({
-  imports: [HomeRoutingModule, NgZorroAntdModule,
+  imports: [CommonModule, HomeRoutingModule, NgZorroAntdModule, CoreModule, AuthModule,
     NgProgressModule.forRoot({
       spinner: false,
       thick: true

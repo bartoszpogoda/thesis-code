@@ -14,7 +14,7 @@ import {Component, Input} from '@angular/core';
     `
       .parallax-image {
         position: relative;
-        opacity: 0.65;
+        opacity: 0.75;
         background: no-repeat fixed center;
         background-size: cover;
       }

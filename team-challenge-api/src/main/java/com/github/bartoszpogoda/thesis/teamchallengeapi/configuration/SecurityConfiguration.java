@@ -6,6 +6,7 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.configuration.jwt.JwtAut
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -62,6 +63,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // permit access to Swagger docs
             .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**","/swagger-resources/configuration/ui","/swagger-ui.html").permitAll()
             .antMatchers("/").permitAll()
+                // permit register
+            .antMatchers(HttpMethod.POST, "/users").permitAll()
             .anyRequest().authenticated()
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);

@@ -17,7 +17,7 @@ import {NgProgress} from '@ngx-progressbar/core';
     </app-parallax-image>
     <div class="content-container">
       <div nz-row nzGutter="16">
-        <div nz-col class="gutter-row" nzXs="24" nzSm="16">
+        <div nz-col class="gutter-row" nzXs="24" nzSm="12">
           <div class="box">
             <h2>About ...</h2>
             <p>
@@ -25,9 +25,9 @@ import {NgProgress} from '@ngx-progressbar/core';
             </p>
           </div>
         </div>
-        <div nz-col class="gutter-row" nzXs="24" nzSm="8">
+        <div nz-col class="gutter-row" nzXs="24" nzSm="12">
         <div class="box">
-          <app-register></app-register>
+          Link to register
         </div>
         </div>
       </div>
@@ -39,9 +39,9 @@ import {NgProgress} from '@ngx-progressbar/core';
     `
       .box {
         text-align: center;
-        background: #00A0E9;
+        /*background: #00A0E9;*/
         padding: 5px 5px;
-        height: 100px;
+        /*height: 100px;*/
       }
       .temp-content {
         height: 150vh;

@@ -5,6 +5,11 @@ import {NotFoundPageComponent} from './core/containers/not-found-page.component'
 const routes: Routes = [
   {
     path: '',
+    redirectTo: 'home',
+    pathMatch: 'full'
+  },
+  {
+    path: 'home',
     loadChildren: './home/home.module#HomeModule'
   },
   {
