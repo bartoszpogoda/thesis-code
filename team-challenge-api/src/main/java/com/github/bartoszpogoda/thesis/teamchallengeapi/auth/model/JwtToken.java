@@ -7,11 +7,8 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class JwtToken {
 
     @NonNull
     private String token;
-
-    private String userId;
 }

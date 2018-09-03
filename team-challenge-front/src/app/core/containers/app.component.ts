@@ -34,7 +34,7 @@ import * as LayoutActions from '../actions/layout.actions';
         <app-navbar-login class="onlyDesktop" *ngIf="!(loggedIn$ | async)"></app-navbar-login>
         <ul *ngIf="loggedIn$ | async" nz-menu class="onlyDesktop" [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 64px;">
           <nz-badge class="avatar-badge" (click)="toggleNotificationPanel()" [nzCount]="5" style="margin-right: 24px;">
-            <span class="avatar-username">Bartosz Pogoda</span>
+            <span class="avatar-username">{{userFullName$ | async}}</span>
             <!-- TODO extract dumb component -->
             <nz-avatar [nzSize]="'large'" nzIcon="anticon anticon-user" ></nz-avatar>
             <!--[nzShape]="'square'"-->
@@ -56,12 +56,13 @@ import * as LayoutActions from '../actions/layout.actions';
 export class AppComponent {
   // breadcrumbItems = ['Home', 'App', 'Temp'];
   loggedIn$: Observable<boolean>;
-
   notificationPanelVisible$: Observable<boolean>;
+  userFullName$: Observable<string>;
 
   constructor(private store: Store<fromRoot.State>) {
     this.notificationPanelVisible$ = this.store.pipe(select(fromRoot.getShowNotificationsPanel));
     this.loggedIn$ = this.store.pipe(select(fromAuth.selectLoggedIn));
+    this.userFullName$ = this.store.pipe(select(fromAuth.selectUserFullname));
   }
 
   toggleNotificationPanel() {

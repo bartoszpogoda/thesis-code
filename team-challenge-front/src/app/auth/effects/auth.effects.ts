@@ -1,7 +1,16 @@
 ///<reference path="../actions/auth.actions.ts"/>
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {AuthActionTypes, Login, LoginFailure, LoginSuccess, Register, RegisterFailure, RegisterSuccess} from '../actions/auth.actions';
+import {
+  AuthActionTypes,
+  DecodeToken, DecodeTokenSuccess,
+  Login,
+  LoginFailure,
+  LoginSuccess,
+  Register,
+  RegisterFailure,
+  RegisterSuccess
+} from '../actions/auth.actions';
 import {catchError, exhaustMap, map, switchMap, tap} from 'rxjs/operators';
 import {Authenticate} from '../models/authenticate';
 import {TokenService} from '../service/token.service';
@@ -22,11 +31,26 @@ export class AuthEffects {
     map(action => action.payload),
     exhaustMap((auth: Authenticate) =>
       this.tokenService.create(auth).pipe(
-        map(token => new LoginSuccess(token)),
+        map(token => new DecodeToken(token)),
         catchError(error => of(new LoginFailure(error)))
       )
     )
   );
+
+  @Effect()
+  $decodeToken = this.actions$.pipe(
+    ofType<Login>(AuthActionTypes.DecodeToken),
+    map(action => action.payload),
+    map((token: Token) =>
+      new DecodeTokenSuccess(this.tokenService.decode(token))
+    )
+  );
+
+  @Effect()
+  $decodeTokenSuccess = this.actions$.pipe(
+    ofType<Login>(AuthActionTypes.DecodeTokenSuccess),
+    map(() => new LoginSuccess())
+  )
 
   @Effect({dispatch: false})
   $loginSuccess = this.actions$.pipe(

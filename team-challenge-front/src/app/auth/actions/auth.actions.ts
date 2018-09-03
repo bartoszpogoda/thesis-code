@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import {Authenticate} from '../models/authenticate';
-import {Token} from '../models/token';
+import {DecodedToken, Token} from '../models/token';
 import {RegisterForm} from '../models/register';
 import {ApiError} from '../../core/models/error';
 
@@ -11,6 +11,8 @@ export enum AuthActionTypes {
   Register = '[Auth] Register',
   RegisterSuccess = '[Auth] Register Success',
   RegisterFailure = '[Auth] Register Failure',
+  DecodeToken = '[Auth] Decode Token',
+  DecodeTokenSuccess = '[Auth] Decode Token Success',
 }
 
 export class Login implements Action {
@@ -21,8 +23,6 @@ export class Login implements Action {
 
 export class LoginSuccess implements Action {
   readonly type = AuthActionTypes.LoginSuccess;
-
-  constructor(public payload: Token) {}
 }
 
 export class LoginFailure implements Action {
@@ -47,5 +47,16 @@ export class RegisterFailure implements Action {
   constructor(public payload: ApiError) {}
 }
 
-export type AuthActionsUnion = Login | LoginSuccess
-      | LoginFailure | Register | RegisterSuccess | RegisterFailure;
+export class DecodeToken implements Action {
+  readonly type = AuthActionTypes.DecodeToken;
+
+  constructor(public payload: Token) {}
+}
+
+export class DecodeTokenSuccess implements Action {
+  readonly type = AuthActionTypes.DecodeTokenSuccess;
+
+  constructor(public payload: DecodedToken) {}
+}
+
+export type AuthActionsUnion = Login | LoginSuccess | LoginFailure | Register | RegisterSuccess | RegisterFailure | DecodeToken | DecodeTokenSuccess;

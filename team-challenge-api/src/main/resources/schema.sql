@@ -2,7 +2,8 @@
 CREATE TABLE Users (
   UserID VARCHAR(64) AUTO_INCREMENT PRIMARY KEY,
   Email VARCHAR(64) NOT NULL,
-  EncodedPassword CHAR(60) NOT NULL
+  EncodedPassword CHAR(60) NOT NULL,
+  Fullname VARCHAR(64) NOT NULL
 );
 
 CREATE TABLE Authorities (

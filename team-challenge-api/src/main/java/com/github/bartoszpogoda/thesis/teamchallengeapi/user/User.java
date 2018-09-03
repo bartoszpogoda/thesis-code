@@ -31,6 +31,9 @@ public class User {
     @JsonIgnore
     private String encodedPassword;
 
+    @Column(name = "Fullname")
+    private String fullName;
+
     @ManyToMany
     @JoinTable(name = "GrantedAuthorities",
             joinColumns = {@JoinColumn(name="UserID", referencedColumnName = "UserID")},

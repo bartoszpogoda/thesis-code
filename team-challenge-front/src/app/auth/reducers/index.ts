@@ -68,3 +68,8 @@ export const selectJustRegistered = createSelector(
   state => state.justRegistered
 )
 
+export const selectUserFullname = createSelector(
+  selectAuthStatusState,
+  state => state.decoded.fullName
+)
+

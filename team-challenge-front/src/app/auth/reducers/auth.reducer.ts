@@ -1,14 +1,16 @@
 import {AuthActionsUnion, AuthActionTypes} from '../actions/auth.actions';
-import {Token} from '../models/token';
+import {DecodedToken, Token} from '../models/token';
 
 export interface State {
   loggedIn: boolean;
   token: Token | null;
+  decoded: DecodedToken | null;
 }
 
 const initialState: State = {
   loggedIn: false,
-  token: null
+  token: null,
+  decoded: null
 };
 
 export function reducer(
@@ -17,11 +19,22 @@ export function reducer(
 ): State {
   switch (action.type) {
 
+    case AuthActionTypes.DecodeToken:
+      return {
+        ...state,
+        token: action.payload,
+      };
+
+    case AuthActionTypes.DecodeTokenSuccess:
+      return {
+        ...state,
+        decoded: action.payload,
+      };
+
     case AuthActionTypes.LoginSuccess:
       return {
         ...state,
-        loggedIn: true,
-        token: action.payload,
+        loggedIn: true
       };
 
     default:

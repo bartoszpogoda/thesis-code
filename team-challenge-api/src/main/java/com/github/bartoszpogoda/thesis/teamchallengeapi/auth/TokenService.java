@@ -22,6 +22,9 @@ public class TokenService {
     @Value("${teamchallengeapi.token.claims.roles.key}")
     private String claimsRolesKey = "roles";
 
+    @Value("${teamchallengeapi.token.claims.fullname.key}")
+    private String claimsFullnameKey = "fullname";
+
     public JwtToken generateToken(User user) {
         String token = Jwts.builder()
                 .setClaims(claimsForUser(user))
@@ -30,12 +33,13 @@ public class TokenService {
                 .signWith(SignatureAlgorithm.HS256, signingKey)
                 .compact();
 
-        return new JwtToken(token, user.getId());
+        return new JwtToken(token);
     }
 
     private Claims claimsForUser(User user) {
         Claims claims = Jwts.claims().setSubject(user.getEmail());
         claims.put(claimsRolesKey, SecurityUtil.getAuthoritiesOfUser(user));
+        claims.put(claimsFullnameKey, user.getFullName());
 
         return claims;
     }
