@@ -30,7 +30,7 @@ public class TokenService {
                 .signWith(SignatureAlgorithm.HS256, signingKey)
                 .compact();
 
-        return new JwtToken(token);
+        return new JwtToken(token, user.getId());
     }
 
     private Claims claimsForUser(User user) {

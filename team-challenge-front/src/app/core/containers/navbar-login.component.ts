@@ -12,6 +12,7 @@ import {Authenticate} from '../../auth/models/authenticate';
 @Component({
   selector: 'app-navbar-login',
   template: `
+    <app-progress [inProgress]="loginPending$ | async"></app-progress>
     <app-login-form-horizontal [error]="loginError$ | async" (submitted)="onLogin($event)"></app-login-form-horizontal>
   `
 })
@@ -20,20 +21,9 @@ export class NavbarLoginComponent {
   loginError$: Observable<ApiError>;
 
   constructor(
-    private store: Store<fromAuth.State>,
-    public progress: NgProgress
+    private store: Store<fromAuth.State>
   ) {
     this.loginPending$ = this.store.pipe(select(fromAuth.selectLoginPending));
-
-    // TODO unscubscribe on destroy
-    this.loginPending$.subscribe(next => {
-      if (next) {
-        progress.start();
-      } else {
-        progress.complete();
-      }
-    });
-
     this.loginError$ = this.store.pipe(select(fromAuth.selectLoginError));
   }
 

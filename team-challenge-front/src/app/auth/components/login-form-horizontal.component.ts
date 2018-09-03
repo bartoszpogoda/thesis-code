@@ -14,7 +14,7 @@ import {NzMessageService} from 'ng-zorro-antd';
   selector: 'app-login-form-horizontal',
   template: `
     <ng-progress></ng-progress>
-    <form nz-form [nzLayout]="'inline'" [formGroup]="validateForm" (ngSubmit)="submitForm($event)">
+    <form nz-form [nzLayout]="'inline'" [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
         <nz-form-control [class.has-error]="error">
           <nz-input-group nzPrefixIcon="anticon anticon-user">
@@ -48,14 +48,14 @@ export class LoginFormHorizontalComponent implements OnInit {
 
   validateForm: FormGroup;
 
-  submitForm($event): void {
+  submitForm(): void {
     for (const i of Object.keys(this.validateForm.controls)) {
       this.validateForm.controls[ i ].markAsDirty();
       this.validateForm.controls[ i ].updateValueAndValidity();
     }
 
     if (this.validateForm.valid) {
-      this.submitted.emit($event);
+      this.submitted.emit(this.validateForm.value);
     }
   }
 

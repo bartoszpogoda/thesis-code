@@ -31,15 +31,20 @@ import * as LayoutActions from '../actions/layout.actions';
         </ul>
         </div>
         <!--<app-login *ngIf="!(loggedIn$ | async)"></app-login>-->
-        <app-navbar-login *ngIf="!(loggedIn$ | async)"></app-navbar-login>
+        <app-navbar-login class="onlyDesktop" *ngIf="!(loggedIn$ | async)"></app-navbar-login>
         <ul *ngIf="loggedIn$ | async" nz-menu class="onlyDesktop" [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 64px;">
-          <li class="pull-right notification-bell">
-            <app-notification-bell [badgeCount]="4" (bellClicked)="toggleNotificationPanel()"></app-notification-bell>
-          </li>
+          <nz-badge class="avatar-badge" (click)="toggleNotificationPanel()" [nzCount]="5" style="margin-right: 24px;">
+            <span class="avatar-username">Bartosz Pogoda</span>
+            <!-- TODO extract dumb component -->
+            <nz-avatar [nzSize]="'large'" nzIcon="anticon anticon-user" ></nz-avatar>
+            <!--[nzShape]="'square'"-->
+          </nz-badge>
+          <!--<li class="pull-right notification-bell">-->
+            <!--<app-notification-bell [badgeCount]="4" (bellClicked)="toggleNotificationPanel()"></app-notification-bell>-->
+          <!--</li>-->
         </ul>
       </nz-header>
       <nz-content>
-        <!--<app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>-->
           <router-outlet></router-outlet>
         <app-notification-panel [isVisible]="notificationPanelVisible$ | async"></app-notification-panel>
         <nz-back-top></nz-back-top>

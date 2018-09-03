@@ -17,6 +17,7 @@ import {ErrorInterceptor} from './services/error.interceptor';
 import {ApiErrorAlertComponent} from './components/api-error-alert.component';
 import {NavbarLoginComponent} from './containers/navbar-login.component';
 import {SuccessAlertComponent} from './components/success-alert.component';
+import {ProgressComponent} from './components/progress.component';
 
 export const COMPONENTS = [
   AppComponent,
@@ -28,7 +29,8 @@ export const COMPONENTS = [
   NotificationPanelComponent,
   ApiErrorAlertComponent,
   SuccessAlertComponent,
-  NavbarLoginComponent
+  NavbarLoginComponent,
+  ProgressComponent
 ];
 
 @NgModule({
