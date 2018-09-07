@@ -15,6 +15,10 @@ export enum AuthActionTypes {
   DecodeToken = '[Auth] Decode Token',
   DecodeTokenSuccess = '[Auth] Decode Token Success',
   DecodeTokenFailureExpired = '[Auth] Decode Token Failure - Expired',
+  RenewToken = '[Auth] Renew Token',
+  RenewTokenReceived = '[Auth] Renew Token Received',
+  RenewTokenSuccess = '[Auth] Renew Token Success',
+  RenewTokenFailure = '[Auth] Renew Token Failure',
   Logout = '[Auth] Logout',
 }
 
@@ -72,10 +76,32 @@ export class DecodeTokenFailureExpired implements Action {
   readonly type = AuthActionTypes.DecodeTokenFailureExpired;
 }
 
+export class RenewToken implements Action {
+  readonly type = AuthActionTypes.RenewToken;
+}
+
+export class RenewTokenReceived implements  Action {
+  readonly type = AuthActionTypes.RenewTokenReceived;
+
+  constructor(public payload: Token) {}
+}
+
+export class RenewTokenSuccess implements Action {
+  readonly type = AuthActionTypes.RenewTokenSuccess;
+}
+
+export class RenewTokenFailure implements Action {
+  readonly type = AuthActionTypes.RenewTokenFailure;
+
+  constructor(public payload: ApiError) {}
+}
+
 export class Logout implements Action {
   readonly type = AuthActionTypes.Logout;
 }
 
 export type AuthActionsUnion = Login | LoginSuccess | LoginFailure
   | Register | RegisterSuccess | RegisterFailure | DecodeToken | DecodeTokenSuccess
-  | GenerateTokenSuccess | DecodeTokenFailureExpired | Logout;
+  | GenerateTokenSuccess | DecodeTokenFailureExpired
+  | RenewToken | RenewTokenReceived | RenewTokenSuccess | RenewTokenFailure | Logout;
+

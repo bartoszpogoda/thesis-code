@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 
 import * as fromRoot from '../../reducers';
 import * as fromAuth from '../../auth/reducers';
 import * as LayoutActions from '../actions/layout.actions';
 import * as CoreActions from '../actions/core.actions';
 import {DecodedToken} from '../../auth/models/token';
+import {TokenService} from '../../auth/service/token.service';
 
 @Component({
   selector: 'app-app',
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
+    <app-progress [inProgress]="loginPending$ | async" id="loginPending"></app-progress>
     <nz-layout class="layout">
       <nz-header class="app-header" #top>
         <div>
@@ -58,21 +60,29 @@ import {DecodedToken} from '../../auth/models/token';
     </nz-layout>
   `
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
   // breadcrumbItems = ['Home', 'App', 'Temp'];
   loggedIn$: Observable<boolean>;
+  loginPending$: Observable<boolean>;
   notificationPanelVisible$: Observable<boolean>;
   decodedToken$: Observable<DecodedToken>;
+  periodicRenewalSub: Subscription;
 
-  constructor(private store: Store<fromRoot.State>) {
+  constructor(private store: Store<fromRoot.State>, private tokenService: TokenService) {
     this.notificationPanelVisible$ = this.store.pipe(select(fromRoot.getShowNotificationsPanel));
     this.loggedIn$ = this.store.pipe(select(fromAuth.selectLoggedIn));
     this.decodedToken$ = this.store.pipe(select(fromAuth.selectDecodedToken));
+    this.loginPending$ = this.store.pipe(select(fromAuth.selectLoginPending));
 
     this.store.dispatch(new CoreActions.EnterApplication());
+    this.periodicRenewalSub = this.tokenService.startPeriodicRenewal();
   }
 
   toggleNotificationPanel() {
     this.store.dispatch(new LayoutActions.ToggleNotifications());
+  }
+
+  ngOnDestroy(): void {
+    this.periodicRenewalSub.unsubscribe();
   }
 }

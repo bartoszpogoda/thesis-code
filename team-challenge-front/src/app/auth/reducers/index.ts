@@ -79,6 +79,11 @@ export const selectToken = createSelector(
   fromAuth.getToken
 );
 
+export const selectTokenRenewalPending = createSelector(
+  selectAuthStatusState,
+  fromAuth.getTokenRenewalPending
+);
+
 export const selectDecodedToken = createSelector(
   selectAuthStatusState,
   fromAuth.getDecoded

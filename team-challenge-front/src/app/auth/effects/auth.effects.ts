@@ -9,9 +9,9 @@ import {
   LoginSuccess, Logout,
   Register,
   RegisterFailure,
-  RegisterSuccess
+  RegisterSuccess, RenewToken, RenewTokenFailure, RenewTokenReceived, RenewTokenSuccess
 } from '../actions/auth.actions';
-import {catchError, exhaustMap, map, switchMap, tap} from 'rxjs/operators';
+import {catchError, exhaustMap, map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import {Authenticate} from '../models/authenticate';
 import {TokenService} from '../service/token.service';
 import {of} from 'rxjs';
@@ -76,8 +76,9 @@ export class AuthEffects {
   @Effect()
   $decodeTokenSuccess = this.actions$.pipe(
     ofType<DecodeTokenSuccess>(AuthActionTypes.DecodeTokenSuccess),
-    map(() => new LoginSuccess())
-  )
+    withLatestFrom(this.store.pipe(select(selectTokenRenewalPending))),
+    map(([, tokenRenewalPending]) => tokenRenewalPending ? new RenewTokenSuccess() : new LoginSuccess())
+  );
 
   @Effect({dispatch: false})
   $loginSuccess = this.actions$.pipe(
@@ -109,6 +110,24 @@ export class AuthEffects {
     })
   );
 
+  @Effect()
+  $renewToken = this.actions$.pipe(
+    ofType<RenewToken>(AuthActionTypes.RenewToken),
+    exhaustMap(() => {
+      return this.tokenService.renew().pipe(
+        map(token => new RenewTokenReceived(token)),
+        catchError(error => of(new RenewTokenFailure(error)))
+      );
+    })
+  );
+
+  @Effect()
+  $renewTokenReceived = this.actions$.pipe(
+    ofType<RenewTokenReceived>(AuthActionTypes.RenewTokenReceived),
+    map(action => action.payload),
+    map(payload => new DecodeToken(payload))
+  )
+
   @Effect({dispatch: false})
   $logout = this.actions$.pipe(
     ofType<Logout>(AuthActionTypes.Logout),
@@ -122,10 +141,13 @@ export class AuthEffects {
     private tokenService: TokenService,
     private usersService: UsersService,
     private router: Router,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private store: Store<AuthState>
   ) {}
 }
 import {UsersService} from '../service/users.service';
 import {ApiError} from '../../core/models/error';
 
 import {CoreActionTypes, EnterApplication, NoAction} from '../../core/actions/core.actions';
+import {AuthState, selectLoginPending, selectTokenRenewalPending} from '../reducers';
+import {select, Store} from '@ngrx/store';

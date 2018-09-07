@@ -1,5 +1,6 @@
 import {AuthActionsUnion, AuthActionTypes} from '../actions/auth.actions';
 import {ApiError} from '../../core/models/error';
+import {CoreActionTypes, CoreActionUnion} from '../../core/actions/core.actions';
 
 export interface State {
   pending: boolean;
