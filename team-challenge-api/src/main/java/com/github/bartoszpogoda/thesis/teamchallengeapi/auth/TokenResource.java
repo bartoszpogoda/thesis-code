@@ -2,7 +2,7 @@ package com.github.bartoszpogoda.thesis.teamchallengeapi.auth;
 
 import com.github.bartoszpogoda.thesis.teamchallengeapi.auth.model.JwtToken;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.auth.model.LoginForm;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.exception.InvalidCredentialsException;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.exception.impl.InvalidCredentialsException;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -13,6 +13,14 @@ const routes: Routes = [
     loadChildren: './home/home.module#HomeModule'
   },
   {
+    path: 'player',
+    loadChildren: './player/player.module#PlayerModule'
+  },
+  {
+    path: 'community',
+    loadChildren: './community/community.module#CommunityModule'
+  },
+  {
     path: '**',
     component: NotFoundPageComponent
   }

@@ -1,15 +1,11 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.exception;
 
-import com.github.bartoszpogoda.thesis.teamchallengeapi.exception.ExceptionCode;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.exception.ExceptionResponse;
 import lombok.extern.java.Log;
-import org.omg.CORBA.DynAnyPackage.Invalid;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

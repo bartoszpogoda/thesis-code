@@ -43,16 +43,16 @@ import * as AuthActions from '../actions/auth.actions';
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired>
         <span>
-          Nickname
+          Full name
           <nz-tooltip nzTitle="What do you want other to call you">
             <i nz-tooltip class="anticon anticon-question-circle-o"></i>
           </nz-tooltip>
         </span>
         </nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24">
-          <input nz-input id="username" formControlName="username">
-          <nz-form-explain *ngIf="validateForm.get('username').dirty && validateForm.get('username').errors">
-            Please input your username!
+          <input nz-input id="fullName" formControlName="fullName">
+          <nz-form-explain *ngIf="validateForm.get('fullName').dirty && validateForm.get('fullName').errors">
+            Please input your full name
           </nz-form-explain>
         </nz-form-control>
       </nz-form-item>
@@ -108,7 +108,7 @@ export class RegisterFormComponent implements OnInit {
       email            : [ null, [ Validators.email ] ],
       password         : [ null, [ Validators.required ] ],
       checkPassword    : [ null, [ Validators.required, this.confirmationValidator ] ],
-      username         : [ null, [ Validators.required ] ],
+      fullName         : [ null, [ Validators.required ] ],
       // agree            : [ false ]
     });
   }

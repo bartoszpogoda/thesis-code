@@ -49,3 +49,7 @@ export function reducer(
       return state;
   }
 }
+
+export const getPending = (state: State) => state.pending;
+export const getJustRegistered = (state: State) => state.justRegistered;
+export const getError = (state: State) => state.error;

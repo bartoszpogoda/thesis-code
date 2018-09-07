@@ -11,10 +11,11 @@ import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {AuthEffects} from './effects/auth.effects';
 import {TokenService} from './service/token.service';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {RegisterFormComponent} from './components/register-form.component';
 import {UsersService} from './service/users.service';
 import {LoginFormHorizontalComponent} from './components/login-form-horizontal.component';
+import {TokenInterceptor} from './service/token.interceptor';
 
 export const COMPONENTS = [
   LoginFormHorizontalComponent,
@@ -29,7 +30,11 @@ export const COMPONENTS = [
     NgProgressModule.forRoot()],
   declarations: COMPONENTS,
   exports: COMPONENTS,
-  providers: [TokenService, UsersService, { provide: NZ_I18N, useValue: en_US }]
+  providers: [TokenService, UsersService, { provide: NZ_I18N, useValue: en_US }, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptor,
+    multi: true
+  }]
 })
 export class AuthModule {
   static forRoot() {

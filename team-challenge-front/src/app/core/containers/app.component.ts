@@ -5,6 +5,8 @@ import {Observable} from 'rxjs';
 import * as fromRoot from '../../reducers';
 import * as fromAuth from '../../auth/reducers';
 import * as LayoutActions from '../actions/layout.actions';
+import * as CoreActions from '../actions/core.actions';
+import {DecodedToken} from '../../auth/models/token';
 
 @Component({
   selector: 'app-app',
@@ -15,11 +17,14 @@ import * as LayoutActions from '../actions/layout.actions';
         <div>
         <div class="logo" routerLink="/"></div>
         <ul nz-menu class="onlyDesktop" [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 64px;">
-          <li nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="/home" [routerLinkActiveOptions]="{exact: true}">
+          <li *ngIf="!(loggedIn$ | async)" nz-menu-item
+              routerLinkActive="ant-menu-item-selected" routerLink="/home" [routerLinkActiveOptions]="{exact: true}">
             <app-nav-item title="Home" icon="home"></app-nav-item>
           </li>
           <li *ngIf="!(loggedIn$ | async)" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="/home/register">
             <app-nav-item title="Register"></app-nav-item></li>
+          <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="community">
+            <app-nav-item title="Community" icon="home"></app-nav-item></li>
           <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="challenges">
             <app-nav-item title="Challenges" [notify]="true" icon="play-circle-o"></app-nav-item></li>
           <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="team">
@@ -34,7 +39,7 @@ import * as LayoutActions from '../actions/layout.actions';
         <app-navbar-login class="onlyDesktop" *ngIf="!(loggedIn$ | async)"></app-navbar-login>
         <ul *ngIf="loggedIn$ | async" nz-menu class="onlyDesktop" [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 64px;">
           <nz-badge class="avatar-badge" (click)="toggleNotificationPanel()" [nzCount]="5" style="margin-right: 24px;">
-            <span class="avatar-username">{{userFullName$ | async}}</span>
+            <span class="avatar-username">{{(decodedToken$ | async).fullName}}</span>
             <!-- TODO extract dumb component -->
             <nz-avatar [nzSize]="'large'" nzIcon="anticon anticon-user" ></nz-avatar>
             <!--[nzShape]="'square'"-->
@@ -57,12 +62,14 @@ export class AppComponent {
   // breadcrumbItems = ['Home', 'App', 'Temp'];
   loggedIn$: Observable<boolean>;
   notificationPanelVisible$: Observable<boolean>;
-  userFullName$: Observable<string>;
+  decodedToken$: Observable<DecodedToken>;
 
   constructor(private store: Store<fromRoot.State>) {
     this.notificationPanelVisible$ = this.store.pipe(select(fromRoot.getShowNotificationsPanel));
     this.loggedIn$ = this.store.pipe(select(fromAuth.selectLoggedIn));
-    this.userFullName$ = this.store.pipe(select(fromAuth.selectUserFullname));
+    this.decodedToken$ = this.store.pipe(select(fromAuth.selectDecodedToken));
+
+    this.store.dispatch(new CoreActions.EnterApplication());
   }
 
   toggleNotificationPanel() {

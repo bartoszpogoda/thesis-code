@@ -3,12 +3,14 @@ import {DecodedToken, Token} from '../models/token';
 
 export interface State {
   loggedIn: boolean;
+  tokenExpired: boolean;
   token: Token | null;
   decoded: DecodedToken | null;
 }
 
 const initialState: State = {
   loggedIn: false,
+  tokenExpired: false,
   token: null,
   decoded: null
 };
@@ -19,7 +21,7 @@ export function reducer(
 ): State {
   switch (action.type) {
 
-    case AuthActionTypes.DecodeToken:
+    case AuthActionTypes.GenerateTokenSuccess:
       return {
         ...state,
         token: action.payload,
@@ -29,6 +31,7 @@ export function reducer(
       return {
         ...state,
         decoded: action.payload,
+        tokenExpired: false
       };
 
     case AuthActionTypes.LoginSuccess:
@@ -37,9 +40,25 @@ export function reducer(
         loggedIn: true
       };
 
+    case AuthActionTypes.Logout:
+      return {
+        ...state,
+        loggedIn: false,
+        token: null,
+        decoded: null
+      };
+    case AuthActionTypes.DecodeTokenFailureExpired:
+      return {
+        ...state,
+        tokenExpired: true,
+        token: null
+      };
+
     default:
       return state;
   }
 }
 
 export const getLoggedIn = (state: State) => state.loggedIn;
+export const getToken = (state: State) => state.token;
+export const getDecoded = (state: State) => state.decoded;

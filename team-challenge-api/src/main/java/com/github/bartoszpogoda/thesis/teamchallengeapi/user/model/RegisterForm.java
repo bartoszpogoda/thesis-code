@@ -15,6 +15,6 @@ public class RegisterForm {
     @Size(min = 7, max = 20, message = "Password must be between 7 and 20 characters long.")
     private String password;
 
-    @NotEmpty(message = "Username can not be empty.")
-    private String username;
+    @NotEmpty(message = "Fullname can not be empty.")
+    private String fullName;
 }

@@ -51,14 +51,6 @@ export class RegisterPageComponent {
     this.registerPending$ = this.store.pipe(select(fromAuth.selectRegisterPending));
     this.justRegistered$ = this.store.pipe(select(fromAuth.selectJustRegistered));
     this.registerError$ = this.store.pipe(select(fromAuth.selectRegisterError));
-    //
-    // this.registerPending$.subscribe(pending => {
-    //   if (pending) {
-    //     this.progress.start();
-    //   } else {
-    //     this.progress.complete();
-    //   }
-    // }); // TODO unsubscribe on destruct
   }
 
   onRegister($event: RegisterForm) {

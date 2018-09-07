@@ -1,4 +1,5 @@
 import {LayoutActionsUnion, LayoutActionTypes,} from '../actions/layout.actions';
+import {AuthActionsUnion, AuthActionTypes} from '../../auth/actions/auth.actions';
 
 export interface State {
   showNotificationsPanel: boolean;
@@ -10,7 +11,7 @@ const initialState: State = {
 
 export function reducer(
   state: State = initialState,
-  action: LayoutActionsUnion
+  action: LayoutActionsUnion | AuthActionsUnion
 ): State {
   switch (action.type) {
     case LayoutActionTypes.CloseNotifications:
@@ -26,6 +27,11 @@ export function reducer(
     case LayoutActionTypes.ToggleNotifications:
       return {
         showNotificationsPanel: !state.showNotificationsPanel
+      };
+
+    case AuthActionTypes.Logout:
+      return {
+        showNotificationsPanel: false,
       };
 
     default:

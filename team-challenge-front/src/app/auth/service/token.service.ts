@@ -19,8 +19,35 @@ export class TokenService {
     return {
       email: decoded['sub'],
       fullName: decoded['fullname'],
-      roles: decoded['roles']
+      roles: decoded['roles'],
+      expires: decoded['exp'],
     };
+  }
+
+  /**
+   * Saves token to the local storage.
+   * @param token
+   */
+  save(token: Token) {
+    localStorage.setItem('token', token.token);
+  }
+
+  clear() {
+    localStorage.removeItem('token');
+  }
+
+  load(): Token {
+    const tokenValue = localStorage.getItem('token');
+
+    if (tokenValue !== null && tokenValue !== 'null') {
+      return {token: tokenValue};
+    } else {
+      return null;
+    }
+  }
+
+  isExpired(decoded: DecodedToken): boolean {
+     return Date.now() > decoded.expires * 1000;
   }
 
   constructor(private http: HttpClient) {}

@@ -11,6 +11,7 @@ export interface AuthState {
   register: fromRegister.State;
 }
 
+
 export interface State extends fromRoot.State {
   auth: AuthState;
 }
@@ -55,21 +56,30 @@ export const selectLoginError = createSelector(
 
 export const selectRegisterPending = createSelector(
   selectRegisterState,
-  (state) => state.pending
+  fromRegister.getPending
 );
 
 export const selectRegisterError = createSelector(
   selectRegisterState,
-  state => state.error
-)
+  fromRegister.getError
+);
 
 export const selectJustRegistered = createSelector(
   selectRegisterState,
-  state => state.justRegistered
-)
+  fromRegister.getJustRegistered
+);
 
 export const selectUserFullname = createSelector(
   selectAuthStatusState,
   state => state.decoded.fullName
-)
+);
 
+export const selectToken = createSelector(
+  selectAuthStatusState,
+  fromAuth.getToken
+);
+
+export const selectDecodedToken = createSelector(
+  selectAuthStatusState,
+  fromAuth.getDecoded
+);
