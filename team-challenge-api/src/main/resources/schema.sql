@@ -19,5 +19,26 @@ CREATE TABLE GrantedAuthorities (
   FOREIGN KEY (AuthorityName) REFERENCES Authorities(AuthorityName)
 );
 
+/* DISCIPLINES */
 
+CREATE TABLE Disciplines (
+  DisciplineID VARCHAR(10) PRIMARY KEY
+);
 
+/* FACILITIES */
+
+CREATE TABLE Facilities (
+  FacilityID VARCHAR(64) AUTO_INCREMENT PRIMARY KEY,
+  DisciplineID VARCHAR(10) NOT NULL,
+  Name VARCHAR(64) NOT NULL,
+
+  FOREIGN KEY (DisciplineID) REFERENCES Disciplines(DisciplineID)
+);
+
+CREATE TABLE OpenFacilities (
+  FacilityID VARCHAR(64) NOT NULL,
+  Temp VARCHAR(64) NOT NULL,
+
+  PRIMARY KEY (FacilityID),
+  FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID)
+);

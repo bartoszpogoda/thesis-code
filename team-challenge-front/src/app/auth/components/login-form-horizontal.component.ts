@@ -18,20 +18,20 @@ import {NzMessageService} from 'ng-zorro-antd';
       <nz-form-item>
         <nz-form-control [class.has-error]="error">
           <nz-input-group nzPrefixIcon="anticon anticon-user">
-            <input formControlName="email" nz-input placeholder="Email">
+            <input formControlName="email" nz-input placeholder="Adres email">
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-control [class.has-error]="error">
           <nz-input-group nzPrefixIcon="anticon anticon-lock">
-            <input formControlName="password" nz-input type="password" placeholder="Password">
+            <input formControlName="password" nz-input type="password" placeholder="Hasło">
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-control>
-          <button nz-button nzType="primary">Log in</button>
+          <button nz-button nzType="primary">Zaloguj się</button>
         </nz-form-control>
       </nz-form-item>
     </form>

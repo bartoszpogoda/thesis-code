@@ -9,3 +9,9 @@ INSERT INTO Authorities VALUES('ROLE_ADMIN');
 INSERT Into GrantedAuthorities VALUES('0', 'ROLE_USER');
 INSERT Into GrantedAuthorities VALUES('0', 'ROLE_MOD');
 
+-- Disciplines
+INSERT INTO Disciplines VALUES('3x3basket');
+
+-- Test facilities
+INSERT INTO Facilities VALUES('0', '3x3basket', 'SP7 Klodzko');
+INSERT INTO OpenFacilities VALUES('0', 'Temp');

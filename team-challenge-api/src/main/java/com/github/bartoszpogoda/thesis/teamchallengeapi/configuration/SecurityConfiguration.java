@@ -61,7 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // permit access to H2 console at least for now
             .antMatchers("/h2-console/**").permitAll()
                 // permit access to Swagger docs
-            .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**","/swagger-resources/configuration/ui","/swagger-ui.html").permitAll()
+            .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**","/swagger-resources/configuration/**","/swagger-ui.html").permitAll()
             .antMatchers("/").permitAll()
                 // permit register
             .antMatchers(HttpMethod.POST, "/users").permitAll()
@@ -71,6 +71,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         // fix H2 console blank page after login
         http.headers().frameOptions().disable();
+
+        // allow only SSL
+        // http.requiresChannel().antMatchers("**").requiresSecure();
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
     }
