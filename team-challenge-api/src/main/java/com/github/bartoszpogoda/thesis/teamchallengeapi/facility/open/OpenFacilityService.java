@@ -25,9 +25,6 @@ public class OpenFacilityService {
     }
 
     public Optional<OpenFacility> getByIdAndDiscipline(String id, String discliplineId) {
-//        return openFacilityRepository.findById(id)
-//                .filter(openFacility -> openFacility.getDisciplineId().equals(discliplineId));
-
         return openFacilityRepository.findByDisciplineIdAndId(discliplineId, id);
     }
 
