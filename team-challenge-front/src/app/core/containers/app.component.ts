@@ -21,19 +21,19 @@ import {TokenService} from '../../auth/service/token.service';
         <ul nz-menu class="onlyDesktop" [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 64px;">
           <li *ngIf="!(loggedIn$ | async)" nz-menu-item
               routerLinkActive="ant-menu-item-selected" routerLink="/home" [routerLinkActiveOptions]="{exact: true}">
-            <app-nav-item title="Home" icon="home"></app-nav-item>
+            <app-nav-item title="Strona główna" icon="home"></app-nav-item>
           </li>
           <li *ngIf="!(loggedIn$ | async)" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="/home/register">
-            <app-nav-item title="Register"></app-nav-item></li>
+            <app-nav-item title="Rejestracja"></app-nav-item></li>
           <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="community">
-            <app-nav-item title="Community" icon="home"></app-nav-item></li>
+            <app-nav-item title="Społeczność" icon="home"></app-nav-item></li>
           <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="challenges">
-            <app-nav-item title="Challenges" [notify]="true" icon="play-circle-o"></app-nav-item></li>
+            <app-nav-item title="Wyzwania" [notify]="true" icon="play-circle-o"></app-nav-item></li>
           <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="team">
-            <app-nav-item title="Team" icon="team"></app-nav-item>
+            <app-nav-item title="Drużyna" icon="team"></app-nav-item>
           </li>
           <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="player">
-            <app-nav-item title="Player" icon="user"></app-nav-item>
+            <app-nav-item title="Zawodnik" icon="user"></app-nav-item>
           </li>
         </ul>
         </div>

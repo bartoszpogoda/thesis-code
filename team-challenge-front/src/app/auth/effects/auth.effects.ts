@@ -133,6 +133,7 @@ export class AuthEffects {
     ofType<Logout>(AuthActionTypes.Logout),
     tap(() => {
       this.tokenService.clear();
+      this.router.navigate(['/home']);
     })
   );
 

@@ -9,33 +9,33 @@ import * as AuthActions from '../actions/auth.actions';
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">E-mail</nz-form-label>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">Adres email</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24">
           <input nz-input formControlName="email" id="email">
           <nz-form-explain *ngIf="validateForm.get('email').dirty && validateForm.get('email').errors">
-            The input is not valid E-mail!
+            Wprowadź prawidłowy adres email!
           </nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>Password</nz-form-label>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>Hasło</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24">
           <input nz-input type="password" id="password" formControlName="password" (ngModelChange)="updateConfirmValidator()">
           <nz-form-explain *ngIf="validateForm.get('password').dirty && validateForm.get('password').errors">
-            Please input your password!
+            Wprowadź hasło!
           </nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>Confirm Password</nz-form-label>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>Potwierdź hasło</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24">
           <input nz-input type="password" formControlName="checkPassword" id="checkPassword">
           <nz-form-explain *ngIf="validateForm.get('checkPassword').dirty && validateForm.get('checkPassword').errors">
             <ng-container *ngIf="validateForm.get('checkPassword').hasError('required')">
-              Please confirm your password!
+              Proszę potwierdź swoje hasło!
             </ng-container>
             <ng-container *ngIf="validateForm.get('checkPassword').hasError('confirm')">
-              Two passwords that you enter is inconsistent!
+              Hasła nie są zgodne!
             </ng-container>
           </nz-form-explain>
         </nz-form-control>
@@ -43,8 +43,8 @@ import * as AuthActions from '../actions/auth.actions';
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired>
         <span>
-          Full name
-          <nz-tooltip nzTitle="What do you want other to call you">
+          Imię i nazwisko
+          <nz-tooltip nzTitle="Wprowadź swoje imię i nazwisko">
             <i nz-tooltip class="anticon anticon-question-circle-o"></i>
           </nz-tooltip>
         </span>
@@ -52,7 +52,7 @@ import * as AuthActions from '../actions/auth.actions';
         <nz-form-control [nzSm]="14" [nzXs]="24">
           <input nz-input id="fullName" formControlName="fullName">
           <nz-form-explain *ngIf="validateForm.get('fullName').dirty && validateForm.get('fullName').errors">
-            Please input your full name
+            Proszę wprowadź swoje imię i nazwisko
           </nz-form-explain>
         </nz-form-control>
       </nz-form-item>
@@ -65,7 +65,7 @@ import * as AuthActions from '../actions/auth.actions';
       <!--</nz-form-item>-->
       <nz-form-item nz-row style="margin-bottom:8px;">
         <nz-form-control [nzSpan]="14" [nzOffset]="6">
-          <button nz-button nzType="primary">Register</button>
+          <button nz-button nzType="primary">Zarejestruj się</button>
         </nz-form-control>
       </nz-form-item>
     </form>

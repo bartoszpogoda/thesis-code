@@ -10,9 +10,12 @@ import {RegisterPageComponent} from './containers/register-page.component';
 import {CommonModule} from '@angular/common';
 import {ParallaxContentComponent} from './components/parallax-content.component';
 import {LoginFailedAlertComponent} from './components/login-failed-alert.component';
+import {IntroductionComponent} from './components/introduction.component';
+import {ParallaxImageVhComponent} from './components/parallax-image-vh.component';
+import {IntroductionHeaderComponent} from './components/introduction-header.component';
 
 export const COMPONENTS = [HomePageComponent, ParallaxImageComponent, ParallaxContentComponent, RegisterPageComponent,
-LoginFailedAlertComponent];
+LoginFailedAlertComponent, IntroductionComponent, ParallaxImageVhComponent, IntroductionHeaderComponent];
 
 @NgModule({
   imports: [CommonModule, HomeRoutingModule, NgZorroAntdModule, CoreModule, AuthModule,

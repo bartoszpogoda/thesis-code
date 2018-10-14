@@ -21,6 +21,10 @@ const routes: Routes = [
     loadChildren: './community/community.module#CommunityModule'
   },
   {
+    path: 'team',
+    loadChildren: './team/team.module#TeamModule'
+  },
+  {
     path: '**',
     component: NotFoundPageComponent
   }

@@ -20,8 +20,8 @@ import {ApiError} from '../../core/models/error';
       <app-api-error-alert [error]="registerError$ | async"></app-api-error-alert>
       <app-api-error-alert [error]="loginError$ | async" [extraText]="loginErrorExtraText"></app-api-error-alert>
       <app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
-      <h1>Join us today!</h1>
-      <p>Are you ready to accept the challenge? Register using form below.</p>
+      <h1>Dołącz do nas już dzisiaj!</h1>
+      <p>Jesteś gotowy podjąć wyzwanie? Zarejestruj się korzystając z poniższego formularza.</p>
       <app-register-form (submitted)="onRegister($event)"></app-register-form>
     </app-parallax-content>
   `, styles: [`
@@ -34,12 +34,12 @@ import {ApiError} from '../../core/models/error';
   `]
 })
 export class RegisterPageComponent {
-  registerSuccessMessage = 'Registration successful!';
-  registerSuccessDetails = 'You can now log in onto your newly created account and team up with your friends.';
-  loginErrorExtraText = ' If you don\'t have an account yet you can register using form presented below';
+  registerSuccessMessage = 'Rejestracja zakończona powodzeniem!';
+  registerSuccessDetails = 'Możesz teraz zalogować się na swoje konto.';
+  loginErrorExtraText = 'Jeśli nie posiadasz konta zarejestruj się korzystając z poniższego formularza.';
   breadcrumbItems: BreadcrumbItem[] = [
-    {link: '/home', title: 'Home'},
-    {title: 'Register'}
+    {link: '/home', title: 'Strona główna'},
+    {title: 'Rejestracja'}
   ];
   loginError$: Observable<ApiError>;
   registerPending$: Observable<boolean>;
