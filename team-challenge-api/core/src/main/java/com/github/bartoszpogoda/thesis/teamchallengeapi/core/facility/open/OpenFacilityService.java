@@ -1,9 +1,9 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.facility.open;
 
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.UnknownDisciplineException;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.facility.model.OpenFacilityRegistrationForm;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.discipline.DisciplineService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.FacilityNotFoundException;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.UnknownDisciplineException;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.facility.model.OpenFacilityRegistrationForm;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

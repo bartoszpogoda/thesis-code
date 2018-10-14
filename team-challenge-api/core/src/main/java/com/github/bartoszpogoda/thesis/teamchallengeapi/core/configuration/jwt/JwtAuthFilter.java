@@ -1,7 +1,7 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.configuration.jwt;
 
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.auth.model.JwtToken;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.auth.TokenService;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.auth.model.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

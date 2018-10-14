@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.joda.time.LocalDate;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -33,6 +34,9 @@ public class User {
 
     @Column(name = "Fullname")
     private String fullName;
+
+    @Column(name = "BirthdayDate")
+    private LocalDate birthdayDate;
 
     @ManyToMany
     @JoinTable(name = "GrantedAuthorities",

@@ -3,7 +3,8 @@ CREATE TABLE Users (
   UserID VARCHAR(64) AUTO_INCREMENT PRIMARY KEY,
   Email VARCHAR(64) NOT NULL UNIQUE,
   EncodedPassword CHAR(60) NOT NULL,
-  Fullname VARCHAR(64) NOT NULL
+  Fullname VARCHAR(64) NOT NULL,
+  BirthdayDate DATE
 );
 
 CREATE TABLE Authorities (
@@ -25,6 +26,13 @@ CREATE TABLE Disciplines (
   DisciplineID VARCHAR(10) PRIMARY KEY
 );
 
+/* REGIONS */
+
+CREATE TABLE Regions (
+  RegionID VARCHAR(10) PRIMARY KEY,
+  Name VARCHAR(25) NOT NULL
+);
+
 /* FACILITIES */
 
 CREATE TABLE Facilities (
@@ -42,3 +50,28 @@ CREATE TABLE OpenFacilities (
   PRIMARY KEY (FacilityID),
   FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID)
 );
+
+/* PLAYERS */
+
+CREATE TABLE Players (
+  PlayerID VARCHAR(64) AUTO_INCREMENT PRIMARY KEY,
+  UserID VARCHAR(64) NOT NULL,
+  DisciplineID VARCHAR(64) NOT NULL,
+  Height INTEGER,
+  YearsOfExperience INTEGER,
+
+  FOREIGN KEY (UserID) REFERENCES Users(UserID),
+  FOREIGN KEY (DisciplineID) REFERENCES Disciplines(DisciplineID)
+);
+
+CREATE TABLE Basket3x3PlayerProfiles (
+  ProfileID VARCHAR(64) AUTO_INCREMENT PRIMARY KEY,
+  PlayerID VARCHAR(64) NOT NULL,
+  Height INTEGER,
+  Weight INTEGER,
+  LongThrowAccuracy DOUBLE,
+  PersonalThrowAccuracy DOUBLE,
+  YearsOfExperience INTEGER,
+
+  FOREIGN  KEY (PlayerID) REFERENCES Players(PlayerID)
+)

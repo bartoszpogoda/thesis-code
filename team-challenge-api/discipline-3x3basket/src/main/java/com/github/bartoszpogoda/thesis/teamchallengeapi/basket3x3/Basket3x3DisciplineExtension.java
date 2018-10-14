@@ -11,5 +11,7 @@ public class Basket3x3DisciplineExtension implements DisciplineExtension {
         return "3x3basket";
     }
 
+    public Basket3x3DisciplineExtension() {
 
+    }
 }

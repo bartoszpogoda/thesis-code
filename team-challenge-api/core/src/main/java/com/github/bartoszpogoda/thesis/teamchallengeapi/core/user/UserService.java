@@ -1,6 +1,7 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.user;
 
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.EmailAlreadyUsedException;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.InvalidCredentialsException;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.user.model.RegisterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -53,7 +54,23 @@ public class UserService {
         this.encoder = encoder;
     }
 
-    public Optional<User> getUserById(String id) {
-        return userRepository.findById(id);
+    public Optional<User> getUserById(String id) throws InvalidCredentialsException {
+
+        Optional<User> currentUser = getCurrentUser();
+
+        return currentUser.map(user -> {
+
+            if(user.getId().equals(id)) {
+                return currentUser;
+            }
+
+            if(user.getAuthorities().contains(new Authority("ROLE_ADMIN"))) {
+                return userRepository.findById(id);
+            }
+
+            return Optional.<User>empty();
+
+        }).orElseThrow(InvalidCredentialsException::new);
+
     }
 }

@@ -1,7 +1,7 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.facility.open;
 
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.facility.model.OpenFacilityRegistrationForm;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.FacilityNotFoundException;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.facility.model.OpenFacilityRegistrationForm;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

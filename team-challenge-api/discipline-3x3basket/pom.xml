@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.bartoszpogoda.thesis</groupId>
-    <artifactId>team-challenge-api-app</artifactId>
+    <artifactId>team-challenge-api-discipline-3x3basket</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>team-challenge-api-app</name>
-    <description>Rest API Extensions for Team Challenge project.</description>
+    <name>team-challenge-api-discipline-3x3basket</name>
+    <description>3x3Basket Discipline Extensions for Team Challenge project.</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -37,11 +37,7 @@
             <artifactId>team-challenge-api-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.github.bartoszpogoda.thesis</groupId>
-            <artifactId>team-challenge-api-discipline-3x3basket</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

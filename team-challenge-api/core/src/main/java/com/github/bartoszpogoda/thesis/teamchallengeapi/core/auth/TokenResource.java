@@ -31,6 +31,7 @@ public class TokenResource {
     private Validator validator;
 
     @PostMapping
+    // TODO refactor make 201 Created
     public ResponseEntity<JwtToken> create(@RequestBody LoginForm loginForm, BindingResult result) throws InvalidCredentialsException {
         validator.validate(loginForm, result);
         if(result.hasErrors()) {

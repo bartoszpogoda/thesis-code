@@ -4,4 +4,6 @@ public interface DisciplineExtension {
 
     String getDisciplineId();
 
+//    AbstractPlayerProfileService<? extends PlayerProfile> getPlayerProfileService();
+
 }
