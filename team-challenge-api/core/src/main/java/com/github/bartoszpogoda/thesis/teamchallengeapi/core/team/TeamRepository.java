@@ -15,5 +15,7 @@ public interface TeamRepository extends CrudRepository<Team, String> {
 
     Page<Team> findAllByDisciplineIdAndRegionId(Pageable pageable, String disciplineId, String regionId);
 
+    Optional<Team> findByIdAndDisciplineId(String id, String disciplineId);
+
     Optional<Team> findByIdAndDisciplineIdAndRegionId(String id, String disciplineId, String regionId);
 }

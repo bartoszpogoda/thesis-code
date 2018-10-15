@@ -24,6 +24,6 @@ public class Authority {
     @Size(max = 50)
     private String name;
 
-
+    public static final Authority ADMIN = new Authority("ROLE_ADMIN");
 
 }

@@ -15,4 +15,8 @@ public class AccessForbiddenException extends AbstractException {
         super(CODE, MESSAGE, DETAILS);
     }
 
+    public AccessForbiddenException(String details) {
+        super(CODE, MESSAGE, details);
+    }
+
 }

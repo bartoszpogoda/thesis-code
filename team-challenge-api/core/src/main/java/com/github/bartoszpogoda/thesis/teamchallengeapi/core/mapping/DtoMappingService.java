@@ -5,6 +5,8 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.PlayerServic
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.model.PlayerDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.Team;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.model.TeamDto;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.teaminvitation.TeamInvitation;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.teaminvitation.model.TeamInvitationDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,15 @@ public class DtoMappingService {
         teamDto.setManagerName(team.getManager().getUser().getFullName());
 
         return teamDto;
+    }
+
+    public TeamInvitationDto mapToDto(TeamInvitation teamInvitation) {
+        TeamInvitationDto teamInvitationDto = modelMapper.map(teamInvitation, TeamInvitationDto.class);
+
+        teamInvitationDto.setPlayerId(teamInvitation.getTargetPlayer().getId());
+        teamInvitationDto.setTeamId(teamInvitation.getTargetTeam().getId());
+
+        return teamInvitationDto;
     }
 
     public DtoMappingService(ModelMapper modelMapper, PlayerService playerService) {
