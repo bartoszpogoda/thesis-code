@@ -1,6 +1,7 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.player;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.Team;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.user.User;
 import lombok.Data;
 
@@ -19,6 +20,10 @@ public class Player {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "UserID")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "TeamID")
+    private Team team;
 
     @Column(name = "DisciplineID")
     @JsonIgnore

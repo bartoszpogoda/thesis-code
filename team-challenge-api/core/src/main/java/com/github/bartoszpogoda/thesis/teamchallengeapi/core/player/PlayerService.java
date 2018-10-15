@@ -1,7 +1,7 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.player;
 
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.discipline.DisciplineService;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.PlayerAlreadyExistsException;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.PlayerAlreadyInTeamException;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.UnknownDisciplineException;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.model.PlayerRegistrationForm;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.user.User;
@@ -24,10 +24,8 @@ public class PlayerService {
 
     private UserService userService;
 
-    public Optional<Player> registerCurrentUser(String disciplineId, @Valid PlayerRegistrationForm registrationForm) throws UnknownDisciplineException, PlayerAlreadyExistsException {
-        if(!disciplineService.disciplineExists(disciplineId)) {
-            throw new UnknownDisciplineException();
-        }
+    public Optional<Player> registerCurrentUser(String disciplineId, @Valid PlayerRegistrationForm registrationForm) throws UnknownDisciplineException, PlayerAlreadyInTeamException {
+        disciplineService.checkDisciplineExists(disciplineId);
 
         Optional<User> currentUserOpt = userService.getCurrentUser();
         if(currentUserOpt.isPresent()) {
@@ -35,7 +33,7 @@ public class PlayerService {
 
             Optional<Player> existingUser = playerRepository.findByUserAndDisciplineId(currentUser, disciplineId);
             if(existingUser.isPresent()) {
-                throw new PlayerAlreadyExistsException();
+                throw new PlayerAlreadyInTeamException();
             }
 
             Player player = new Player();
@@ -57,18 +55,22 @@ public class PlayerService {
         return playerRepository.existsPlayerByIdAndDisciplineId(playerId, disciplineId);
     }
 
+    public Optional<Player> getCurrentPlayer(String disciplineId) throws UnknownDisciplineException {
+        disciplineService.checkDisciplineExists(disciplineId);
+
+        return userService.getCurrentUser()
+                .flatMap(user -> playerRepository.findByUserAndDisciplineId(user, disciplineId));
+    }
+
     public Page<Player> findAllPlayers(Pageable pageable, String disciplineId) throws UnknownDisciplineException {
-        if(!disciplineService.disciplineExists(disciplineId)) {
-            throw new UnknownDisciplineException();
-        }
+        disciplineService.checkDisciplineExists(disciplineId);
+
 
         return playerRepository.findAllByDisciplineId(pageable, disciplineId);
     }
 
     public Page<Player> findByName(Pageable pageable, String disciplineId, String fullNamePortion) throws UnknownDisciplineException {
-        if(!disciplineService.disciplineExists(disciplineId)) {
-            throw new UnknownDisciplineException();
-        }
+        disciplineService.checkDisciplineExists(disciplineId);
 
         return playerRepository.findByDisciplineIdAndUserFullNameContainingIgnoreCase(pageable, disciplineId, fullNamePortion);
 
@@ -87,9 +89,7 @@ public class PlayerService {
     }
 
     public Optional<Player> getByIdAndDiscipline(String id, String disciplineId) throws UnknownDisciplineException {
-        if(!disciplineService.disciplineExists(disciplineId)) {
-            throw new UnknownDisciplineException();
-        }
+        disciplineService.checkDisciplineExists(disciplineId);
 
         return playerRepository.findByIdAndDisciplineId(id, disciplineId);
     }

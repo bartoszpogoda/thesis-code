@@ -15,4 +15,6 @@ public class PlayerDto {
 
     private int yearsOfExperience;
 
+    private String teamName;
+
 }

@@ -5,14 +5,14 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.Exception
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.BAD_REQUEST)
-public class PlayerAlreadyExistsException extends AbstractException {
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class UnknownRegionException extends AbstractException {
+    private static final ExceptionCode CODE = ExceptionCode.UNKNOWN_REGION;
 
-    private static final ExceptionCode CODE = ExceptionCode.PLAYER_ALREADY_EXISTS;
-    private static final String MESSAGE = "Player already exists for this discipline.";
-    private static final String DETAILS = "";
+    private static final String MESSAGE = "Unknown Region.";
+    private static final String DETAILS = "Region was not defined in the system";
 
-    public PlayerAlreadyExistsException() {
+    public UnknownRegionException() {
         super(CODE, MESSAGE, DETAILS);
     }
 }

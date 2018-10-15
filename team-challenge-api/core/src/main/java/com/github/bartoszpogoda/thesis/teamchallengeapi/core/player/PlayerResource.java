@@ -2,9 +2,10 @@ package com.github.bartoszpogoda.thesis.teamchallengeapi.core.player;
 
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.discipline.DisciplineService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.InternalServerException;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.PlayerAlreadyExistsException;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.PlayerAlreadyInTeamException;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.PlayerNotFoundException;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.UnknownDisciplineException;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.mapping.DtoMappingService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.model.PlayerDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.model.PlayerRegistrationForm;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.user.UserService;
@@ -12,7 +13,6 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.util.CustomPage;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.util.PaginationUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +28,13 @@ public class PlayerResource {
 
     private PlayerService playerService;
 
-    private ModelMapper modelMapper;
+    private DtoMappingService mappingService;
 
     @PostMapping
     public ResponseEntity<PlayerDto> register(@PathVariable("disciplineId") String disciplineId,
-                                           @Valid @RequestBody PlayerRegistrationForm registrationForm) throws PlayerAlreadyExistsException, UnknownDisciplineException, InternalServerException {
+                                           @Valid @RequestBody PlayerRegistrationForm registrationForm) throws PlayerAlreadyInTeamException, UnknownDisciplineException, InternalServerException {
         return playerService.registerCurrentUser(disciplineId, registrationForm)
-                .map(this::convertToDto)
+                .map(mappingService::mapToDto)
                 .map(playerDto ->
                         ResponseEntity.created(createLocationByAddingIdToCurentRequest(playerDto.getId())).body(playerDto))
                 .orElseThrow(InternalServerException::new);
@@ -57,7 +57,7 @@ public class PlayerResource {
             players = playerService.findAllPlayers(pageable, disciplineId);
         }
 
-        Page<PlayerDto> playersDto = players.map(this::convertToDto);
+        Page<PlayerDto> playersDto = players.map(mappingService::mapToDto);
 
         return ResponseEntity.ok(PaginationUtil.toCustomPage(playersDto));
     }
@@ -66,22 +66,13 @@ public class PlayerResource {
     public ResponseEntity<PlayerDto> getPlayer(@PathVariable("disciplineId") String disciplineId, @PathVariable("id") String id) throws UnknownDisciplineException, PlayerNotFoundException {
 
         return playerService.getByIdAndDiscipline(id, disciplineId)
-                .map(this::convertToDto)
+                .map(mappingService::mapToDto)
                 .map(ResponseEntity::ok)
                 .orElseThrow(PlayerNotFoundException::new);
     }
 
-    private PlayerDto convertToDto(Player player) {
-        PlayerDto playerDto = modelMapper.map(player, PlayerDto.class);
-
-        playerDto.setFullName(player.getUser().getFullName());
-        playerDto.setAge(playerService.calculateAge(player.getUser().getBirthdayDate()));
-
-        return playerDto;
-    }
-
-    public PlayerResource(UserService userService, PlayerService playerService, DisciplineService disciplineService, ModelMapper modelMapper) {
+    public PlayerResource(UserService userService, PlayerService playerService, DisciplineService disciplineService, DtoMappingService mappingService) {
         this.playerService = playerService;
-        this.modelMapper = modelMapper;
+        this.mappingService = mappingService;
     }
 }

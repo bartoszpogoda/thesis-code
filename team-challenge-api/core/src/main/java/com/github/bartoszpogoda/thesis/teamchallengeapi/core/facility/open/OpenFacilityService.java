@@ -30,10 +30,7 @@ public class OpenFacilityService {
 
     public Optional<OpenFacility> create(OpenFacilityRegistrationForm registrationForm, String disciplineId)
             throws UnknownDisciplineException {
-
-        if(!disciplineService.disciplineExists(disciplineId)) {
-            throw new UnknownDisciplineException();
-        }
+        disciplineService.checkDisciplineExists(disciplineId);
 
         OpenFacility openFacility = new OpenFacility();
         openFacility.setDisciplineId(disciplineId);

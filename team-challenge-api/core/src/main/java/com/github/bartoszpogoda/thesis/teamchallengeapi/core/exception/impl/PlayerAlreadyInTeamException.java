@@ -6,13 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class PlayerAlreadyExistsException extends AbstractException {
+public class PlayerAlreadyInTeamException extends AbstractException {
 
-    private static final ExceptionCode CODE = ExceptionCode.PLAYER_ALREADY_EXISTS;
-    private static final String MESSAGE = "Player already exists for this discipline.";
-    private static final String DETAILS = "";
+    private static final ExceptionCode CODE = ExceptionCode.PLAYER_ALREADY_IN_TEAM;
+    private static final String MESSAGE = "Player is already in team.";
+    private static final String DETAILS = "Action not possible.";
 
-    public PlayerAlreadyExistsException() {
+    public PlayerAlreadyInTeamException() {
         super(CODE, MESSAGE, DETAILS);
     }
 }

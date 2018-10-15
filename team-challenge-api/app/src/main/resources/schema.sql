@@ -56,6 +56,7 @@ CREATE TABLE OpenFacilities (
 CREATE TABLE Players (
   PlayerID VARCHAR(64) AUTO_INCREMENT PRIMARY KEY,
   UserID VARCHAR(64) NOT NULL,
+  TeamID VARCHAR(64),
   DisciplineID VARCHAR(64) NOT NULL,
   Height INTEGER,
   YearsOfExperience INTEGER,
@@ -64,14 +65,19 @@ CREATE TABLE Players (
   FOREIGN KEY (DisciplineID) REFERENCES Disciplines(DisciplineID)
 );
 
-CREATE TABLE Basket3x3PlayerProfiles (
-  ProfileID VARCHAR(64) AUTO_INCREMENT PRIMARY KEY,
-  PlayerID VARCHAR(64) NOT NULL,
-  Height INTEGER,
-  Weight INTEGER,
-  LongThrowAccuracy DOUBLE,
-  PersonalThrowAccuracy DOUBLE,
-  YearsOfExperience INTEGER,
+/* TEAMS */
+CREATE TABLE Teams (
+  TeamID VARCHAR(64) AUTO_INCREMENT PRIMARY KEY,
+  DisciplineID VARCHAR(64) NOT NULL,
+  RegionID VARCHAR(10) NOT NULL,
+  ManagerID VARCHAR(64) NOT NULL,
+  Name VARCHAR(32) NOT NULL,
+  Active BIT (1),
+  Balance INTEGER,
 
-  FOREIGN  KEY (PlayerID) REFERENCES Players(PlayerID)
-)
+  FOREIGN KEY (ManagerID) REFERENCES Users(UserID),
+  FOREIGN KEY (DisciplineID) REFERENCES Disciplines(DisciplineID),
+  FOREIGN KEY (RegionID) REFERENCES Regions(RegionID)
+);
+
+ALTER TABLE Players ADD CONSTRAINT FK_Team_ID FOREIGN KEY (TeamID) REFERENCES Teams(TeamID);
