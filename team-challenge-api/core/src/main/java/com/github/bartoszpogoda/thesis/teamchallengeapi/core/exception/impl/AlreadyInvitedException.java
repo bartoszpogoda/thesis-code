@@ -5,18 +5,14 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.Exception
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.FORBIDDEN)
-public class AccessForbiddenException extends AbstractException {
-    private static final ExceptionCode CODE = ExceptionCode.UNAUTHORIZED;
-    private static final String MESSAGE = "Couldn't allow access to this resource.";
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class AlreadyInvitedException extends AbstractException {
+
+    private static final ExceptionCode CODE = ExceptionCode.ALREADY_INVITED;
+    private static final String MESSAGE = "Player was already invited to your team.";
     private static final String DETAILS = "";
 
-    public AccessForbiddenException() {
+    public AlreadyInvitedException() {
         super(CODE, MESSAGE, DETAILS);
     }
-
-    public AccessForbiddenException(String details) {
-        super(CODE, MESSAGE, details);
-    }
-
 }

@@ -88,6 +88,12 @@ public class TeamService {
         return teamRepository.findByIdAndDisciplineIdAndRegionId(id, disciplineId, regionId);
     }
 
+    public Optional<Team> getByIdAndDiscipline(String id, String disciplineId) throws UnknownDisciplineException {
+        disciplineService.checkDisciplineExists(disciplineId);
+
+        return teamRepository.findByIdAndDisciplineId(id, disciplineId);
+    }
+
     public List<Player> getTeamMembers(String disciplineId, String regionId, String id) throws UnknownDisciplineException, UnknownRegionException {
         disciplineService.checkDisciplineExists(disciplineId);
         regionService.checkRegionExists(regionId);

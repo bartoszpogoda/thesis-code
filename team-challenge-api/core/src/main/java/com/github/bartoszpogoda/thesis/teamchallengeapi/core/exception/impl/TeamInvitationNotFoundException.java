@@ -5,18 +5,14 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.Exception
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.FORBIDDEN)
-public class AccessForbiddenException extends AbstractException {
-    private static final ExceptionCode CODE = ExceptionCode.UNAUTHORIZED;
-    private static final String MESSAGE = "Couldn't allow access to this resource.";
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class TeamInvitationNotFoundException extends AbstractException {
+
+    private static final ExceptionCode CODE = ExceptionCode.TEAM_INVITATION_NOT_FOUND;
+    private static final String MESSAGE = "Team invitation not found.";
     private static final String DETAILS = "";
 
-    public AccessForbiddenException() {
+    public TeamInvitationNotFoundException() {
         super(CODE, MESSAGE, DETAILS);
     }
-
-    public AccessForbiddenException(String details) {
-        super(CODE, MESSAGE, details);
-    }
-
 }
