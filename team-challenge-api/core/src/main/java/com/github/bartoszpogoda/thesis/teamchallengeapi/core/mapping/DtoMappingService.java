@@ -40,6 +40,9 @@ public class DtoMappingService {
 
         teamInvitationDto.setPlayerId(teamInvitation.getTargetPlayer().getId());
         teamInvitationDto.setTeamId(teamInvitation.getTargetTeam().getId());
+        teamInvitationDto.setTeamName(teamInvitation.getTargetTeam().getName());
+        teamInvitationDto.setTeamManagerName(teamInvitation.getTargetTeam().getManager().getUser().getFullName());
+        teamInvitationDto.setPlayerName(teamInvitation.getTargetPlayer().getUser().getFullName());
 
         return teamInvitationDto;
     }

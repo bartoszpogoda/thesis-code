@@ -1,6 +1,5 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.teaminvitation;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.Player;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.Team;
 import lombok.Builder;

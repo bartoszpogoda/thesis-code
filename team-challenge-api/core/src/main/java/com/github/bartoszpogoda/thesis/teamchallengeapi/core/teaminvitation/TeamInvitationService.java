@@ -6,13 +6,10 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.Player;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.PlayerService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.Team;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.TeamService;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.teaminvitation.model.TeamInvitationDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.user.Authority;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +22,7 @@ public class TeamInvitationService {
     private PlayerService playerService;
 
 
-    public Optional<TeamInvitation> invite(String disciplineId, String teamId, String playerId) throws UnknownDisciplineException, TeamNotFoundException, PlayerNotFoundException, AccessForbiddenException, PlayerAlreadyInTeamException {
+    public Optional<TeamInvitation> invite(String disciplineId, String teamId, String playerId) throws UnknownDisciplineException, TeamNotFoundException, PlayerNotFoundException, AccessForbiddenException, PlayerAlreadyInTeamException, AlreadyInvitedException {
 
         disciplineService.checkDisciplineExists(disciplineId);
 
@@ -33,14 +30,18 @@ public class TeamInvitationService {
         Player manager = team.getManager();
         Player currentPlayer = playerService.getCurrentPlayer(disciplineId).orElseThrow(PlayerNotFoundException::new);
 
-        if(!manager.equals(currentPlayer)) {
+        if (!manager.equals(currentPlayer)) {
             throw new AccessForbiddenException("Player can't manage this team");
         }
 
         Player targetPlayer = playerService.get(playerId, disciplineId).orElseThrow(PlayerNotFoundException::new);
 
-        if(targetPlayer.getTeam() != null) {
+        if (targetPlayer.getTeam() != null) {
             throw new PlayerAlreadyInTeamException();
+        }
+
+        if (teamInvitationRepository.existsByTargetTeamIdAndTargetTeamDisciplineIdAndTargetPlayerId(teamId, disciplineId, playerId)) {
+            throw new AlreadyInvitedException();
         }
 
         TeamInvitation teamInvitation = new TeamInvitation.TeamInvitationBuilder()
@@ -50,19 +51,11 @@ public class TeamInvitationService {
     }
 
 
-    public TeamInvitationService(TeamInvitationRepository teamInvitationRepository, DisciplineService disciplineService, TeamService teamService, PlayerService playerService) {
-        this.teamInvitationRepository = teamInvitationRepository;
-        this.disciplineService = disciplineService;
-        this.teamService = teamService;
-        this.playerService = playerService;
-    }
-
-
     public List<TeamInvitation> getForPlayer(String disciplineId, String playerId) throws UnknownDisciplineException, PlayerNotFoundException, AccessForbiddenException {
 
         Player currentPlayer = playerService.getCurrentPlayer(disciplineId).orElseThrow(PlayerNotFoundException::new);
 
-        if(!(currentPlayer.getId().equals(playerId) || currentPlayer.getUser().getAuthorities().contains(Authority.ADMIN))) {
+        if (!(currentPlayer.getId().equals(playerId) || currentPlayer.getUser().getAuthorities().contains(Authority.ADMIN))) {
             throw new AccessForbiddenException();
         }
 
@@ -74,11 +67,54 @@ public class TeamInvitationService {
         Player currentPlayer = playerService.getCurrentPlayer(disciplineId).orElseThrow(PlayerNotFoundException::new);
         Team currentPlayerTeam = currentPlayer.getTeam();
 
-        if(!(currentPlayerTeam.getManager().equals(currentPlayer) && currentPlayerTeam.getId().equals(teamId))) {
+        if (!(currentPlayerTeam.getManager().equals(currentPlayer) && currentPlayerTeam.getId().equals(teamId))) {
             throw new AccessForbiddenException();
         }
 
         return teamInvitationRepository.findByTargetTeamIdAndTargetTeamDisciplineId(teamId, disciplineId);
-
     }
+
+    @Transactional
+    public void accept(String disciplineId, String id) throws UnknownDisciplineException, PlayerAlreadyInTeamException, PlayerNotFoundException, TeamInvitationNotFoundException, AccessForbiddenException {
+
+        Player currentPlayer = playerService.getCurrentPlayer(disciplineId).orElseThrow(PlayerNotFoundException::new);
+
+        TeamInvitation teamInvitation = teamInvitationRepository.findByIdAndTargetTeamDisciplineId(id, disciplineId).orElseThrow(TeamInvitationNotFoundException::new);
+
+        if (!teamInvitation.getTargetPlayer().equals(currentPlayer)) {
+            throw new AccessForbiddenException();
+        }
+
+        if (currentPlayer.getTeam() != null) {
+            throw new PlayerAlreadyInTeamException();
+        }
+
+        // TODO check if Team size will not be over discipline specific limit
+
+        currentPlayer.setTeam(teamInvitation.getTargetTeam());
+
+        teamInvitationRepository.deleteByTargetPlayerIdAndTargetTeamDisciplineId(id, disciplineId);
+    }
+
+    @Transactional
+    public void cancel(String disciplineId, String id) throws UnknownDisciplineException, PlayerNotFoundException, TeamInvitationNotFoundException, AccessForbiddenException {
+
+        Player currentPlayer = playerService.getCurrentPlayer(disciplineId).orElseThrow(PlayerNotFoundException::new);
+
+        TeamInvitation teamInvitation = teamInvitationRepository.findByIdAndTargetTeamDisciplineId(id, disciplineId).orElseThrow(TeamInvitationNotFoundException::new);
+
+        if (teamInvitation.getTargetTeam().getManager().equals(currentPlayer) || teamInvitation.getTargetPlayer().equals(currentPlayer)) {
+            teamInvitationRepository.delete(teamInvitation);
+        } else {
+            throw new AccessForbiddenException();
+        }
+    }
+
+    public TeamInvitationService(TeamInvitationRepository teamInvitationRepository, DisciplineService disciplineService, TeamService teamService, PlayerService playerService) {
+        this.teamInvitationRepository = teamInvitationRepository;
+        this.disciplineService = disciplineService;
+        this.teamService = teamService;
+        this.playerService = playerService;
+    }
+
 }

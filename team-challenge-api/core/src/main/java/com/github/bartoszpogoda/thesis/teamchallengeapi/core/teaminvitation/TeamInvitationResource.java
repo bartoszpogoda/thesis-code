@@ -4,11 +4,11 @@ package com.github.bartoszpogoda.thesis.teamchallengeapi.core.teaminvitation;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.*;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.mapping.DtoMappingService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.teaminvitation.model.TeamInvitationDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +23,7 @@ public class TeamInvitationResource {
     private TeamInvitationService teamInvitationService;
 
     @PostMapping
-    public ResponseEntity<TeamInvitationDto> invite(@PathVariable String disciplineId, @RequestBody @Valid TeamInvitationDto teamInvitationForm) throws UnknownDisciplineException, PlayerNotFoundException, AccessForbiddenException, PlayerAlreadyInTeamException, TeamNotFoundException, InternalServerException {
+    public ResponseEntity<TeamInvitationDto> invite(@PathVariable String disciplineId, @RequestBody @Valid TeamInvitationDto teamInvitationForm) throws UnknownDisciplineException, PlayerNotFoundException, AccessForbiddenException, PlayerAlreadyInTeamException, TeamNotFoundException, InternalServerException, AlreadyInvitedException {
 
         return teamInvitationService.invite(disciplineId, teamInvitationForm.getTeamId(), teamInvitationForm.getPlayerId())
                 .map(mappingService::mapToDto)
@@ -52,6 +52,19 @@ public class TeamInvitationResource {
         return ResponseEntity.ok(teamInvitations);
     }
 
+    @PostMapping("/{id}/acceptance")
+    public ResponseEntity<?> accept(@PathVariable String disciplineId, @PathVariable String id) throws UnknownDisciplineException, PlayerNotFoundException, TeamInvitationNotFoundException, AccessForbiddenException, PlayerAlreadyInTeamException {
+        teamInvitationService.accept(disciplineId, id);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> cancel(@PathVariable String disciplineId, @PathVariable String id) throws UnknownDisciplineException, TeamInvitationNotFoundException, AccessForbiddenException, PlayerNotFoundException {
+        teamInvitationService.cancel(disciplineId, id);
+
+        return new ResponseEntity<TeamInvitation>(HttpStatus.NO_CONTENT);
+    }
 
     public TeamInvitationResource(DtoMappingService mappingService, TeamInvitationService teamInvitationService) {
         this.mappingService = mappingService;
