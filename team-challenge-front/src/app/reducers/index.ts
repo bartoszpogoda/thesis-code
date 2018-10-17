@@ -22,6 +22,8 @@ import { storeFreeze } from 'ngrx-store-freeze';
  * notation packages up all of the exports into a single object.
  */
 import * as fromLayout from '../core/reducers/layout.reducer';
+import * as fromPlayer from '../core/reducers/player.reducer';
+import * as fromTeam from '../core/reducers/team.reducer';
 
 /**
  * As mentioned, we treat each reducer like a table in a database. This means
@@ -30,6 +32,8 @@ import * as fromLayout from '../core/reducers/layout.reducer';
 export interface State {
   layout: fromLayout.State;
   router: fromRouter.RouterReducerState;
+  player: fromPlayer.State;
+  team: fromTeam.State;
 }
 
 /**
@@ -40,6 +44,8 @@ export interface State {
 export const reducers: ActionReducerMap<State> = {
   layout: fromLayout.reducer,
   router: fromRouter.routerReducer,
+  player: fromPlayer.reducer,
+  team: fromTeam.reducer
 };
 
 // console.log all actions
@@ -62,7 +68,7 @@ export const metaReducers: MetaReducer<State>[] = !environment.production
   : [];
 
 /**
- * Layout Reducers
+ * Layout Selectors
  */
 export const getLayoutState = createFeatureSelector<State, fromLayout.State>(
   'layout'
@@ -71,4 +77,39 @@ export const getLayoutState = createFeatureSelector<State, fromLayout.State>(
 export const getShowNotificationsPanel = createSelector(
   getLayoutState,
   fromLayout.getShowNotificationsPanel
+);
+
+/**
+ * Player Selectors
+ */
+export const selectPlayerState = createFeatureSelector<State, fromPlayer.State>('player');
+
+export const selectPlayerProfile = createSelector(
+  selectPlayerState,
+  fromPlayer.getPlayer
+);
+
+export const selectPlayerProfileNotExisting = createSelector(
+  selectPlayerState,
+  fromPlayer.getNotExisting
+);
+
+export const selectPlayerProfileLoading = createSelector(
+  selectPlayerState,
+  fromPlayer.getLoading
+);
+
+export const selectPlayerProfileHasAnyNotifications = createSelector(
+  selectPlayerState,
+  fromPlayer.getAnyNotifications
+)
+
+/**
+ * Team Selectors
+ */
+export const selectTeamState = createFeatureSelector<State, fromTeam.State>('team');
+
+export const selectHasTeam = createSelector(
+  selectTeamState,
+  fromTeam.getHasTeam
 );

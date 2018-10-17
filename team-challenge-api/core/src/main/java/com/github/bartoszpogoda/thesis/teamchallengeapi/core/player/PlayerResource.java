@@ -71,6 +71,15 @@ public class PlayerResource {
                 .orElseThrow(PlayerNotFoundException::new);
     }
 
+    @GetMapping(params = "userId")
+    public ResponseEntity<PlayerDto> getPlayerByUserId(@PathVariable String disciplineId, @RequestParam String userId) throws UnknownDisciplineException, PlayerNotFoundException {
+
+        return playerService.getByUserId(userId, disciplineId)
+                .map(mappingService::mapToDto)
+                .map(ResponseEntity::ok)
+                .orElseThrow(PlayerNotFoundException::new);
+    }
+
     public PlayerResource(UserService userService, PlayerService playerService, DisciplineService disciplineService, DtoMappingService mappingService) {
         this.playerService = playerService;
         this.mappingService = mappingService;

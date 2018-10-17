@@ -46,7 +46,7 @@ export class RegisterPageComponent {
   justRegistered$: Observable<boolean>;
   registerError$: Observable<ApiError>;
 
-  constructor(private store: Store<fromAuth.State>, public progress: NgProgress) {
+  constructor(private store: Store<fromAuth.State>) {
     this.loginError$ = this.store.pipe(select(fromAuth.selectLoginError));
     this.registerPending$ = this.store.pipe(select(fromAuth.selectRegisterPending));
     this.justRegistered$ = this.store.pipe(select(fromAuth.selectJustRegistered));

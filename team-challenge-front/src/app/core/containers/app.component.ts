@@ -1,6 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {Observable, Subscription} from 'rxjs';
+import {Observable, Subscription, timer} from 'rxjs';
 
 import * as fromRoot from '../../reducers';
 import * as fromAuth from '../../auth/reducers';
@@ -8,6 +8,7 @@ import * as LayoutActions from '../actions/layout.actions';
 import * as CoreActions from '../actions/core.actions';
 import {DecodedToken} from '../../auth/models/token';
 import {TokenService} from '../../auth/service/token.service';
+import {skipUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-app',
@@ -27,13 +28,15 @@ import {TokenService} from '../../auth/service/token.service';
             <app-nav-item title="Rejestracja"></app-nav-item></li>
           <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="community">
             <app-nav-item title="Społeczność" icon="home"></app-nav-item></li>
-          <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="challenges">
-            <app-nav-item title="Wyzwania" [notify]="true" icon="play-circle-o"></app-nav-item></li>
-          <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="team">
+          <li *ngIf="loggedIn$ | async" [class.disabled]="!(hasTeam$ | async)"
+              nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="challenges">
+            <app-nav-item title="Wyzwania" icon="play-circle-o"></app-nav-item></li>
+          <li *ngIf="loggedIn$ | async" [class.disabled]="playerNotExisting$ | async"
+              nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="team">
             <app-nav-item title="Drużyna" icon="team"></app-nav-item>
           </li>
           <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="player">
-            <app-nav-item title="Zawodnik" icon="user"></app-nav-item>
+            <app-nav-item title="Zawodnik" [notify]="playerHasNotifications$ | async" icon="user"></app-nav-item>
           </li>
         </ul>
         </div>
@@ -66,6 +69,9 @@ export class AppComponent implements OnDestroy {
   loginPending$: Observable<boolean>;
   notificationPanelVisible$: Observable<boolean>;
   decodedToken$: Observable<DecodedToken>;
+  playerNotExisting$: Observable<boolean>;
+  playerHasNotifications$: Observable<boolean>;
+  hasTeam$: Observable<boolean>;
   periodicRenewalSub: Subscription;
 
   constructor(private store: Store<fromRoot.State>, private tokenService: TokenService) {
@@ -73,6 +79,11 @@ export class AppComponent implements OnDestroy {
     this.loggedIn$ = this.store.pipe(select(fromAuth.selectLoggedIn));
     this.decodedToken$ = this.store.pipe(select(fromAuth.selectDecodedToken));
     this.loginPending$ = this.store.pipe(select(fromAuth.selectLoginPending));
+    this.playerNotExisting$ = this.store.pipe(select(fromRoot.selectPlayerProfileNotExisting));
+    this.hasTeam$ = this.store.pipe(select(fromRoot.selectHasTeam));
+
+    this.playerHasNotifications$ = this.store.pipe(
+      select(fromRoot.selectPlayerProfileHasAnyNotifications));
 
     this.store.dispatch(new CoreActions.EnterApplication());
     this.periodicRenewalSub = this.tokenService.startPeriodicRenewal();

@@ -17,8 +17,10 @@ export class ProgressComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const inProgress: SimpleChange = changes.inProgress;
     if (inProgress.currentValue && !this.progress.isStarted(this.id)) {
+      console.log('start ' + this.id);
       this.progress.start(this.id);
     } else {
+      console.log('end ' + this.id);
       this.progress.complete(this.id);
     }
   }

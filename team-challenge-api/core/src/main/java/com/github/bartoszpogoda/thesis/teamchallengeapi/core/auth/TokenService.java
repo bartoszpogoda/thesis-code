@@ -25,6 +25,9 @@ public class TokenService {
     @Value("${teamchallengeapi.token.claims.fullname.key}")
     private String claimsFullnameKey = "fullname";
 
+    @Value("${teamchallengeapi.token.claims.id.key}")
+    private String userIdKey;
+
     public JwtToken generateToken(User user) {
         String token = Jwts.builder()
                 .setClaims(claimsForUser(user))
@@ -40,6 +43,7 @@ public class TokenService {
         Claims claims = Jwts.claims().setSubject(user.getEmail());
         claims.put(claimsRolesKey, SecurityUtil.getAuthoritiesOfUser(user));
         claims.put(claimsFullnameKey, user.getFullName());
+        claims.put(userIdKey, user.getId());
 
         return claims;
     }

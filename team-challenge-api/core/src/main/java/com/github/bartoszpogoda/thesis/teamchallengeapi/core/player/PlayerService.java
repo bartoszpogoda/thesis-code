@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
 import java.util.Optional;
+import java.util.stream.DoubleStream;
 
 @Service
 public class PlayerService {
@@ -92,5 +93,11 @@ public class PlayerService {
         disciplineService.checkDisciplineExists(disciplineId);
 
         return playerRepository.findByIdAndDisciplineId(id, disciplineId);
+    }
+
+    public Optional<Player> getByUserId(String userId, String disciplineId) throws UnknownDisciplineException {
+        disciplineService.checkDisciplineExists(disciplineId);
+
+        return playerRepository.findByUserIdAndDisciplineId(userId, disciplineId);
     }
 }

@@ -132,8 +132,8 @@ export class AuthEffects {
   $logout = this.actions$.pipe(
     ofType<Logout>(AuthActionTypes.Logout),
     tap(() => {
-      this.tokenService.clear();
       this.router.navigate(['/home']);
+      this.tokenService.clear();
     })
   );
 

@@ -17,6 +17,8 @@ public interface PlayerRepository extends CrudRepository<Player, String> {
 
     Optional<Player> findByIdAndDisciplineId(String playerId, String disciplineId);
 
+    Optional<Player> findByUserIdAndDisciplineId(String userId, String disciplineId);
+
     Page<Player> findAllByDisciplineId(Pageable pageable, String disciplineId);
 
     Page<Player> findByDisciplineIdAndUserFullNameContainingIgnoreCase(Pageable pageable, String disciplineId, String fullName);
