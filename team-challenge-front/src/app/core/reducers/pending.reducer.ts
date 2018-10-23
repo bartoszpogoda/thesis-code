@@ -1,22 +1,41 @@
 import {LayoutActionsUnion,} from '../actions/layout.actions';
 import {AuthActionsUnion, AuthActionTypes} from '../../auth/actions/auth.actions';
 import {PlayerActionsUnion, PlayerActionTypes} from '../actions/player.actions';
+import {ManagerActionTypes} from '../actions/manager.actions';
 
 const START_PENDING_ACTION_TYPES: any[] = [
   PlayerActionTypes.LoadCurrent,
   PlayerActionTypes.Register,
+  PlayerActionTypes.AcceptTeamInvitation,
+  PlayerActionTypes.DeclineTeamInvitation,
+  PlayerActionTypes.LoadTeamInvitations,
   AuthActionTypes.Login,
-  AuthActionTypes.Register
+  AuthActionTypes.Register,
+  ManagerActionTypes.Invite,
+  ManagerActionTypes.CancelInvitation,
+  ManagerActionTypes.LoadTeamInvitations
 ];
 const FINISH_PENDING_ACTION_TYPES: any[] = [
   PlayerActionTypes.LoadCurrentSuccess,
   PlayerActionTypes.RegisterSuccess,
   PlayerActionTypes.LoadCurrentFailure,
   PlayerActionTypes.RegisterFailure,
+  PlayerActionTypes.AcceptTeamInvitationSuccess,
+  PlayerActionTypes.AcceptTeamInvitationFailure,
+  PlayerActionTypes.DeclineTeamInvitationSuccess,
+  PlayerActionTypes.DeclineTeamInvitationFailure,
+  PlayerActionTypes.LoadTeamInvitationsSuccess,
+  PlayerActionTypes.LoadTeamInvitationsFailure,
   AuthActionTypes.LoginSuccess,
   AuthActionTypes.LoginFailure,
   AuthActionTypes.RegisterSuccess,
-  AuthActionTypes.RegisterFailure
+  AuthActionTypes.RegisterFailure,
+  ManagerActionTypes.InviteSuccess,
+  ManagerActionTypes.InviteFailure,
+  ManagerActionTypes.CancelInvitationSuccess,
+  ManagerActionTypes.CancelInvitationFailure,
+  ManagerActionTypes.LoadTeamInvitationsSuccess,
+  ManagerActionTypes.LoadTeamInvitationsFailure,
 ];
 
 export interface State {

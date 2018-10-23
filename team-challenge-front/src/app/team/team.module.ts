@@ -13,11 +13,14 @@ import {TeamManagerPageComponent} from './containers/team-manager-page.component
 import {IsManagerGuard} from './services/is-manager.guard';
 import {TeamCreatorPageComponent} from './containers/team-creator-page.component';
 import {PlayerModule} from '../player/player.module';
-import {TeamInvitePlayerComponent} from './containers/team-invite-player.component';
+import {TeamRecruitmentPageComponent} from './containers/team-recruitment-page.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {SentInvitationComponent} from './components/sent-invitation.component';
+import {CreatorBaseDataComponent} from './components/creator-base-data.component';
 
 export const COMPONENTS = [TeamPageComponent, TeamJoinPageComponent, ReceivedInvitationComponent, TeamDisplayComponent,
-  TeamManagerPageComponent, TeamCreatorPageComponent, TeamInvitePlayerComponent];
+  TeamManagerPageComponent, TeamCreatorPageComponent, TeamRecruitmentPageComponent, SentInvitationComponent,
+  CreatorBaseDataComponent];
 
 @NgModule({
   imports: [

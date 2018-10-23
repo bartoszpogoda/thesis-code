@@ -38,4 +38,17 @@ export class TeamService {
     const params = new HttpParams().set('teamId', teamId);
     return this.http.get<TeamInvitation[]>('/api/3x3basket/invitations/', {params: params});
   }
+
+  cancelInvitation(invitationId: string): Observable<any> {
+    return this.http.delete('/api/3x3basket/invitations/' + invitationId);
+  }
+
+  invite(teamId: string, playerId: string): Observable<TeamInvitation> {
+    const invitation: TeamInvitation = {
+      teamId: teamId,
+      playerId: playerId
+    };
+
+    return this.http.post<TeamInvitation>('/api/3x3basket/invitations', invitation);
+  }
 }

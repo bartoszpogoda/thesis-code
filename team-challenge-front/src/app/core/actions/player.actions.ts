@@ -18,7 +18,10 @@ export enum PlayerActionTypes {
   LoadTeamInvitationsFailure = '[Player] Load Team Invitations Failure',
   AcceptTeamInvitation = '[Player] Accept Team Invitation',
   AcceptTeamInvitationSuccess = '[Player] Accept Team Invitation Success',
-  AcceptTeamInvitationFailure = '[Player] Accept Team Invitation Failure'
+  AcceptTeamInvitationFailure = '[Player] Accept Team Invitation Failure',
+  DeclineTeamInvitation = '[Player] Decline Team Invitation',
+  DeclineTeamInvitationSuccess = '[Player] Decline Team Invitation Success',
+  DeclineTeamInvitationFailure = '[Player] Decline Team Invitation Failure'
 }
 
 export class LoadCurrent implements Action {
@@ -95,9 +98,28 @@ export class AcceptTeamInvitationFailure implements Action {
   constructor(public payload: ApiError) {}
 }
 
+export class DeclineTeamInvitation implements Action {
+  readonly type = PlayerActionTypes.DeclineTeamInvitation;
+
+  constructor(public payload: string) {} // invitation id
+}
+
+export class DeclineTeamInvitationSuccess implements Action {
+  readonly type = PlayerActionTypes.DeclineTeamInvitationSuccess;
+
+  constructor(public payload: string) {} // invitation id
+}
+
+export class DeclineTeamInvitationFailure implements Action {
+  readonly type = PlayerActionTypes.DeclineTeamInvitationFailure;
+
+  constructor(public payload: ApiError) {}
+}
+
 
 export type PlayerActionsUnion = LoadCurrent | LoadCurrentSuccess | LoadCurrentFailure | Register
   | RegisterSuccess | RegisterFailure | ShowJustRegistered | HideJustRegistered
   | LoadTeamInvitations | LoadTeamInvitationsFailure | LoadTeamInvitationsSuccess
-  | AcceptTeamInvitation | AcceptTeamInvitationSuccess | AcceptTeamInvitationFailure;
+  | AcceptTeamInvitation | AcceptTeamInvitationSuccess | AcceptTeamInvitationFailure
+  | DeclineTeamInvitation | DeclineTeamInvitationSuccess | DeclineTeamInvitationFailure;
 

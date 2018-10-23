@@ -8,12 +8,14 @@ import {selectInvitePlayerNameSearch, selectInvitePlayerPage, selectManagementIn
 import {PlayerService} from '../service/player.service';
 import {TeamService} from '../service/team.service';
 import {
+  CancelInvitation, CancelInvitationFailure, CancelInvitationSuccess, Invite, InviteFailure,
   InvitePlayerDecodePage, InvitePlayerDecodePageSuccess,
   InvitePlayerLoadPage,
   InvitePlayerLoadPageFailure,
   InvitePlayerLoadPageSuccess, InvitePlayerNameSearchChanged,
-  InvitePlayerPageChanged, LoadTeamInvitations, LoadTeamInvitationsFailure, LoadTeamInvitationsSuccess, ManagerActionTypes,
+  InvitePlayerPageChanged, InviteSuccess, LoadTeamInvitations, LoadTeamInvitationsFailure, LoadTeamInvitationsSuccess, ManagerActionTypes,
 } from '../actions/manager.actions';
+import {AcceptTeamInvitationFailure, AcceptTeamInvitationSuccess} from '../actions/player.actions';
 
 @Injectable()
 export class ManagerEffects {
@@ -83,6 +85,38 @@ export class ManagerEffects {
       const decoded = this.teamService.decodeInvitePlayerPage(page, invitations);
       return new InvitePlayerDecodePageSuccess(decoded);
     })
+  );
+
+  @Effect()
+  $cancelInvitation = this.actions$.pipe(
+    ofType<CancelInvitation>(ManagerActionTypes.CancelInvitation),
+    map(action => action.payload),
+    exhaustMap(invitationId =>
+      this.teamService.cancelInvitation(invitationId).pipe(
+        map(() => new CancelInvitationSuccess()),
+        catchError(err => of(new CancelInvitationFailure(err)))
+      )
+    )
+  );
+
+  @Effect()
+  $refreshInvitations = this.actions$.pipe(
+    ofType<CancelInvitationSuccess | InviteSuccess>(ManagerActionTypes.CancelInvitationSuccess, ManagerActionTypes.InviteSuccess),
+    map(() => new LoadTeamInvitations())
+  );
+
+
+  @Effect()
+  $invite = this.actions$.pipe(
+    ofType<Invite>(ManagerActionTypes.Invite),
+    map(action => action.payload),
+    withLatestFrom(this.store.pipe(select(selectPlayerTeam))),
+    exhaustMap(([playerId, team]) =>
+      this.teamService.invite(team.id, playerId).pipe(
+        map((invitation) => new InviteSuccess(invitation)),
+        catchError(err => of(new InviteFailure(err)))
+      )
+    )
   );
 
 

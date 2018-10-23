@@ -7,8 +7,7 @@ import {Component} from '@angular/core';
     <div class="spaces-sides">
       <app-breadcrumb [items]="items"></app-breadcrumb>
       <div class="content-container">
-        <h1>Zarządzaj swoją drużyną</h1>
-        <app-team-invite-player></app-team-invite-player>
+        <h1 routerLink="recruitment">(TODO: Styling) Rekrutacja</h1>
       </div>
     </div>
   `

@@ -1,8 +1,8 @@
 export interface TeamInvitation {
-  id: string;
+  id?: string;
   playerId: string;
-  playerName: string;
+  playerName?: string;
   teamId: string;
-  teamManagerName: string;
-  teamName: string;
+  teamManagerName?: string;
+  teamName?: string;
 }

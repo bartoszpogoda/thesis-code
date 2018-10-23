@@ -81,6 +81,12 @@ export function reducer(
         invitations: []
       };
 
+    case PlayerActionTypes.DeclineTeamInvitationSuccess:
+      return {
+        ...state,
+        invitations: state.invitations.filter(inv => inv.id !== action.payload)
+      };
+
     default:
       return state;
   }

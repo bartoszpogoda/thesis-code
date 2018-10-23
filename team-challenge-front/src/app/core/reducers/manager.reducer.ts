@@ -95,7 +95,7 @@ export function reducer(
 
 export const getInvitePlayerData = (state: State) => state.invitePlayer.data;
 export const getInvitePlayerPage = (state: State) => state.invitePlayer.page;
-export const getInvitePlayerTotal = (state: State) => state.invitePlayer.page.totalElements;
+export const getInvitePlayerTotal = (state: State) => (state.invitePlayer.page) ? state.invitePlayer.page.totalElements : 0;
 export const getInvitePlayerLoading = (state: State) => state.invitePlayer.loading;
 export const getInvitePlayerNameSearch = (state: State) => state.invitePlayer.nameSearch;
 export const getInvitations = (state: State) => state.invitations;

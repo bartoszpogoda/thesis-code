@@ -28,6 +28,10 @@ export class PlayerService {
     return this.http.post<any>('/api/3x3basket/invitations/' + invitationId + '/acceptance', {});
   }
 
+  declineInvitation(invitationId: string): Observable<any> {
+    return this.http.delete('/api/3x3basket/invitations/' + invitationId);
+  }
+
   searchByName(name: string = '', page: number = 0, size: number = 10): Observable<Page<Player>> {
     const params = new HttpParams().set('name', name)
       .set('page', '' + page)
@@ -35,7 +39,7 @@ export class PlayerService {
     return this.http.get<Page<Player>>('/api/3x3basket/players', {params: params});
   }
 
-  searchByNameWithoutTeam(name: string = '', page: number = 0, size: number = 10): Observable<Page<Player>> {
+  searchByNameWithoutTeam(name: string = '', page: number = 0, size: number = 5): Observable<Page<Player>> {
     const params = new HttpParams().set('name', name)
       .set('page', '' + page)
       .set('size', '' + size)

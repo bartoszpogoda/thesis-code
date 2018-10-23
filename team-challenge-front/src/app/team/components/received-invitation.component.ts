@@ -5,13 +5,14 @@ import {OutputEmitter} from '@angular/compiler/src/output/abstract_emitter';
 @Component({
   selector: 'app-received-invitation',
   template: `
-    <p>Zaproszenie do drużyny
+    <nz-card class="invitation-card">
+      (Todo: styling)
       <strong (click)="onClickedTeam()">{{teamInvitation.teamName}}</strong>
-      od <strong>{{teamInvitation.teamManagerName}}</strong></p>
-    <nz-button-group>
-      <button (click)="onAccepted()" nz-button nzType="primary">Dołącz</button>
-      <button (click)="onDeclined()" nz-button>Odrzuć</button>
-    </nz-button-group>
+      <nz-button-group style="float: right;">
+        <button (click)="onAccepted()" nz-button nzType="primary">Dołącz</button>
+        <button (click)="onDeclined()" nz-button>Odrzuć</button>
+      </nz-button-group>
+    </nz-card>
   `
 })
 export class ReceivedInvitationComponent {

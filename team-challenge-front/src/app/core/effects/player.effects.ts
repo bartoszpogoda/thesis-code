@@ -5,13 +5,24 @@ import { of, timer} from 'rxjs';
 import {Router} from '@angular/router';
 import {NzMessageService} from 'ng-zorro-antd';
 import {
-  AcceptTeamInvitation, AcceptTeamInvitationFailure, AcceptTeamInvitationSuccess,
+  AcceptTeamInvitation,
+  AcceptTeamInvitationFailure,
+  AcceptTeamInvitationSuccess,
+  DeclineTeamInvitation,
+  DeclineTeamInvitationFailure,
+  DeclineTeamInvitationSuccess,
   HideJustRegistered,
   LoadCurrent,
   LoadCurrentFailure,
-  LoadCurrentSuccess, LoadTeamInvitations, LoadTeamInvitationsFailure, LoadTeamInvitationsSuccess,
+  LoadCurrentSuccess,
+  LoadTeamInvitations,
+  LoadTeamInvitationsFailure,
+  LoadTeamInvitationsSuccess,
   PlayerActionTypes,
-  Register, RegisterFailure, RegisterSuccess, ShowJustRegistered
+  Register,
+  RegisterFailure,
+  RegisterSuccess,
+  ShowJustRegistered
 } from '../actions/player.actions';
 
 import * as fromTeam from '../actions/team.actions';
@@ -134,6 +145,17 @@ export class PlayerEffects {
     map(() => new LoadCurrent())
   );
 
+  @Effect()
+  $declineTeamInvitation = this.actions$.pipe(
+    ofType<DeclineTeamInvitation>(PlayerActionTypes.DeclineTeamInvitation),
+    map(action => action.payload),
+    exhaustMap(invitationId =>
+      this.playerService.declineInvitation(invitationId).pipe(
+        map(() => new DeclineTeamInvitationSuccess(invitationId)),
+        catchError(err => of(new DeclineTeamInvitationFailure(err)))
+      )
+    )
+  );
 
   // withLatestFrom(this.store.pipe(select(selectTokenRenewalPending))),
 

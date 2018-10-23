@@ -16,7 +16,13 @@ export enum ManagerActionTypes {
   InvitePlayerLoadPageFailure = '[Manager] Invite Player Load Page Failure',
   InvitePlayerDecodePage = '[Manager] Invite Player Decode Page',
   InvitePlayerDecodePageSuccess = '[Manager] Invite Player Decode Page Success',
-  InvitePlayerNameSearchChanged = '[Manager] Invite Player Name Search Changed'
+  InvitePlayerNameSearchChanged = '[Manager] Invite Player Name Search Changed',
+  CancelInvitation = '[Manager] Cancel Invitation',
+  CancelInvitationSuccess = '[Manager] Cancel Invitation Success',
+  CancelInvitationFailure = '[Manager] Cancel Invitation Failure',
+  Invite = '[Manager] Invite',
+  InviteSuccess = '[Manager] Invite Success',
+  InviteFailure = '[Manager] Invite Failure',
 }
 
 export class LoadTeamInvitations implements Action {
@@ -77,9 +83,43 @@ export class InvitePlayerNameSearchChanged implements Action {
   constructor(public payload: string) {}
 }
 
+export class CancelInvitation implements Action {
+  readonly type = ManagerActionTypes.CancelInvitation;
+
+  constructor(public payload: string) {}
+}
+
+export class CancelInvitationSuccess implements Action {
+  readonly type = ManagerActionTypes.CancelInvitationSuccess;
+}
+
+export class CancelInvitationFailure implements Action {
+  readonly type = ManagerActionTypes.CancelInvitationFailure;
+
+  constructor(public payload: ApiError) {}
+}
+
+export class Invite implements Action {
+  readonly type = ManagerActionTypes.Invite;
+
+  constructor(public payload: string) {}
+}
+
+export class InviteSuccess implements Action {
+  readonly type = ManagerActionTypes.InviteSuccess;
+
+  constructor(public payload: TeamInvitation) {}
+}
+
+export class InviteFailure implements Action {
+  readonly type = ManagerActionTypes.InviteFailure;
+
+  constructor(public payload: ApiError) {}
+}
 
 export type ManagerActionsUnion =
   | InvitePlayerPageChanged | InvitePlayerLoadPage | InvitePlayerLoadPageSuccess | InvitePlayerLoadPageFailure | InvitePlayerDecodePage
   | InvitePlayerDecodePageSuccess | LoadTeamInvitations | LoadTeamInvitationsSuccess | LoadTeamInvitationsFailure
-  | InvitePlayerNameSearchChanged;
+  | InvitePlayerNameSearchChanged | CancelInvitation | CancelInvitationSuccess | CancelInvitationFailure
+  | Invite | InviteSuccess | InviteFailure;
 

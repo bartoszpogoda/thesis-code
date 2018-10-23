@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AcceptTeamInvitation, LoadTeamInvitations} from '../../core/actions/player.actions';
+import {AcceptTeamInvitation, DeclineTeamInvitation, LoadTeamInvitations} from '../../core/actions/player.actions';
 import * as fromRoot from '../../reducers/index';
 import {select, Store} from '@ngrx/store';
 import {selectPlayerInvitations} from '../../reducers/index';
@@ -17,11 +17,12 @@ import {Observable} from 'rxjs';
       <h2>Zaproszenia do drużyn</h2>
 
       <ng-container *ngFor="let invitation of (teamInvitations$ | async)">
-        <app-received-invitation [teamInvitation]="invitation" (accepted)="onAccepted(invitation)"></app-received-invitation>
+        <app-received-invitation [teamInvitation]="invitation" (accepted)="onAccepted(invitation)"
+        (declined)="onDeclined(invitation)"></app-received-invitation>
       </ng-container>
       <nz-divider></nz-divider>
 
-      <h2>Załóż nową drużynę</h2>
+      <h2 routerLink="/team/creator">Załóż nową drużynę</h2>
     </div>
     </div>
   `
@@ -44,5 +45,9 @@ export class TeamJoinPageComponent implements OnInit {
 
   onAccepted(invitation: TeamInvitation) {
     this.store.dispatch(new AcceptTeamInvitation(invitation.id));
+  }
+
+  onDeclined(invitation: TeamInvitation) {
+    this.store.dispatch(new DeclineTeamInvitation(invitation.id));
   }
 }
