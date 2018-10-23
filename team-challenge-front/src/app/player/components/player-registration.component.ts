@@ -4,7 +4,7 @@ import {PlayerRegistrationForm} from '../../core/models/player';
 
 
 @Component({
-  selector: 'app-player-registration-component',
+  selector: 'app-player-registration',
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
@@ -26,18 +26,18 @@ import {PlayerRegistrationForm} from '../../core/models/player';
         </span>
         </nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24">
-          <input nz-input id="experience" formControlName="experience">
-          <nz-form-explain *ngIf="validateForm.get('experience').dirty && validateForm.get('experience').errors">
-            <ng-container *ngIf="validateForm.get('experience').hasError('required')">
+          <input nz-input id="yearsOfExperience" formControlName="yearsOfExperience">
+          <nz-form-explain *ngIf="validateForm.get('yearsOfExperience').dirty && validateForm.get('yearsOfExperience').errors">
+            <ng-container *ngIf="validateForm.get('yearsOfExperience').hasError('required')">
               Określ swój staż gry w koszykówkę
             </ng-container>
-            <ng-container *ngIf="validateForm.get('experience').hasError('min')">
+            <ng-container *ngIf="validateForm.get('yearsOfExperience').hasError('min')">
               Jeśli nie masz żadnego doświadczenia wprowadź liczbę 0
             </ng-container>
-            <ng-container *ngIf="validateForm.get('experience').hasError('max')">
+            <ng-container *ngIf="validateForm.get('yearsOfExperience').hasError('max')">
               Wprowadź rzeczywiste doświadczenie
             </ng-container>
-            <ng-container *ngIf="validateForm.get('experience').hasError('pattern')">
+            <ng-container *ngIf="validateForm.get('yearsOfExperience').hasError('pattern')">
               Wprowadź liczbę określającą twój staż gry w latach
             </ng-container>
           </nz-form-explain>
@@ -73,7 +73,7 @@ export class PlayerRegistrationComponent implements OnInit {
   ngOnInit(): void {
     this.validateForm = this.fb.group({
       height            : [ null, [ Validators.required, Validators.pattern('[0-9]*'), Validators.min(100), Validators.max(230)] ],
-      experience        : [ null, [ Validators.required, Validators.pattern('[0-9]*'), Validators.min(0), Validators.max(100)] ]
+      yearsOfExperience : [ null, [ Validators.required, Validators.pattern('[0-9]*'), Validators.min(0), Validators.max(100)] ]
     });
   }
 }

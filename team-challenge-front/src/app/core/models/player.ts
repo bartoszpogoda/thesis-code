@@ -12,3 +12,8 @@ export interface PlayerRegistrationForm {
   yearsOfExperience: number;
 }
 
+export interface InvitablePlayer {
+  player: Player;
+  invited: boolean;
+}
+

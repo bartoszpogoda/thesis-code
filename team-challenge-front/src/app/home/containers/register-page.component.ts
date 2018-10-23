@@ -13,7 +13,6 @@ import {ApiError} from '../../core/models/error';
 @Component({
   selector: 'app-register-page',
   template: `
-    <app-progress [inProgress]="registerPending$ | async" id="registerPending"></app-progress>
     <app-parallax-content imageUrl="/assets/images/home/basketball-background.jpg">
       <app-success-alert [display]="justRegistered$ | async" [message]="registerSuccessMessage"
       [details]="registerSuccessDetails"></app-success-alert>
@@ -48,7 +47,6 @@ export class RegisterPageComponent {
 
   constructor(private store: Store<fromAuth.State>) {
     this.loginError$ = this.store.pipe(select(fromAuth.selectLoginError));
-    this.registerPending$ = this.store.pipe(select(fromAuth.selectRegisterPending));
     this.justRegistered$ = this.store.pipe(select(fromAuth.selectJustRegistered));
     this.registerError$ = this.store.pipe(select(fromAuth.selectRegisterError));
   }

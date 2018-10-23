@@ -31,6 +31,7 @@ public class DtoMappingService {
         TeamDto teamDto = modelMapper.map(team, TeamDto.class);
 
         teamDto.setManagerName(team.getManager().getUser().getFullName());
+        teamDto.setManagerId(team.getManager().getId());
 
         return teamDto;
     }

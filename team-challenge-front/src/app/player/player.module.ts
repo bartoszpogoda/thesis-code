@@ -9,14 +9,19 @@ import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {AuthEffects} from '../auth/effects/auth.effects';
 import {PlayerEffects} from '../core/effects/player.effects';
-import {PlayerService} from '../core/services/player.service';
+import {PlayerService} from '../core/service/player.service';
 import {PlayerRegistrationComponent} from './components/player-registration.component';
 import {RouterModule} from '@angular/router';
 import {NgZorroAntdModule} from 'ng-zorro-antd';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgProgress, NgProgressModule} from '@ngx-progressbar/core';
+import { PlayerProfileComponent } from './components/player-profile.component';
+import {PlayerCreatorGuard} from './service/player-creator-guard.service';
+import {PlayerProfileCreatorPageComponent} from './containers/player-profile-creator-page.component';
+import {TeamInvitePlayerComponent} from '../team/containers/team-invite-player.component';
 
-export const COMPONENTS = [PlayerProfilePageComponent, PlayerRegistrationComponent];
+export const COMPONENTS = [PlayerProfilePageComponent, PlayerProfileCreatorPageComponent,
+  PlayerRegistrationComponent, PlayerProfileComponent];
 
 @NgModule({
   imports: [
@@ -32,6 +37,6 @@ export const COMPONENTS = [PlayerProfilePageComponent, PlayerRegistrationCompone
   ],
   declarations: [COMPONENTS],
   exports: [COMPONENTS],
-  providers: [PlayerService]
+  providers: [PlayerService, PlayerCreatorGuard]
 })
 export class PlayerModule { }

@@ -14,8 +14,9 @@ import {EffectsModule} from '@ngrx/effects';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgProgressModule} from '@ngx-progressbar/core';
 import {PlayerEffects} from './core/effects/player.effects';
-import {PlayerService} from './core/services/player.service';
-import {LoggedInAuthGuard} from './core/services/auth-guard.service';
+import {PlayerService} from './core/service/player.service';
+import {LoggedInAuthGuard} from './core/service/auth-guard.service';
+import {TeamEffects} from './core/effects/team.effects';
 
 @NgModule({
   imports: [

@@ -31,7 +31,7 @@ public class TeamInvitationResource {
                 .orElseThrow(InternalServerException::new);
 
     }
-
+    // TODO craete listForPlayerOrTeam and dispatch to listForPlayer or ListForTeam based on supplied parameter, else 400
     @GetMapping(params = "playerId")
     public ResponseEntity<List<TeamInvitationDto>> listForPlayer(@PathVariable String disciplineId, @RequestParam String playerId) throws AccessForbiddenException, UnknownDisciplineException, PlayerNotFoundException {
 

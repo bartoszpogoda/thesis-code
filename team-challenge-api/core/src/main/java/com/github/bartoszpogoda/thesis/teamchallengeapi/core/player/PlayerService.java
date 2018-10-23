@@ -77,6 +77,19 @@ public class PlayerService {
 
     }
 
+    public Page<Player> findAllPlayersWithoutTeam(Pageable pageable, String disciplineId) throws UnknownDisciplineException {
+        disciplineService.checkDisciplineExists(disciplineId);
+
+        return playerRepository.findWithoutTeam(pageable, disciplineId);
+    }
+
+    public Page<Player> findWithoutTeamByName(Pageable pageable, String disciplineId, String fullNamePortion) throws UnknownDisciplineException {
+        disciplineService.checkDisciplineExists(disciplineId);
+
+        return playerRepository.findWithoutTeamByName(pageable, disciplineId, fullNamePortion);
+
+    }
+
     public int calculateAge(LocalDate birthDate) {
         LocalDate now = new LocalDate();
 

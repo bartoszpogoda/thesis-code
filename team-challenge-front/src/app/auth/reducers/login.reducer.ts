@@ -3,12 +3,10 @@ import {ApiError} from '../../core/models/error';
 import {CoreActionTypes, CoreActionUnion} from '../../core/actions/core.actions';
 
 export interface State {
-  pending: boolean;
   error: ApiError|null;
 }
 
 const initialState: State = {
-  pending: false,
   error: null,
 };
 
@@ -20,19 +18,16 @@ export function reducer(
     case AuthActionTypes.Login:
       return {
         ...state,
-        pending: true,
         error: null
       };
     case AuthActionTypes.LoginSuccess:
       return {
         ...state,
-        pending: false,
         error: null
       };
     case AuthActionTypes.LoginFailure:
       return {
         ...state,
-        pending: false,
         error: action.payload
       };
     case AuthActionTypes.Register:
@@ -46,5 +41,4 @@ export function reducer(
   }
 }
 
-export const getPending = (state: State) => state.pending;
 export const getError = (state: State) => state.error;

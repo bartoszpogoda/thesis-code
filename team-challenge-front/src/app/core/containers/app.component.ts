@@ -4,17 +4,18 @@ import {Observable, Subscription, timer} from 'rxjs';
 
 import * as fromRoot from '../../reducers';
 import * as fromAuth from '../../auth/reducers';
+import * as fromPending from '../reducers/pending.reducer';
 import * as LayoutActions from '../actions/layout.actions';
 import * as CoreActions from '../actions/core.actions';
 import {DecodedToken} from '../../auth/models/token';
 import {TokenService} from '../../auth/service/token.service';
-import {skipUntil} from 'rxjs/operators';
+import {map, skipUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-app',
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-progress [inProgress]="loginPending$ | async" id="loginPending"></app-progress>
+    <app-progress [inProgress]="(globalPending$ | async) > 0" id="globalPending"></app-progress>
     <nz-layout class="layout">
       <nz-header class="app-header" #top>
         <div>
@@ -33,7 +34,7 @@ import {skipUntil} from 'rxjs/operators';
             <app-nav-item title="Wyzwania" icon="play-circle-o"></app-nav-item></li>
           <li *ngIf="loggedIn$ | async" [class.disabled]="playerNotExisting$ | async"
               nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="team">
-            <app-nav-item title="Drużyna" icon="team"></app-nav-item>
+            <app-nav-item title="Drużyna" [notify]="teamHasNotifications$ | async" icon="team"></app-nav-item>
           </li>
           <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="player">
             <app-nav-item title="Zawodnik" [notify]="playerHasNotifications$ | async" icon="user"></app-nav-item>
@@ -66,24 +67,33 @@ import {skipUntil} from 'rxjs/operators';
 export class AppComponent implements OnDestroy {
   // breadcrumbItems = ['Home', 'App', 'Temp'];
   loggedIn$: Observable<boolean>;
-  loginPending$: Observable<boolean>;
+  // loginPending$: Observable<boolean>;
   notificationPanelVisible$: Observable<boolean>;
   decodedToken$: Observable<DecodedToken>;
   playerNotExisting$: Observable<boolean>;
   playerHasNotifications$: Observable<boolean>;
+  teamHasNotifications$: Observable<boolean>;
   hasTeam$: Observable<boolean>;
   periodicRenewalSub: Subscription;
+
+  globalPending$: Observable<number>;
 
   constructor(private store: Store<fromRoot.State>, private tokenService: TokenService) {
     this.notificationPanelVisible$ = this.store.pipe(select(fromRoot.getShowNotificationsPanel));
     this.loggedIn$ = this.store.pipe(select(fromAuth.selectLoggedIn));
     this.decodedToken$ = this.store.pipe(select(fromAuth.selectDecodedToken));
-    this.loginPending$ = this.store.pipe(select(fromAuth.selectLoginPending));
+    // this.loginPending$ = this.store.pipe(select(fromAuth.selectLoginPending));
     this.playerNotExisting$ = this.store.pipe(select(fromRoot.selectPlayerProfileNotExisting));
     this.hasTeam$ = this.store.pipe(select(fromRoot.selectHasTeam));
+    this.globalPending$ = this.store.pipe(select(fromRoot.selectPending));
 
     this.playerHasNotifications$ = this.store.pipe(
       select(fromRoot.selectPlayerProfileHasAnyNotifications));
+
+    this.teamHasNotifications$ = this.store.pipe(
+      select(fromRoot.selectPlayerInvitations),
+      map((invitations) => invitations.length > 0)
+    );
 
     this.store.dispatch(new CoreActions.EnterApplication());
     this.periodicRenewalSub = this.tokenService.startPeriodicRenewal();

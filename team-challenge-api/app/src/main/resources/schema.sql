@@ -75,7 +75,7 @@ CREATE TABLE Teams (
   Active BIT (1),
   Balance INTEGER,
 
-  FOREIGN KEY (ManagerID) REFERENCES Users(UserID),
+  FOREIGN KEY (ManagerID) REFERENCES Players(PlayerID),
   FOREIGN KEY (DisciplineID) REFERENCES Disciplines(DisciplineID),
   FOREIGN KEY (RegionID) REFERENCES Regions(RegionID)
 );

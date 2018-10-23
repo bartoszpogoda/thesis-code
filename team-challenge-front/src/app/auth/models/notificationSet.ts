@@ -15,10 +15,10 @@ export class NotificationSet {
   }
 
   remove(notification: string): NotificationSet {
-    const cloned = this.contents.map(x => Object.assign({}, x));
+    const cloned = JSON.parse(JSON.stringify( this.contents ));
 
     const indexOf = cloned.indexOf(notification);
-    if (indexOf > 0) {
+    if (indexOf >= 0) {
       cloned.splice(indexOf, 1);
     }
 

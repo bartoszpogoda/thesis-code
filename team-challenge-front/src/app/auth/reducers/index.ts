@@ -39,11 +39,6 @@ export const selectRegisterState = createSelector(
   (state: AuthState) => state.register
 );
 
-export const selectLoginPending = createSelector(
-  selectLoginState,
-  fromLogin.getPending
-);
-
 export const selectLoggedIn = createSelector(
   selectAuthStatusState,
   fromAuth.getLoggedIn
@@ -52,11 +47,6 @@ export const selectLoggedIn = createSelector(
 export const selectLoginError = createSelector(
   selectLoginState,
   fromLogin.getError
-);
-
-export const selectRegisterPending = createSelector(
-  selectRegisterState,
-  fromRegister.getPending
 );
 
 export const selectRegisterError = createSelector(

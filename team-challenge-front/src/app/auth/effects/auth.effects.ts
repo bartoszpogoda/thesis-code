@@ -1,4 +1,3 @@
-///<reference path="../actions/auth.actions.ts"/>
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {
@@ -19,6 +18,11 @@ import {DecodedToken, Token} from '../models/token';
 import {Router} from '@angular/router';
 import {NzMessageService} from 'ng-zorro-antd';
 import {RegisterForm} from '../models/register';
+import {AuthState, selectTokenRenewalPending} from '../reducers';
+import {CoreActionTypes, EnterApplication, NoAction} from '../../core/actions/core.actions';
+import {select, Store} from '@ngrx/store';
+import {UsersService} from '../service/users.service';
+
 @Injectable()
 export class AuthEffects {
 
@@ -146,9 +150,3 @@ export class AuthEffects {
     private store: Store<AuthState>
   ) {}
 }
-import {UsersService} from '../service/users.service';
-import {ApiError} from '../../core/models/error';
-
-import {CoreActionTypes, EnterApplication, NoAction} from '../../core/actions/core.actions';
-import {AuthState, selectLoginPending, selectTokenRenewalPending} from '../reducers';
-import {select, Store} from '@ngrx/store';

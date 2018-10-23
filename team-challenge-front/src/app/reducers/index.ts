@@ -24,6 +24,8 @@ import { storeFreeze } from 'ngrx-store-freeze';
 import * as fromLayout from '../core/reducers/layout.reducer';
 import * as fromPlayer from '../core/reducers/player.reducer';
 import * as fromTeam from '../core/reducers/team.reducer';
+import * as fromPending from '../core/reducers/pending.reducer';
+import * as fromManager from '../core/reducers/manager.reducer';
 
 /**
  * As mentioned, we treat each reducer like a table in a database. This means
@@ -31,9 +33,11 @@ import * as fromTeam from '../core/reducers/team.reducer';
  */
 export interface State {
   layout: fromLayout.State;
+  pending: fromPending.State;
   router: fromRouter.RouterReducerState;
   player: fromPlayer.State;
   team: fromTeam.State;
+  manager: fromManager.State;
 }
 
 /**
@@ -43,9 +47,11 @@ export interface State {
  */
 export const reducers: ActionReducerMap<State> = {
   layout: fromLayout.reducer,
+  pending: fromPending.reducer,
   router: fromRouter.routerReducer,
   player: fromPlayer.reducer,
-  team: fromTeam.reducer
+  team: fromTeam.reducer,
+  manager: fromManager.reducer
 };
 
 // console.log all actions
@@ -80,6 +86,18 @@ export const getShowNotificationsPanel = createSelector(
 );
 
 /**
+ * Pending Selectors
+ */
+export const getPendingState = createFeatureSelector<State, fromPending.State>(
+  'pending'
+);
+
+export const selectPending = createSelector(
+  getPendingState,
+  fromPending.getPending
+);
+
+/**
  * Player Selectors
  */
 export const selectPlayerState = createFeatureSelector<State, fromPlayer.State>('player');
@@ -94,15 +112,20 @@ export const selectPlayerProfileNotExisting = createSelector(
   fromPlayer.getNotExisting
 );
 
-export const selectPlayerProfileLoading = createSelector(
-  selectPlayerState,
-  fromPlayer.getLoading
-);
-
 export const selectPlayerProfileHasAnyNotifications = createSelector(
   selectPlayerState,
   fromPlayer.getAnyNotifications
-)
+);
+
+export const selectPlayerJustRegistered = createSelector(
+  selectPlayerState,
+  fromPlayer.getJustRegistered
+);
+
+export const selectPlayerInvitations = createSelector(
+  selectPlayerState,
+  fromPlayer.getTeamInvitations
+);
 
 /**
  * Team Selectors
@@ -113,3 +136,62 @@ export const selectHasTeam = createSelector(
   selectTeamState,
   fromTeam.getHasTeam
 );
+
+export const selectPlayerTeam = createSelector(
+  selectTeamState,
+  fromTeam.getCurrent
+);
+
+export const selectJustJoined = createSelector(
+  selectTeamState,
+  fromTeam.getJustJoined
+);
+
+export const selectIsManager = createSelector(
+  selectTeamState,
+  fromTeam.getIsManager
+);
+
+/**
+ * Manager Selectors
+ * */
+
+export const selectManagerState = createFeatureSelector<State, fromManager.State>('manager');
+
+export const selectInvitePlayerData = createSelector(
+  selectManagerState,
+  fromManager.getInvitePlayerData
+);
+
+export const selectInvitePlayerNameSearch = createSelector(
+  selectManagerState,
+  fromManager.getInvitePlayerNameSearch
+);
+
+export const selectInvitePlayerPage = createSelector(
+  selectManagerState,
+  fromManager.getInvitePlayerPage
+);
+
+export const selectInvitePlayerTotal = createSelector(
+  selectManagerState,
+  fromManager.getInvitePlayerTotal
+);
+
+export const selectInvitePlayerLoading = createSelector(
+  selectManagerState,
+  fromManager.getInvitePlayerLoading
+);
+
+export const selectManagementInvitations = createSelector(
+  selectManagerState,
+  fromManager.getInvitations
+);
+
+
+
+
+
+
+
+
