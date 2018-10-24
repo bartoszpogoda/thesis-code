@@ -17,10 +17,11 @@ import {TeamRecruitmentPageComponent} from './containers/team-recruitment-page.c
 import {ReactiveFormsModule} from '@angular/forms';
 import {SentInvitationComponent} from './components/sent-invitation.component';
 import {CreatorBaseDataComponent} from './components/creator-base-data.component';
+import {PlayerCardComponent} from './components/player-card.component';
 
 export const COMPONENTS = [TeamPageComponent, TeamJoinPageComponent, ReceivedInvitationComponent, TeamDisplayComponent,
   TeamManagerPageComponent, TeamCreatorPageComponent, TeamRecruitmentPageComponent, SentInvitationComponent,
-  CreatorBaseDataComponent];
+  CreatorBaseDataComponent, PlayerCardComponent];
 
 @NgModule({
   imports: [

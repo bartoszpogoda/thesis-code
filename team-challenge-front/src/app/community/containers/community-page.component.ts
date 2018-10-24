@@ -6,13 +6,15 @@ import {Component} from '@angular/core';
     <div class="spaces-sides">
       <app-breadcrumb [items]="items"></app-breadcrumb>
       <div class="content-container">
-        <h1>Community</h1>
+        <h1>Społeczność</h1>
+        <p>TODO: Drużyny</p>
+        <p>TODO: Zawodnicy</p>
       </div>
     </div>
   `
 })
 export class CommunityPageComponent {
   items = [
-    {title: 'Community'}
+    {title: 'Społeczność'}
   ];
 }

@@ -4,7 +4,8 @@ export interface Player {
   fullName: string;
   height: number;
   teamName: string;
-  yearsOfExperience: string;
+  yearsOfExperience: number;
+  imageId?: string;
 }
 
 export interface PlayerRegistrationForm {

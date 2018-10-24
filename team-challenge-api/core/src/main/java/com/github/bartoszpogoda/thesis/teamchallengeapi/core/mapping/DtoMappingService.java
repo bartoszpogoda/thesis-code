@@ -23,6 +23,7 @@ public class DtoMappingService {
         playerDto.setFullName(player.getUser().getFullName());
         playerDto.setAge(playerService.calculateAge(player.getUser().getBirthdayDate()));
         playerDto.setTeamName(player.getTeam() == null ? "" : player.getTeam().getName());
+        playerDto.setImageId(player.getUser().getImagePath());
 
         return playerDto;
     }

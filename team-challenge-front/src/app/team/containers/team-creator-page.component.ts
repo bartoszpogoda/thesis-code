@@ -1,4 +1,7 @@
 import {Component} from '@angular/core';
+import {Store} from '@ngrx/store';
+import * as fromRoot from '../../reducers';
+import {CreateTeam} from '../../core/actions/team.actions';
 
 
 @Component({
@@ -12,23 +15,25 @@ import {Component} from '@angular/core';
           <nz-step nzTitle="Podstawowe dane"></nz-step>
           <nz-step nzTitle="Punkt 'Home'"></nz-step>
           <nz-step nzTitle="Coś jeszcze?"></nz-step>
+          <nz-step nzTitle="Zaproś?"></nz-step>
         </nz-steps>
 
         <div class="steps-content">
-          <app-creator-base-data *ngIf="current == 0"></app-creator-base-data>
+          <app-creator-base-data *ngIf="current == 0" (submitted)="baseStageSubmitted($event)"></app-creator-base-data>
         </div>
-        <div class="steps-action">
-          <button nz-button nzType="default" (click)="pre()" *ngIf="current > 0">
-            <span>Previous</span>
-          </button>
-          <button nz-button nzType="default" (click)="next()" *ngIf="current < 2">
-            <span>Next</span>
-          </button>
-          <button nz-button nzType="primary" (click)="done()" *ngIf="current === 2">
-            <span>Done</span>
-          </button>
-        </div>
-      </div>
+        <!--<div class="steps-action">-->
+          <!--<button nz-button nzType="default" (click)="pre()" *ngIf="current > 0">-->
+            <!--<span>Previous</span>-->
+          <!--</button>-->
+          <!--<button nz-button nzType="default" (click)="next()" *ngIf="current < 2">-->
+            <!--<span>Next</span>-->
+          <!--</button>-->
+          <!--<button nz-button nzType="primary" (click)="done()" *ngIf="current === 2">-->
+            <!--<span>Done</span>-->
+          <!--</button>-->
+        <!--</div>-->
+      <!--</div>-->
+    </div>
     </div>
   `,
   styles  : [
@@ -72,6 +77,19 @@ export class TeamCreatorPageComponent {
     console.log('done');
   }
 
-  constructor() {
+  baseStageSubmitted(teamName: string) {
+    console.log('Base stage submitted: ' + teamName);
+
+    const teamCreationForm = {
+      name: teamName
+    };
+
+    // temp
+    this.store.dispatch(new CreateTeam(teamCreationForm));
+
+    // this.next();
+  }
+
+  constructor(private store: Store<fromRoot.State>) {
   }
 }

@@ -86,14 +86,14 @@ export class PlayerEffects {
       );
     })
   );
-
-  @Effect({dispatch: false})
-  $redirectOnRegisterSuccess = this.actions$.pipe(
-    ofType<RegisterSuccess>(PlayerActionTypes.RegisterSuccess),
-    tap(() => {
-      this.router.navigate(['/player']);
-    })
-  );
+  //
+  // @Effect({dispatch: false})
+  // $redirectOnRegisterSuccess = this.actions$.pipe(
+  //   ofType<RegisterSuccess>(PlayerActionTypes.RegisterSuccess),
+  //   tap(() => {
+  //     this.router.navigate(['/player']);
+  //   })
+  // );
 
   @Effect()
   $loadTeamInvitations = this.actions$.pipe(
@@ -156,8 +156,6 @@ export class PlayerEffects {
       )
     )
   );
-
-  // withLatestFrom(this.store.pipe(select(selectTokenRenewalPending))),
 
   constructor(
     private actions$: Actions,

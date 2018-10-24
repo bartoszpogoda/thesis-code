@@ -34,10 +34,10 @@ import {map, skipUntil} from 'rxjs/operators';
             <app-nav-item title="Wyzwania" icon="play-circle-o"></app-nav-item></li>
           <li *ngIf="loggedIn$ | async" [class.disabled]="playerNotExisting$ | async"
               nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="team">
-            <app-nav-item title="Drużyna" [notify]="teamHasNotifications$ | async" icon="team"></app-nav-item>
+            <app-nav-item title="Moja drużyna" [notify]="teamHasNotifications$ | async" icon="team"></app-nav-item>
           </li>
           <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="player">
-            <app-nav-item title="Zawodnik" [notify]="playerHasNotifications$ | async" icon="user"></app-nav-item>
+            <app-nav-item title="Mój profil" [notify]="playerHasNotifications$ | async" icon="user"></app-nav-item>
           </li>
         </ul>
         </div>
@@ -47,7 +47,7 @@ import {map, skipUntil} from 'rxjs/operators';
           <nz-badge class="avatar-badge" (click)="toggleNotificationPanel()" [nzCount]="5" style="margin-right: 24px;">
             <span class="avatar-username">{{(decodedToken$ | async).fullName}}</span>
             <!-- TODO extract dumb component -->
-            <nz-avatar [nzSize]="'large'" nzIcon="anticon anticon-user" ></nz-avatar>
+            <nz-avatar [nzSize]="'large'" [nzSrc]="this.avatarUrl$ | async"></nz-avatar> <!--nzIcon="anticon anticon-user"-->
             <!--[nzShape]="'square'"-->
           </nz-badge>
           <!--<li class="pull-right notification-bell">-->
@@ -67,6 +67,7 @@ import {map, skipUntil} from 'rxjs/operators';
 export class AppComponent implements OnDestroy {
   // breadcrumbItems = ['Home', 'App', 'Temp'];
   loggedIn$: Observable<boolean>;
+  avatarUrl$: Observable<string>;
   // loginPending$: Observable<boolean>;
   notificationPanelVisible$: Observable<boolean>;
   decodedToken$: Observable<DecodedToken>;
@@ -86,6 +87,7 @@ export class AppComponent implements OnDestroy {
     this.playerNotExisting$ = this.store.pipe(select(fromRoot.selectPlayerProfileNotExisting));
     this.hasTeam$ = this.store.pipe(select(fromRoot.selectHasTeam));
     this.globalPending$ = this.store.pipe(select(fromRoot.selectPending));
+    this.avatarUrl$ = this.store.pipe(select(fromRoot.selectPlayerAvatarUrl));
 
     this.playerHasNotifications$ = this.store.pipe(
       select(fromRoot.selectPlayerProfileHasAnyNotifications));

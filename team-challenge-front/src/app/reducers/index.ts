@@ -127,6 +127,32 @@ export const selectPlayerInvitations = createSelector(
   fromPlayer.getTeamInvitations
 );
 
+export const selectPlayerCreatorStep = createSelector(
+  selectPlayerState,
+  fromPlayer.getCreatorStep
+);
+
+export const selectPlayerAvatarUrl = createSelector(
+  selectPlayerState,
+  fromPlayer.getAvatarUrl
+);
+
+export const selectPlayerCreatorAvatarUploading = createSelector(
+  selectPlayerState,
+  fromPlayer.getCreatorAvatarUploading
+);
+
+export const selectPlayerCreatorAvatarUploaded = createSelector(
+  selectPlayerState,
+  fromPlayer.getCreatorAvatarUploaded
+);
+
+export const selectPlayerCreatorButtonText = createSelector(
+  selectPlayerState,
+  fromPlayer.getCreatorButtonText
+);
+
+
 /**
  * Team Selectors
  */

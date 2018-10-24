@@ -6,3 +6,7 @@ export interface Team {
   managerName: string;
   name: string;
 }
+
+export interface TeamCreationForm {
+  name: string;
+}

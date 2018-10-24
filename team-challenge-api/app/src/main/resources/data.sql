@@ -1,18 +1,23 @@
 
 -- Test user, plain password is 'password'
-INSERT INTO Users VALUES('0', 'test@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Kevin Best', '1996-11-16');
-INSERT INTO Users VALUES('1', 'admin@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Admin Kevin', '1990-11-11');
-INSERT INTO Users VALUES('2', 'player1@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Player One', '1999-12-03');
-INSERT INTO Users VALUES('3', 'player2@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Player Two', '1996-01-15');
-INSERT INTO Users VALUES('4', 'manager1@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Manager One', '1994-01-15');
-INSERT INTO Users VALUES('5', 'player3@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Player 3', '1994-01-15');
-INSERT INTO Users VALUES('6', 'player4@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Player 4', '1994-01-15');
-INSERT INTO Users VALUES('7', 'player5@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Player 5', '1994-01-15');
-INSERT INTO Users VALUES('8', 'player6@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'The Player 6', '1994-01-15');
-INSERT INTO Users VALUES('9', 'player7@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'The Player 7', '1994-01-15');
-INSERT INTO Users VALUES('10', 'player8@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'The Player 8', '1994-01-15');
-INSERT INTO Users VALUES('11', 'player9@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'The Player 9', '1994-01-15');
-INSERT INTO Users VALUES('12', 'player10@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Player 10', '1994-01-15');
+INSERT INTO Users VALUES('0', 'test@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Kevin Best', '1996-11-16', NULL);
+INSERT INTO Users VALUES('1', 'admin@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Admin Kevin', '1990-11-11', NULL);
+INSERT INTO Users VALUES('2', 'player1@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Player One', '1999-12-03', NULL);
+INSERT INTO Users VALUES('3', 'player2@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Player Two', '1996-01-15', NULL);
+INSERT INTO Users VALUES('4', 'manager1@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Manager One', '1994-01-15', NULL);
+INSERT INTO Users VALUES('5', 'player3@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Player 3', '1994-01-15', NULL);
+INSERT INTO Users VALUES('6', 'player4@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Player 4', '1994-01-15', NULL);
+INSERT INTO Users VALUES('7', 'player5@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Player 5', '1994-01-15', NULL);
+INSERT INTO Users VALUES('8', 'player6@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'The Player 6', '1994-01-15', NULL);
+INSERT INTO Users VALUES('9', 'player7@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'The Player 7', '1994-01-15', NULL);
+INSERT INTO Users VALUES('10', 'player8@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'The Player 8', '1994-01-15', NULL);
+INSERT INTO Users VALUES('11', 'player9@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'The Player 9', '1994-01-15', NULL);
+INSERT INTO Users VALUES('12', 'player10@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Player 10', '1994-01-15', NULL);
+INSERT INTO Users VALUES('13', 'user1@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'The User 1', '1991-03-12', NULL);
+INSERT INTO Users VALUES('14', 'user2@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'The User 2', '1990-01-16', NULL);
+INSERT INTO Users VALUES('15', 'user3@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'The User 3', '1991-01-11', NULL);
+INSERT INTO Users VALUES('16', 'user4@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'The User 4', '1992-08-10', NULL);
+INSERT INTO Users VALUES('17', 'user5@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'User 5', '1993-12-12', NULL);
 
 INSERT INTO Authorities VALUES('ROLE_USER');
 INSERT INTO Authorities VALUES('ROLE_MOD');

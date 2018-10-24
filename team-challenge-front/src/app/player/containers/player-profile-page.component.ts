@@ -1,14 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../../reducers/index';
-import * as PlayerActions from '../../core/actions/player.actions';
 import {
   selectPlayerJustRegistered,
   selectPlayerProfile, selectPending,
 } from '../../reducers/index';
 import {Observable} from 'rxjs';
-import {Player, PlayerRegistrationForm} from '../../core/models/player';
-import {Register} from '../../core/actions/player.actions';
+import {Player} from '../../core/models/player';
 
 @Component({
   selector: 'app-player-profile-page',
@@ -21,21 +19,14 @@ import {Register} from '../../core/actions/player.actions';
                            [details]="registerSuccessDetails"></app-success-alert>
         <h1>Profil zawodnika</h1>
         <div nz-row nzGutter="16">
-          <div nz-col nzXs="0" nzSm="2"></div>
-          <div nz-col nzXs="0" nzSm="10">
-            <app-player-profile [player]="player$ | async"
-                                (submitted)="onPlayerRegistrationSubmitted($event)">
-            </app-player-profile>
-          </div>
-          <div nz-col  nzXs="0" nzSm="10">
-          </div>
-          <div nz-col nzXs="0" nzSm="2"></div>
+          <app-player-profile [player]="player$ | async">
+          </app-player-profile>
         </div>
       </div>
     </div>
   `
 })
-export class PlayerProfilePageComponent implements OnInit {
+export class PlayerProfilePageComponent {
   items = [
     {title: 'Zawodnik'}
   ];
@@ -53,11 +44,4 @@ export class PlayerProfilePageComponent implements OnInit {
     this.pending$ = this.store.pipe(select(selectPending));
   }
 
-  ngOnInit(): void {
-    // setTimeout(() => this.store.dispatch(new PlayerActions.LoadCurrent()), 5);
-  }
-
-  onPlayerRegistrationSubmitted(registrationForm: PlayerRegistrationForm) {
-    this.store.dispatch(new Register(registrationForm));
-  }
 }

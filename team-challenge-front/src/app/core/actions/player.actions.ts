@@ -21,7 +21,9 @@ export enum PlayerActionTypes {
   AcceptTeamInvitationFailure = '[Player] Accept Team Invitation Failure',
   DeclineTeamInvitation = '[Player] Decline Team Invitation',
   DeclineTeamInvitationSuccess = '[Player] Decline Team Invitation Success',
-  DeclineTeamInvitationFailure = '[Player] Decline Team Invitation Failure'
+  DeclineTeamInvitationFailure = '[Player] Decline Team Invitation Failure',
+  UploadAvatar = '[Player] Upload Avatar',
+  UploadAvatarSuccess = '[Player] Upload Avatar Success', // TODO what if failure?
 }
 
 export class LoadCurrent implements Action {
@@ -116,10 +118,22 @@ export class DeclineTeamInvitationFailure implements Action {
   constructor(public payload: ApiError) {}
 }
 
+export class UploadAvatar implements Action {
+  readonly type = PlayerActionTypes.UploadAvatar;
+
+}
+
+export class UploadAvatarSuccess implements Action {
+  readonly type = PlayerActionTypes.UploadAvatarSuccess;
+
+  constructor(public payload: string) {}
+}
+
 
 export type PlayerActionsUnion = LoadCurrent | LoadCurrentSuccess | LoadCurrentFailure | Register
   | RegisterSuccess | RegisterFailure | ShowJustRegistered | HideJustRegistered
   | LoadTeamInvitations | LoadTeamInvitationsFailure | LoadTeamInvitationsSuccess
   | AcceptTeamInvitation | AcceptTeamInvitationSuccess | AcceptTeamInvitationFailure
-  | DeclineTeamInvitation | DeclineTeamInvitationSuccess | DeclineTeamInvitationFailure;
+  | DeclineTeamInvitation | DeclineTeamInvitationSuccess | DeclineTeamInvitationFailure
+  | UploadAvatar | UploadAvatarSuccess;
 

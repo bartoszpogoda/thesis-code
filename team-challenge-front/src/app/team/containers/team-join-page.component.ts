@@ -15,6 +15,7 @@ import {Observable} from 'rxjs';
       <h1>Dołącz do drużyny lub załóż własną</h1>
 
       <h2>Zaproszenia do drużyn</h2>
+      <p *ngIf="(teamInvitations$ | async).length === 0">Nie posiadasz żadnych zaproszeń.</p>
 
       <ng-container *ngFor="let invitation of (teamInvitations$ | async)">
         <app-received-invitation [teamInvitation]="invitation" (accepted)="onAccepted(invitation)"

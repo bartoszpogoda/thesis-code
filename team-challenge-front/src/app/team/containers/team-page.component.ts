@@ -6,6 +6,7 @@ import * as fromRoot from '../../reducers';
 import {selectIsManager, selectJustJoined, selectPlayerInvitations, selectPlayerTeam} from '../../reducers';
 import {AcceptTeamInvitation, LoadTeamInvitations} from '../../core/actions/player.actions';
 import {Team} from '../../core/models/team';
+import {Player} from '../../core/models/player';
 
 @Component({
   selector: 'app-team-page',
@@ -29,6 +30,15 @@ import {Team} from '../../core/models/team';
         <div *ngIf="isManager$ | async">
           <button routerLink="manager" nz-button nzType="primary">Przejdź do widoku zarządzania</button>
         </div>
+
+        <h2>Zawodnicy</h2>
+
+        <div nz-row nzGutter="16">
+          <div nz-col nzXs="0" nzSm="4">
+            <app-player-card [player]="testPlayer"></app-player-card>
+          </div>
+        </div>
+
       </div>
     </div>
   `
@@ -37,6 +47,15 @@ export class TeamPageComponent {
   items = [
     {title: 'Drużyna'}
   ];
+
+  testPlayer: Player = {
+    id: '0',
+    yearsOfExperience: 2,
+    height: 172,
+    age: 17,
+    fullName: 'Andrzej Pietruszka',
+    teamName: 'Team RZODKIEWKA'
+  };
 
   playersTeam$: Observable<Team>;
   isManager$: Observable<boolean>;

@@ -4,7 +4,8 @@ CREATE TABLE Users (
   Email VARCHAR(64) NOT NULL UNIQUE,
   EncodedPassword CHAR(60) NOT NULL,
   Fullname VARCHAR(64) NOT NULL,
-  BirthdayDate DATE
+  BirthdayDate DATE,
+  ImagePath VARCHAR(64)
 );
 
 CREATE TABLE Authorities (

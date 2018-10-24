@@ -3,7 +3,7 @@ import {RegisterForm} from '../../auth/models/register';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {InvitablePlayer, Player, PlayerRegistrationForm} from '../models/player';
-import {Team} from '../models/team';
+import {Team, TeamCreationForm} from '../models/team';
 import {Page} from '../models/page';
 import {TeamInvitation} from '../models/team-invitation';
 import {ɵINTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS} from '@angular/platform-browser-dynamic';
@@ -50,5 +50,9 @@ export class TeamService {
     };
 
     return this.http.post<TeamInvitation>('/api/3x3basket/invitations', invitation);
+  }
+
+  createTeam(creationForm: TeamCreationForm): Observable<Team> {
+    return this.http.post<Team>('/api/3x3basket/wro/teams/', creationForm);
   }
 }

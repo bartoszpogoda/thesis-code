@@ -23,6 +23,7 @@ import {EffectsModule} from '@ngrx/effects';
 import {PlayerEffects} from './effects/player.effects';
 import {TeamEffects} from './effects/team.effects';
 import {ManagerEffects} from './effects/manager.effects';
+import {ImageLoaderComponent} from './components/image-loader.component';
 
 export const COMPONENTS = [
   AppComponent,
@@ -35,7 +36,8 @@ export const COMPONENTS = [
   ApiErrorAlertComponent,
   SuccessAlertComponent,
   NavbarLoginComponent,
-  ProgressComponent
+  ProgressComponent,
+  ImageLoaderComponent
 ];
 
 @NgModule({

@@ -1,5 +1,6 @@
 import {TeamActionsUnion, TeamActionTypes} from '../actions/team.actions';
 import {Team} from '../models/team';
+import {AuthActionsUnion, AuthActionTypes} from '../../auth/actions/auth.actions';
 
 export interface State {
   hasTeam: boolean;
@@ -17,9 +18,14 @@ const initialState: State = {
 
 export function reducer(
   state: State = initialState,
-  action: TeamActionsUnion
+  action: TeamActionsUnion | AuthActionsUnion
 ): State {
   switch (action.type) {
+
+    case AuthActionTypes.Logout:
+      return {
+        ...initialState
+      };
 
     case TeamActionTypes.LoadCurrentSuccess:
       return {

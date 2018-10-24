@@ -4,6 +4,7 @@ import {TeamInvitation} from '../models/team-invitation';
 import {InvitablePlayer, Player} from '../models/player';
 import {Page} from '../models/page';
 import {ManagerActionsUnion, ManagerActionTypes} from '../actions/manager.actions';
+import {AuthActionsUnion, AuthActionTypes} from '../../auth/actions/auth.actions';
 
 export interface State {
   invitations: TeamInvitation[];
@@ -31,9 +32,14 @@ const initialState: State = {
 
 export function reducer(
   state: State = initialState,
-  action: ManagerActionsUnion
+  action: ManagerActionsUnion | AuthActionsUnion
 ): State {
   switch (action.type) {
+
+    case AuthActionTypes.Logout:
+      return {
+        ...initialState
+      };
 
     case ManagerActionTypes.LoadTeamInvitationsSuccess:
       return {

@@ -38,6 +38,9 @@ public class User {
     @Column(name = "BirthdayDate")
     private LocalDate birthdayDate;
 
+    @Column(name = "ImagePath")
+    private String imagePath;
+
     @ManyToMany
     @JoinTable(name = "GrantedAuthorities",
             joinColumns = {@JoinColumn(name="UserID", referencedColumnName = "UserID")},

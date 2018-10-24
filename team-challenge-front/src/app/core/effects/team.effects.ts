@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {AuthActionTypes, LoginSuccess} from '../../auth/actions/auth.actions';
-import {catchError, exhaustMap, map, switchMap, take, withLatestFrom} from 'rxjs/operators';
+import {catchError, exhaustMap, map, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
 import {of, timer} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {State} from '../../reducers';
 import {PlayerService} from '../service/player.service';
 import {TeamService} from '../service/team.service';
 import {
+  CreateTeam, CreateTeamFailure, CreateTeamSuccess,
   HideJustJoined,
   LoadCurrent,
   LoadCurrentFailure,
@@ -23,6 +24,8 @@ import {
   ShowJustRegistered
 } from '../actions/player.actions';
 import {selectPlayerProfile} from '../../reducers';
+import * as fromTeam from '../actions/team.actions';
+import {Router} from '@angular/router';
 
 @Injectable()
 export class TeamEffects {
@@ -77,11 +80,44 @@ export class TeamEffects {
     })
   );
 
+  @Effect()
+  $createTeam = this.actions$.pipe(
+    ofType<CreateTeam>(TeamActionTypes.CreateTeam),
+    map(action => action.payload),
+    switchMap((creationForm) => {
+      return this.teamService.createTeam(creationForm).pipe(
+        map(createdTeam => new CreateTeamSuccess(createdTeam)),
+        catchError(err => of(new CreateTeamFailure(err)))
+      );
+    })
+  );
+
+  @Effect()
+  $loadCurrentTeamAfterCreation = this.actions$.pipe(
+    ofType<CreateTeamSuccess>(TeamActionTypes.CreateTeamSuccess),
+    map(() => new LoadCurrent())
+  );
+
+  @Effect({dispatch: false})
+  $redirectToTeamViewAfterCreation = this.actions$.pipe(
+    ofType<CreateTeamSuccess>(TeamActionTypes.CreateTeamSuccess),
+    switchMap(() => {
+      return this.actions$.pipe(
+        ofType<LoadCurrentSuccess>(TeamActionTypes.LoadCurrentSuccess),
+        take(1),
+        tap(() => {
+          this.router.navigate(['/team']);
+        })
+      );
+    })
+  );
+
 
   constructor(
     private actions$: Actions,
     private teamService: TeamService,
-    private store: Store<State>
+    private store: Store<State>,
+    private router: Router
   ) {}
 }
 

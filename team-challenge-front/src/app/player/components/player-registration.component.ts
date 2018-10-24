@@ -8,8 +8,8 @@ import {PlayerRegistrationForm} from '../../core/models/player';
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">Wzrost (cm)</nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24">
+        <nz-form-label [nzOffset]="4" [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">Wzrost (cm)</nz-form-label>
+        <nz-form-control [nzSm]="6" [nzXs]="24">
           <input nz-input formControlName="height" id="height">
           <nz-form-explain *ngIf="validateForm.get('height').dirty && validateForm.get('height').errors">
             Wprowadź swój prawdziwy wzrost!
@@ -17,7 +17,7 @@ import {PlayerRegistrationForm} from '../../core/models/player';
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired>
+        <nz-form-label [nzOffset]="4" [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired>
         <span>
           Staż gry (lata)
           <nz-tooltip nzTitle="Ile lat spędziłeś aktywnie grając w koszykówkę?">
@@ -25,7 +25,7 @@ import {PlayerRegistrationForm} from '../../core/models/player';
           </nz-tooltip>
         </span>
         </nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24">
+        <nz-form-control [nzSm]="6" [nzXs]="24">
           <input nz-input id="yearsOfExperience" formControlName="yearsOfExperience">
           <nz-form-explain *ngIf="validateForm.get('yearsOfExperience').dirty && validateForm.get('yearsOfExperience').errors">
             <ng-container *ngIf="validateForm.get('yearsOfExperience').hasError('required')">
