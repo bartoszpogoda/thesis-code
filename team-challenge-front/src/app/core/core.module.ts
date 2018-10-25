@@ -24,6 +24,7 @@ import {PlayerEffects} from './effects/player.effects';
 import {TeamEffects} from './effects/team.effects';
 import {ManagerEffects} from './effects/manager.effects';
 import {ImageLoaderComponent} from './components/image-loader.component';
+import {TeamCardComponent} from './components/team-card.component';
 
 export const COMPONENTS = [
   AppComponent,
@@ -37,7 +38,8 @@ export const COMPONENTS = [
   SuccessAlertComponent,
   NavbarLoginComponent,
   ProgressComponent,
-  ImageLoaderComponent
+  ImageLoaderComponent,
+  TeamCardComponent
 ];
 
 @NgModule({

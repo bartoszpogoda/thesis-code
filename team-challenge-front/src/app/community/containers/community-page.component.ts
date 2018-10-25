@@ -7,8 +7,8 @@ import {Component} from '@angular/core';
       <app-breadcrumb [items]="items"></app-breadcrumb>
       <div class="content-container">
         <h1>Społeczność</h1>
-        <p>TODO: Drużyny</p>
-        <p>TODO: Zawodnicy</p>
+        <h2 routerLink="teams">(Link, TODO styling) Drużyny</h2>
+        <h2 routerLink="players">(Link, TODO styling) Gracze</h2>
       </div>
     </div>
   `
