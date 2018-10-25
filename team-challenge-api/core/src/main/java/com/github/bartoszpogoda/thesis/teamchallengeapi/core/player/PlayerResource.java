@@ -32,7 +32,7 @@ public class PlayerResource {
 
     @PostMapping
     public ResponseEntity<PlayerDto> register(@PathVariable("disciplineId") String disciplineId,
-                                           @Valid @RequestBody PlayerRegistrationForm registrationForm) throws PlayerAlreadyInTeamException, UnknownDisciplineException, InternalServerException {
+                                              @Valid @RequestBody PlayerRegistrationForm registrationForm) throws PlayerAlreadyInTeamException, UnknownDisciplineException, InternalServerException {
         return playerService.registerCurrentUser(disciplineId, registrationForm)
                 .map(mappingService::mapToDto)
                 .map(playerDto ->
@@ -48,13 +48,22 @@ public class PlayerResource {
     })
     @GetMapping
     public ResponseEntity<CustomPage<PlayerDto>> getPlayers(@PathVariable("disciplineId") String disciplineId,
-                                                          Pageable pageable, @RequestParam(name = "name", required = false) String nameFragment) throws UnknownDisciplineException {
+                                                            Pageable pageable, @RequestParam(name = "name", required = false) String nameFragment,
+                                                            @RequestParam(name = "withoutTeam", required = false) boolean withoutTeam) throws UnknownDisciplineException {
 
         Page<Player> players;
-        if(nameFragment != null) {
-            players = playerService.findByName(pageable, disciplineId, nameFragment);
+        if (nameFragment != null) {
+            if (withoutTeam) {
+                players = playerService.findWithoutTeamByName(pageable, disciplineId, nameFragment);
+            } else {
+                players = playerService.findByName(pageable, disciplineId, nameFragment);
+            }
         } else {
-            players = playerService.findAllPlayers(pageable, disciplineId);
+            if (withoutTeam) {
+                players = playerService.findAllPlayersWithoutTeam(pageable, disciplineId);
+            } else {
+                players = playerService.findAllPlayers(pageable, disciplineId);
+            }
         }
 
         Page<PlayerDto> playersDto = players.map(mappingService::mapToDto);
@@ -66,6 +75,23 @@ public class PlayerResource {
     public ResponseEntity<PlayerDto> getPlayer(@PathVariable("disciplineId") String disciplineId, @PathVariable("id") String id) throws UnknownDisciplineException, PlayerNotFoundException {
 
         return playerService.getByIdAndDiscipline(id, disciplineId)
+                .map(mappingService::mapToDto)
+                .map(ResponseEntity::ok)
+                .orElseThrow(PlayerNotFoundException::new);
+    }
+
+    @GetMapping("/current")
+    public ResponseEntity<PlayerDto> getCurrentPlayer(@PathVariable String disciplineId) throws UnknownDisciplineException, PlayerNotFoundException {
+        return playerService.getCurrentPlayer(disciplineId)
+                .map(mappingService::mapToDto)
+                .map(ResponseEntity::ok)
+                .orElseThrow(PlayerNotFoundException::new);
+    }
+
+    @GetMapping(params = "userId")
+    public ResponseEntity<PlayerDto> getPlayerByUserId(@PathVariable String disciplineId, @RequestParam String userId) throws UnknownDisciplineException, PlayerNotFoundException {
+
+        return playerService.getByUserId(userId, disciplineId)
                 .map(mappingService::mapToDto)
                 .map(ResponseEntity::ok)
                 .orElseThrow(PlayerNotFoundException::new);

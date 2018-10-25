@@ -56,6 +56,13 @@ import * as AuthActions from '../actions/auth.actions';
           </nz-form-explain>
         </nz-form-control>
       </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Data urodzenia</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <nz-date-picker (ngModelChange)="onBirthdayDateChange($event)" nzFormat="yyyy/MM/dd"
+                          formControlName="birthdayDate"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
       <!--<nz-form-item nz-row style="margin-bottom:8px;">-->
         <!--<nz-form-control [nzSpan]="14" [nzOffset]="6">-->
           <!--<label nz-checkbox formControlName="agree">-->
@@ -83,7 +90,10 @@ export class RegisterFormComponent implements OnInit {
     }
 
     if (this.validateForm.valid) {
-      this.submitted.emit(this.validateForm.value);
+      const result = this.validateForm.value;
+      result.birthdayDate = this.validateForm.value.birthdayDate.toISOString().slice(0, 10);
+
+      this.submitted.emit(result);
     }
   }
 
@@ -109,7 +119,13 @@ export class RegisterFormComponent implements OnInit {
       password         : [ null, [ Validators.required ] ],
       checkPassword    : [ null, [ Validators.required, this.confirmationValidator ] ],
       fullName         : [ null, [ Validators.required ] ],
+      birthdayDate     : [ null ],
       // agree            : [ false ]
     });
+  }
+
+  onBirthdayDateChange($event) {
+    console.log($event);
+    console.log(this.validateForm.value);
   }
 }

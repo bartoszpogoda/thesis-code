@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.DoubleStream;
 
 @Service
 public class TeamService {
@@ -101,5 +102,11 @@ public class TeamService {
         return teamRepository.findByIdAndDisciplineIdAndRegionId(id, disciplineId, regionId)
                 .map(team -> team.getPlayers())
                 .orElse(Collections.emptyList());
+    }
+
+    public Optional<Team> getCurrentPlayerTeam(String disciplineId) throws UnknownDisciplineException {
+        disciplineService.checkDisciplineExists(disciplineId);
+
+        return playerService.getCurrentPlayer(disciplineId).map(Player::getTeam);
     }
 }

@@ -4,7 +4,8 @@ CREATE TABLE Users (
   Email VARCHAR(64) NOT NULL UNIQUE,
   EncodedPassword CHAR(60) NOT NULL,
   Fullname VARCHAR(64) NOT NULL,
-  BirthdayDate DATE
+  BirthdayDate DATE,
+  ImagePath VARCHAR(64)
 );
 
 CREATE TABLE Authorities (
@@ -75,7 +76,7 @@ CREATE TABLE Teams (
   Active BIT (1),
   Balance INTEGER,
 
-  FOREIGN KEY (ManagerID) REFERENCES Users(UserID),
+  FOREIGN KEY (ManagerID) REFERENCES Players(PlayerID),
   FOREIGN KEY (DisciplineID) REFERENCES Disciplines(DisciplineID),
   FOREIGN KEY (RegionID) REFERENCES Regions(RegionID)
 );

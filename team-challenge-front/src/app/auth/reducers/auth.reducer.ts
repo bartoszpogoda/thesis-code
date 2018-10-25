@@ -44,10 +44,7 @@ export function reducer(
 
     case AuthActionTypes.Logout:
       return {
-        ...state,
-        loggedIn: false,
-        token: null,
-        decoded: null
+        ...initialState
       };
 
     case AuthActionTypes.DecodeTokenFailureExpired:

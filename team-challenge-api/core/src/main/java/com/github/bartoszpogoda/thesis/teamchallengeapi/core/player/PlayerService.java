@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
 import java.util.Optional;
+import java.util.stream.DoubleStream;
 
 @Service
 public class PlayerService {
@@ -76,6 +77,19 @@ public class PlayerService {
 
     }
 
+    public Page<Player> findAllPlayersWithoutTeam(Pageable pageable, String disciplineId) throws UnknownDisciplineException {
+        disciplineService.checkDisciplineExists(disciplineId);
+
+        return playerRepository.findWithoutTeam(pageable, disciplineId);
+    }
+
+    public Page<Player> findWithoutTeamByName(Pageable pageable, String disciplineId, String fullNamePortion) throws UnknownDisciplineException {
+        disciplineService.checkDisciplineExists(disciplineId);
+
+        return playerRepository.findWithoutTeamByName(pageable, disciplineId, fullNamePortion);
+
+    }
+
     public int calculateAge(LocalDate birthDate) {
         LocalDate now = new LocalDate();
 
@@ -92,5 +106,11 @@ public class PlayerService {
         disciplineService.checkDisciplineExists(disciplineId);
 
         return playerRepository.findByIdAndDisciplineId(id, disciplineId);
+    }
+
+    public Optional<Player> getByUserId(String userId, String disciplineId) throws UnknownDisciplineException {
+        disciplineService.checkDisciplineExists(disciplineId);
+
+        return playerRepository.findByUserIdAndDisciplineId(userId, disciplineId);
     }
 }

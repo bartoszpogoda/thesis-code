@@ -30,6 +30,7 @@ export class TokenService {
       fullName: decoded['fullname'],
       roles: decoded['roles'],
       expires: decoded['exp'],
+      id: decoded['id'],
     };
   }
 

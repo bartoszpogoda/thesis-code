@@ -7,6 +7,7 @@ export interface DecodedToken {
   fullName: string;
   roles: Role[];
   expires: number;
+  id: string;
 }
 
 export interface Role {

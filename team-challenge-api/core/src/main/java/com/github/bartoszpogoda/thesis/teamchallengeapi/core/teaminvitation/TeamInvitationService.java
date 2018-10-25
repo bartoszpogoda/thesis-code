@@ -93,7 +93,7 @@ public class TeamInvitationService {
 
         currentPlayer.setTeam(teamInvitation.getTargetTeam());
 
-        teamInvitationRepository.deleteByTargetPlayerIdAndTargetTeamDisciplineId(id, disciplineId);
+        teamInvitationRepository.deleteByTargetPlayerIdAndTargetTeamDisciplineId(currentPlayer.getId(), disciplineId);
     }
 
     @Transactional

@@ -12,6 +12,11 @@ import {environment} from '../environments/environment';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {EffectsModule} from '@ngrx/effects';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NgProgressModule} from '@ngx-progressbar/core';
+import {PlayerEffects} from './core/effects/player.effects';
+import {PlayerService} from './core/service/player.service';
+import {LoggedInAuthGuard} from './core/service/auth-guard.service';
+import {TeamEffects} from './core/effects/team.effects';
 
 @NgModule({
   imports: [
@@ -32,11 +37,16 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
       logOnly: environment.production,
     }),
 
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([PlayerEffects]),
 
-    CoreModule.forRoot()
+    CoreModule.forRoot(),
+
+    NgProgressModule.forRoot({
+      spinner: false,
+      thick: true
+    })
   ],
-  providers: [ ],
+  providers: [PlayerService, LoggedInAuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

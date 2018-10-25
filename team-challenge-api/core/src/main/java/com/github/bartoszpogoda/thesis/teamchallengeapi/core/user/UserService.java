@@ -3,6 +3,7 @@ package com.github.bartoszpogoda.thesis.teamchallengeapi.core.user;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.EmailAlreadyUsedException;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.InvalidCredentialsException;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.user.model.RegisterForm;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,6 +44,7 @@ public class UserService {
         user.setEmail(registerForm.getEmail());
         user.setEncodedPassword(encoder.encode(registerForm.getPassword()));
         user.setFullName(registerForm.getFullName());
+        user.setBirthdayDate(new LocalDate(registerForm.getBirthdayDate()));
 
         User savedUser = userRepository.save(user);
         return Optional.ofNullable(savedUser);

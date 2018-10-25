@@ -21,14 +21,13 @@ import java.util.stream.Collectors;
 import static com.github.bartoszpogoda.thesis.teamchallengeapi.core.util.ResponseUtil.createLocationByAddingIdToCurentRequest;
 
 @RestController
-@RequestMapping("{disciplineId}/{regionId}/teams")
 public class TeamResource {
 
     private TeamService teamService;
 
     private DtoMappingService mappingService;
 
-    @PostMapping
+    @PostMapping("/{disciplineId}/{regionId}/teams")
     public ResponseEntity<TeamDto> createTeam(@PathVariable String disciplineId, @PathVariable String regionId,
                                               @RequestBody @Valid TeamCreationForm teamCreationForm) throws UnknownDisciplineException, UnknownRegionException, PlayerAlreadyInTeamException, PlayerNotFoundException, InternalServerException {
 
@@ -44,7 +43,7 @@ public class TeamResource {
             @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
                     value = "Number of records per page.")
     })
-    @GetMapping
+    @GetMapping("/{disciplineId}/{regionId}/teams")
     public ResponseEntity<CustomPage<TeamDto>> queryTeams(@PathVariable String disciplineId, @PathVariable String regionId,
                                                             Pageable pageable, @RequestParam(name = "name", required = false) String nameFragment) throws UnknownDisciplineException, UnknownRegionException {
 
@@ -60,7 +59,7 @@ public class TeamResource {
         return ResponseEntity.ok(PaginationUtil.toCustomPage(teamsDto));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{disciplineId}/{regionId}/teams/{id}")
     public ResponseEntity<TeamDto> getTeam(@PathVariable String disciplineId, @PathVariable String regionId, @PathVariable String id) throws UnknownRegionException, UnknownDisciplineException, TeamNotFoundException {
         return teamService.getByIdAndDisciplineAndRegion(id, disciplineId, regionId)
                 .map(mappingService::mapToDto)
@@ -68,8 +67,16 @@ public class TeamResource {
                 .orElseThrow(TeamNotFoundException::new);
     }
 
+    @GetMapping("/{disciplineId}/teams/current")
+    public ResponseEntity<TeamDto> getCurrentPlayerTeam(@PathVariable String disciplineId) throws UnknownDisciplineException, TeamNotFoundException {
+        return teamService.getCurrentPlayerTeam(disciplineId)
+                .map(mappingService::mapToDto)
+                .map(ResponseEntity::ok)
+                .orElseThrow(TeamNotFoundException::new);
+    }
 
-    @GetMapping("/{id}/players")
+
+    @GetMapping("/{disciplineId}/{regionId}/teams/{id}/players")
     public ResponseEntity<List<PlayerDto>> getTeamMembers(@PathVariable String disciplineId, @PathVariable String regionId, @PathVariable String id) throws UnknownRegionException, UnknownDisciplineException {
 
         List<PlayerDto> teamMembers = teamService.getTeamMembers(disciplineId, regionId, id)

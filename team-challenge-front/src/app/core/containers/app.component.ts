@@ -1,19 +1,21 @@
 import {Component, OnDestroy} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {Observable, Subscription} from 'rxjs';
+import {Observable, Subscription, timer} from 'rxjs';
 
 import * as fromRoot from '../../reducers';
 import * as fromAuth from '../../auth/reducers';
+import * as fromPending from '../reducers/pending.reducer';
 import * as LayoutActions from '../actions/layout.actions';
 import * as CoreActions from '../actions/core.actions';
 import {DecodedToken} from '../../auth/models/token';
 import {TokenService} from '../../auth/service/token.service';
+import {map, skipUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-app',
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-progress [inProgress]="loginPending$ | async" id="loginPending"></app-progress>
+    <app-progress [inProgress]="(globalPending$ | async) > 0" id="globalPending"></app-progress>
     <nz-layout class="layout">
       <nz-header class="app-header" #top>
         <div>
@@ -27,13 +29,15 @@ import {TokenService} from '../../auth/service/token.service';
             <app-nav-item title="Rejestracja"></app-nav-item></li>
           <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="community">
             <app-nav-item title="Społeczność" icon="home"></app-nav-item></li>
-          <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="challenges">
-            <app-nav-item title="Wyzwania" [notify]="true" icon="play-circle-o"></app-nav-item></li>
-          <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="team">
-            <app-nav-item title="Drużyna" icon="team"></app-nav-item>
+          <li *ngIf="loggedIn$ | async" [class.disabled]="!(hasTeam$ | async)"
+              nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="challenges">
+            <app-nav-item title="Wyzwania" icon="play-circle-o"></app-nav-item></li>
+          <li *ngIf="loggedIn$ | async" [class.disabled]="playerNotExisting$ | async"
+              nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="team">
+            <app-nav-item title="Moja drużyna" [notify]="teamHasNotifications$ | async" icon="team"></app-nav-item>
           </li>
           <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="player">
-            <app-nav-item title="Zawodnik" icon="user"></app-nav-item>
+            <app-nav-item title="Mój profil" [notify]="playerHasNotifications$ | async" icon="user"></app-nav-item>
           </li>
         </ul>
         </div>
@@ -43,7 +47,7 @@ import {TokenService} from '../../auth/service/token.service';
           <nz-badge class="avatar-badge" (click)="toggleNotificationPanel()" [nzCount]="5" style="margin-right: 24px;">
             <span class="avatar-username">{{(decodedToken$ | async).fullName}}</span>
             <!-- TODO extract dumb component -->
-            <nz-avatar [nzSize]="'large'" nzIcon="anticon anticon-user" ></nz-avatar>
+            <nz-avatar [nzSize]="'large'" [nzSrc]="this.avatarUrl$ | async"></nz-avatar> <!--nzIcon="anticon anticon-user"-->
             <!--[nzShape]="'square'"-->
           </nz-badge>
           <!--<li class="pull-right notification-bell">-->
@@ -63,16 +67,35 @@ import {TokenService} from '../../auth/service/token.service';
 export class AppComponent implements OnDestroy {
   // breadcrumbItems = ['Home', 'App', 'Temp'];
   loggedIn$: Observable<boolean>;
-  loginPending$: Observable<boolean>;
+  avatarUrl$: Observable<string>;
+  // loginPending$: Observable<boolean>;
   notificationPanelVisible$: Observable<boolean>;
   decodedToken$: Observable<DecodedToken>;
+  playerNotExisting$: Observable<boolean>;
+  playerHasNotifications$: Observable<boolean>;
+  teamHasNotifications$: Observable<boolean>;
+  hasTeam$: Observable<boolean>;
   periodicRenewalSub: Subscription;
+
+  globalPending$: Observable<number>;
 
   constructor(private store: Store<fromRoot.State>, private tokenService: TokenService) {
     this.notificationPanelVisible$ = this.store.pipe(select(fromRoot.getShowNotificationsPanel));
     this.loggedIn$ = this.store.pipe(select(fromAuth.selectLoggedIn));
     this.decodedToken$ = this.store.pipe(select(fromAuth.selectDecodedToken));
-    this.loginPending$ = this.store.pipe(select(fromAuth.selectLoginPending));
+    // this.loginPending$ = this.store.pipe(select(fromAuth.selectLoginPending));
+    this.playerNotExisting$ = this.store.pipe(select(fromRoot.selectPlayerProfileNotExisting));
+    this.hasTeam$ = this.store.pipe(select(fromRoot.selectHasTeam));
+    this.globalPending$ = this.store.pipe(select(fromRoot.selectPending));
+    this.avatarUrl$ = this.store.pipe(select(fromRoot.selectPlayerAvatarUrl));
+
+    this.playerHasNotifications$ = this.store.pipe(
+      select(fromRoot.selectPlayerProfileHasAnyNotifications));
+
+    this.teamHasNotifications$ = this.store.pipe(
+      select(fromRoot.selectPlayerInvitations),
+      map((invitations) => invitations.length > 0)
+    );
 
     this.store.dispatch(new CoreActions.EnterApplication());
     this.periodicRenewalSub = this.tokenService.startPeriodicRenewal();

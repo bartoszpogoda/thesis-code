@@ -23,6 +23,7 @@ public class DtoMappingService {
         playerDto.setFullName(player.getUser().getFullName());
         playerDto.setAge(playerService.calculateAge(player.getUser().getBirthdayDate()));
         playerDto.setTeamName(player.getTeam() == null ? "" : player.getTeam().getName());
+        playerDto.setImageId(player.getUser().getImagePath());
 
         return playerDto;
     }
@@ -31,6 +32,7 @@ public class DtoMappingService {
         TeamDto teamDto = modelMapper.map(team, TeamDto.class);
 
         teamDto.setManagerName(team.getManager().getUser().getFullName());
+        teamDto.setManagerId(team.getManager().getId());
 
         return teamDto;
     }
