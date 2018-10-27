@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AcceptTeamInvitation, DeclineTeamInvitation, LoadTeamInvitations} from '../../core/actions/player.actions';
-import * as fromRoot from '../../reducers/index';
+import * as fromRoot from '../../core/reducers/index';
 import {select, Store} from '@ngrx/store';
-import {selectPlayerInvitations} from '../../reducers/index';
+import {selectPlayerInvitations} from '../../core/reducers/index';
 import {TeamInvitation} from '../../core/models/team-invitation';
 import {Observable} from 'rxjs';
 
@@ -31,7 +31,7 @@ import {Observable} from 'rxjs';
 export class TeamJoinPageComponent implements OnInit {
 
   items = [
-    {title: 'Drużyna'}, {title: 'Dołącz'}
+    {title: 'Moja drużyna'}, {title: 'Dołącz'}
   ];
 
   teamInvitations$: Observable<TeamInvitation[]>;

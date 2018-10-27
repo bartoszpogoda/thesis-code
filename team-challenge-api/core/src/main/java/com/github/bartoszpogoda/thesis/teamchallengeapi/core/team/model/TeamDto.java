@@ -17,4 +17,6 @@ public class TeamDto {
 
     private int balance;
 
+    private boolean hasImage;
+
 }

@@ -4,44 +4,31 @@ import {ApiError} from '../models/error';
 import {NotificationSet} from '../../auth/models/notificationSet';
 import {TeamInvitation} from '../models/team-invitation';
 import {AuthActionsUnion, AuthActionTypes} from '../../auth/actions/auth.actions';
+import {PlayerCreatorActionsUnion, PlayerCreatorActionTypes} from '../actions/player-creator.actions';
 
 const defaultAvatarUrl = '/assets/images/home/avatar.png';
 
 export interface State {
   player: Player;
   notExisting: boolean;
-  justRegistered: boolean;
   error: ApiError | null;
   notifications: NotificationSet;
   invitations: TeamInvitation[];
   avatarUrl;
-  creator: {
-    step: number;
-    avatarUploading: boolean;
-    avatarUploaded: boolean;
-    buttonText: string;
-  };
 }
 
 const initialState: State = {
   player: null,
-  justRegistered: false,
   notExisting: true,
   error: null,
   notifications: new NotificationSet([]),
   invitations: [],
   avatarUrl: defaultAvatarUrl, // TODO serve locally (resource)
-  creator: {
-    step: 0,
-    avatarUploading: false,
-    avatarUploaded: false,
-    buttonText: 'Pomiń krok'
-  }
 };
 
 export function reducer(
   state: State = initialState,
-  action: PlayerActionsUnion | AuthActionsUnion
+  action: PlayerActionsUnion | AuthActionsUnion | PlayerCreatorActionsUnion
 ): State {
   switch (action.type) {
 
@@ -69,31 +56,15 @@ export function reducer(
         notExisting: false,
         error: null,
         player: action.payload,
-        avatarUrl: action.payload.imageId ? 'api/images/users/' + action.payload.imageId + '?' + new Date() : defaultAvatarUrl
+        avatarUrl: action.payload.hasImage ? '/api/3x3basket/players/' + action.payload.id + '/avatar' : defaultAvatarUrl
       };
 
-    case PlayerActionTypes.RegisterSuccess:
+    case PlayerCreatorActionTypes.RegisterSuccess:
       return {
         ...state,
         player: action.payload,
         notExisting: false,
-        notifications: state.notifications.remove('todoCreatePlayer'),
-        creator: {
-          ...state.creator,
-          step: 1
-        }
-      };
-
-    case PlayerActionTypes.ShowJustRegistered:
-      return {
-        ...state,
-        justRegistered: true
-      };
-
-    case PlayerActionTypes.HideJustRegistered:
-      return {
-        ...state,
-        justRegistered: false
+        notifications: state.notifications.remove('todoCreatePlayer')
       };
 
     case PlayerActionTypes.LoadTeamInvitationsSuccess:
@@ -114,28 +85,13 @@ export function reducer(
         invitations: state.invitations.filter(inv => inv.id !== action.payload)
       };
 
-    case PlayerActionTypes.UploadAvatar:
+    case PlayerCreatorActionTypes.UploadAvatarSuccess:
       return {
         ...state,
-        creator: {
-          ...state.creator,
-          avatarUploading: true
-        }
-      };
-
-    case PlayerActionTypes.UploadAvatarSuccess:
-      return {
-        ...state,
-        avatarUrl: 'api/images/users/' + action.payload + '?' + new Date(),
+        avatarUrl: '/api/3x3basket/players/' + state.player.id + '/avatar' + '?' + new Date(),
         player: {
           ...state.player,
-          imageId: action.payload
-        },
-        creator: {
-          ...state.creator,
-          avatarUploading: false,
-          avatarUploaded: true,
-          buttonText: 'Pokaż profil'
+          hasImage: true
         }
       };
 
@@ -147,11 +103,6 @@ export function reducer(
 export const getPlayer = (state: State) => state.player;
 export const getNotExisting = (state: State) => state.notExisting;
 export const getAnyNotifications = (state: State) => state.notifications.any();
-export const getJustRegistered = (state: State) => state.justRegistered;
 export const getTeamInvitations = (state: State) => state.invitations;
-export const getCreatorStep = (state: State) => state.creator.step;
 
 export const getAvatarUrl = (state: State) => state.avatarUrl;
-export const getCreatorAvatarUploading = (state: State) => state.creator.avatarUploading;
-export const getCreatorAvatarUploaded = (state: State) => state.creator.avatarUploaded;
-export const getCreatorButtonText = (state: State) => state.creator.buttonText;

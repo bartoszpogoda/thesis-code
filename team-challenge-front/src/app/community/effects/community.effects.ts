@@ -10,21 +10,21 @@ import {
   CommunityTeamsActionTypes,
   EnterPage,
   LoadPage, LoadPageFailure,
-  LoadPageSuccess
+  LoadPageSuccess, LoadTeam, LoadTeamFailure, LoadTeamPlayers, LoadTeamPlayersFailure, LoadTeamPlayersSuccess, LoadTeamSuccess
 } from '../actions/community-teams.actions';
 import {CommunityService} from '../service/community.service';
 import {of} from 'rxjs';
+import {TeamService} from '../../core/service/team.service';
 
 @Injectable()
 export class CommunityEffects {
 
   @Effect()
-  $loadTeamsIfPageNotLoaded = this.actions$.pipe(
+  $loadTeamsCurrentPage = this.actions$.pipe(
     ofType<EnterPage>(CommunityTeamsActionTypes.EnterPage),
     withLatestFrom(this.store.pipe(select(selectTeamsPage)), this.store.pipe(select(selectTeamsCurrentPage))),
-    filter(([, page, ]) => page == null),
-    // @ts-ignore
-    map(([, , current]) => new LoadPage(current))
+    // filter(([, page, ]) => page == null),
+    map(([, , current]) => new LoadPage(+current))
   );
 
   @Effect()
@@ -32,11 +32,33 @@ export class CommunityEffects {
     ofType<LoadPage>(CommunityTeamsActionTypes.LoadPage),
     withLatestFrom(this.store.pipe(select(selectTeamsCurrentPage))),
     switchMap(([, current]) => {
-      // @ts-ignore
-      return this.communityService.getTeamsPage(current, 6).pipe(
-        // @ts-ignore
+      return this.communityService.getTeamsPage(+current, 6).pipe(
         map(page => new LoadPageSuccess(page)),
         catchError(err => of(new LoadPageFailure(err)))
+      );
+    })
+  );
+
+  @Effect()
+  $loadTeam = this.actions$.pipe(
+    ofType<LoadTeam>(CommunityTeamsActionTypes.LoadTeam),
+    map(action => action.payload),
+    switchMap(id => {
+      return this.teamService.get(id).pipe(
+        map(team => new LoadTeamSuccess(team)),
+        catchError(err => of(new LoadTeamFailure(err)))
+      );
+    })
+  );
+
+  @Effect()
+  $loadTeamPlayers = this.actions$.pipe(
+    ofType<LoadTeamPlayers>(CommunityTeamsActionTypes.LoadTeamPlayers),
+    map(action => action.payload),
+    switchMap(id => {
+      return this.teamService.getPlayers(id).pipe(
+        map(team => new LoadTeamPlayersSuccess(team)),
+        catchError(err => of(new LoadTeamPlayersFailure(err)))
       );
     })
   );
@@ -45,6 +67,7 @@ export class CommunityEffects {
     private actions$: Actions,
     private router: Router,
     private store: Store<CommunityState>,
-    private communityService: CommunityService
+    private communityService: CommunityService,
+    private teamService: TeamService
   ) {}
 }

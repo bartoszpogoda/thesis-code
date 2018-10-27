@@ -9,6 +9,10 @@ import {Observable, of, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {ApiError} from '../models/error';
 
+import * as fromRoot from '../reducers/index';
+import {Store} from '@ngrx/store';
+import {SessionTimeout} from '../../auth/actions/auth.actions';
+
 /**
  * This interceptor maps standard error to ApiError model
  * which is standard format returned by backend API.
@@ -25,6 +29,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(catchError((error, caught) => {
       console.log(error);
+
       throw error.error.code ? error.error : this.apiConnectionError;
     }) as any);
   }

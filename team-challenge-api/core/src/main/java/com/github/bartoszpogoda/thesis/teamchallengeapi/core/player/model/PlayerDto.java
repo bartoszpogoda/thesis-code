@@ -17,6 +17,6 @@ public class PlayerDto {
 
     private String teamName;
 
-    private String imageId;
+    private boolean hasImage;
 
 }

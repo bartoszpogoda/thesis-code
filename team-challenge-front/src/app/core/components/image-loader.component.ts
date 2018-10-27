@@ -54,7 +54,7 @@ export class ImageLoaderComponent {
   startedUpload = new EventEmitter();
 
   @Output()
-  uploaded = new EventEmitter<string>();
+  uploaded = new EventEmitter();
 
   constructor(private msg: NzMessageService) {}
 
@@ -76,10 +76,10 @@ export class ImageLoaderComponent {
       return;
     }
     if (info.file.status === 'done') {
-      const savedImagePath = info.file.response.path;
+      // const savedImagePath = info.file.response.path;
 
-      this.uploaded.emit(savedImagePath);
-      this.avatarUrl = this.uploadUrl + '/' + savedImagePath + '?' + new Date();
+      this.uploaded.emit();
+      this.avatarUrl = this.uploadUrl + '?' + new Date();
     }
   }
 }

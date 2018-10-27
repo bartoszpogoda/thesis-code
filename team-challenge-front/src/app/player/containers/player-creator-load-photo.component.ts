@@ -1,19 +1,15 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {PlayerRegistrationForm} from '../../core/models/player';
+import {Player, PlayerRegistrationForm} from '../../core/models/player';
 import {select, Store} from '@ngrx/store';
-import * as fromRoot from '../../reducers';
+import * as fromRoot from '../../core/reducers/index';
 import {
-  selectPlayerCreatorAvatarUploaded,
-  selectPlayerCreatorAvatarUploading,
-  selectPlayerCreatorButtonText,
   selectPlayerProfileNotExisting
-} from '../../reducers';
-import {selectPlayerJustRegistered} from '../../reducers';
-import {selectPlayerProfile} from '../../reducers';
-import {selectPlayerCreatorStep} from '../../reducers';
+} from '../../core/reducers/index';
+import {selectPlayerProfile} from '../../core/reducers/index';
 import {Observable} from 'rxjs';
-import {UploadAvatar, UploadAvatarSuccess} from '../../core/actions/player.actions';
+import {UploadAvatar, UploadAvatarSuccess} from '../../core/actions/player-creator.actions';
+import {selectAvatarUploaded, selectAvatarUploading, selectButtonText} from '../../core/selectors/player-creator.selectors';
 
 
 @Component({
@@ -26,8 +22,8 @@ import {UploadAvatar, UploadAvatarSuccess} from '../../core/actions/player.actio
         <h2>Dodaj zdjęcie</h2>
         <p>Aby inni mogli Cię rozpoznać.</p>
 
-        <app-image-loader uploadUrl="api/images/users" (startedUpload)="onStartedUpload()"
-                          (uploaded)="onUploaded($event)"></app-image-loader>
+        <app-image-loader [uploadUrl]="'api/3x3basket/players/' + (player$ | async).id + '/avatar'" (startedUpload)="onStartedUpload()"
+                          (uploaded)="onUploaded()"></app-image-loader>
 
         <button routerLink="/player" nz-button [nzType]="(avatarUploaded$ | async) ? 'primary' : 'default'"
                 [nzLoading]="avatarUploading$ | async">
@@ -46,9 +42,10 @@ export class PlayerCreatorLoadPhotoComponent  {
   avatarUploading$: Observable<boolean>;
   avatarUploaded$: Observable<boolean>;
   buttonText$: Observable<string>;
+  player$: Observable<Player>;
 
-  onUploaded(id: string) {
-    this.store.dispatch(new UploadAvatarSuccess(id));
+  onUploaded() {
+    this.store.dispatch(new UploadAvatarSuccess());
   }
 
   onStartedUpload() {
@@ -56,9 +53,10 @@ export class PlayerCreatorLoadPhotoComponent  {
   }
 
   constructor(private store: Store<fromRoot.State>) {
-    this.avatarUploading$ = this.store.pipe(select(selectPlayerCreatorAvatarUploading));
-    this.avatarUploaded$ = this.store.pipe(select(selectPlayerCreatorAvatarUploaded));
-    this.buttonText$ = this.store.pipe(select(selectPlayerCreatorButtonText));
+    this.avatarUploading$ = this.store.pipe(select(selectAvatarUploading));
+    this.avatarUploaded$ = this.store.pipe(select(selectAvatarUploaded));
+    this.buttonText$ = this.store.pipe(select(selectButtonText));
+    this.player$ = this.store.pipe(select(selectPlayerProfile));
   }
 
 }

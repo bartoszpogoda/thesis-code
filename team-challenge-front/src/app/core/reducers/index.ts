@@ -5,7 +5,7 @@ import {
   ActionReducer,
   MetaReducer,
 } from '@ngrx/store';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import * as fromRouter from '@ngrx/router-store';
 
 /**
@@ -21,11 +21,13 @@ import { storeFreeze } from 'ngrx-store-freeze';
  * the state of the reducer plus any selector functions. The `* as`
  * notation packages up all of the exports into a single object.
  */
-import * as fromLayout from '../core/reducers/layout.reducer';
-import * as fromPlayer from '../core/reducers/player.reducer';
-import * as fromTeam from '../core/reducers/team.reducer';
-import * as fromPending from '../core/reducers/pending.reducer';
-import * as fromManager from '../core/reducers/manager.reducer';
+import * as fromLayout from './layout.reducer';
+import * as fromPlayer from './player.reducer';
+import * as fromTeam from './team.reducer';
+import * as fromPending from './pending.reducer';
+import * as fromManager from './manager.reducer';
+import * as fromTeamCreator from './team-creator.reducer';
+import * as fromPlayerCreator from './player-creator.reducer';
 
 /**
  * As mentioned, we treat each reducer like a table in a database. This means
@@ -38,6 +40,8 @@ export interface State {
   player: fromPlayer.State;
   team: fromTeam.State;
   manager: fromManager.State;
+  teamCreator: fromTeamCreator.State;
+  playerCreator: fromPlayerCreator.State;
 }
 
 /**
@@ -51,7 +55,9 @@ export const reducers: ActionReducerMap<State> = {
   router: fromRouter.routerReducer,
   player: fromPlayer.reducer,
   team: fromTeam.reducer,
-  manager: fromManager.reducer
+  manager: fromManager.reducer,
+  teamCreator: fromTeamCreator.reducer,
+  playerCreator: fromPlayerCreator.reducer
 };
 
 // console.log all actions
@@ -117,42 +123,16 @@ export const selectPlayerProfileHasAnyNotifications = createSelector(
   fromPlayer.getAnyNotifications
 );
 
-export const selectPlayerJustRegistered = createSelector(
-  selectPlayerState,
-  fromPlayer.getJustRegistered
-);
 
 export const selectPlayerInvitations = createSelector(
   selectPlayerState,
   fromPlayer.getTeamInvitations
 );
 
-export const selectPlayerCreatorStep = createSelector(
-  selectPlayerState,
-  fromPlayer.getCreatorStep
-);
-
 export const selectPlayerAvatarUrl = createSelector(
   selectPlayerState,
   fromPlayer.getAvatarUrl
 );
-
-export const selectPlayerCreatorAvatarUploading = createSelector(
-  selectPlayerState,
-  fromPlayer.getCreatorAvatarUploading
-);
-
-export const selectPlayerCreatorAvatarUploaded = createSelector(
-  selectPlayerState,
-  fromPlayer.getCreatorAvatarUploaded
-);
-
-export const selectPlayerCreatorButtonText = createSelector(
-  selectPlayerState,
-  fromPlayer.getCreatorButtonText
-);
-
-
 /**
  * Team Selectors
  */
@@ -168,15 +148,13 @@ export const selectPlayerTeam = createSelector(
   fromTeam.getCurrent
 );
 
-export const selectJustJoined = createSelector(
-  selectTeamState,
-  fromTeam.getJustJoined
-);
-
 export const selectIsManager = createSelector(
   selectTeamState,
   fromTeam.getIsManager
 );
+
+
+
 
 /**
  * Manager Selectors

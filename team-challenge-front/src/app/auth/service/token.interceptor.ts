@@ -3,7 +3,7 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/com
 import {TokenService} from './token.service';
 import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
-import * as fromRoot from '../../reducers';
+import * as fromRoot from '../../core/reducers/index';
 import * as fromAuth from '../reducers';
 import {Token} from '../models/token';
 import {flatMap, map, take} from 'rxjs/operators';

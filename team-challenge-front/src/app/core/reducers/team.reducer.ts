@@ -5,14 +5,12 @@ import {AuthActionsUnion, AuthActionTypes} from '../../auth/actions/auth.actions
 export interface State {
   hasTeam: boolean;
   current: Team | null;
-  justJoined: boolean;
   isManager: boolean;
 }
 
 const initialState: State = {
   hasTeam: false,
   current: null,
-  justJoined: false,
   isManager: false
 };
 
@@ -41,18 +39,6 @@ export function reducer(
         hasTeam: false
       };
 
-    case TeamActionTypes.ShowJustJoined:
-      return {
-        ...state,
-        justJoined: true
-      };
-
-    case TeamActionTypes.HideJustJoined:
-      return {
-        ...state,
-        justJoined: false
-      };
-
     case TeamActionTypes.UpdateIsManager:
       return {
         ...state,
@@ -66,5 +52,4 @@ export function reducer(
 
 export const getHasTeam = (state: State) => state.hasTeam;
 export const getCurrent = (state: State) => state.current;
-export const getJustJoined = (state: State) => state.justJoined;
 export const getIsManager = (state: State) => state.isManager;

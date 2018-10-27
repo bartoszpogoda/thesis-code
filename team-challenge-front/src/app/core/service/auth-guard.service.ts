@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {from} from 'rxjs';
 
-import * as fromRoot from '../../reducers';
+import * as fromRoot from '../reducers/index';
 import {map, take, withLatestFrom} from 'rxjs/operators';
 import {selectLoggedIn} from '../../auth/reducers';
 

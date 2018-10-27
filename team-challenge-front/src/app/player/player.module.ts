@@ -18,7 +18,7 @@ import {NgProgress, NgProgressModule} from '@ngx-progressbar/core';
 import { PlayerProfileComponent } from './components/player-profile.component';
 import {PlayerCreatorGuard} from './service/player-creator-guard.service';
 import {PlayerProfileCreatorPageComponent} from './containers/player-profile-creator-page.component';
-import {TeamRecruitmentPageComponent} from '../team/containers/team-recruitment-page.component';
+import {TeamRecruitmentPageComponent} from '../team/containers/manager/team-recruitment-page.component';
 import {PlayerCreatorLoadPhotoComponent} from './containers/player-creator-load-photo.component';
 
 export const COMPONENTS = [PlayerProfilePageComponent, PlayerProfileCreatorPageComponent,

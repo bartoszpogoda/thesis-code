@@ -1,4 +1,4 @@
-import * as fromRoot from '../../reducers';
+import * as fromRoot from '../../core/reducers/index';
 import * as fromCommunityTeams from './community-teams.reducer';
 
 import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
@@ -48,4 +48,14 @@ export const selectTeamsTotal = createSelector(
 export const selectTeams = createSelector(
   selectTeamsState,
   fromCommunityTeams.getTeams
+);
+
+export const selectCurrentTeam = createSelector(
+  selectTeamsState,
+  fromCommunityTeams.getCurrentTeam
+);
+
+export const selectCurrentTeamPlayers = createSelector(
+  selectTeamsState,
+  fromCommunityTeams.getCurrentTeamPlayers
 );

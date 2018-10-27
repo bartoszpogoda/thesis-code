@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {InvitablePlayer, Player, PlayerRegistrationForm} from '../../core/models/player';
-import {PlayerService} from '../../core/service/player.service';
-import {Page} from '../../core/models/page';
+import {InvitablePlayer, Player, PlayerRegistrationForm} from '../../../core/models/player';
+import {PlayerService} from '../../../core/service/player.service';
+import {Page} from '../../../core/models/page';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {debounceTime, takeUntil, tap} from 'rxjs/operators';
-import * as fromRoot from '../../reducers/index';
+import * as fromRoot from '../../../core/reducers/index';
 import {Observable, Subject} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {
@@ -13,14 +13,14 @@ import {
   InvitePlayerNameSearchChanged,
   InvitePlayerPageChanged,
   LoadTeamInvitations
-} from '../../core/actions/manager.actions';
+} from '../../../core/actions/manager.actions';
 import {
   selectInvitePlayerData,
   selectInvitePlayerLoading,
   selectInvitePlayerTotal,
   selectManagementInvitations
-} from '../../reducers/index';
-import {TeamInvitation} from '../../core/models/team-invitation';
+} from '../../../core/reducers/index';
+import {TeamInvitation} from '../../../core/models/team-invitation';
 
 @Component({
   selector: 'app-team-recruitment-page',
@@ -66,7 +66,6 @@ import {TeamInvitation} from '../../core/models/team-invitation';
       </div>
       <div nz-col nzXs="0" nzSm="8">
         <h2>Zaproszenia w toku</h2>
-        <!-- below is very temp!! -->
         <ng-container *ngFor="let invitation of (invitations$ | async)">
           <app-sent-invitation [teamInvitation]="invitation"
                                (canceled)="onCanceled(invitation)"
@@ -81,7 +80,7 @@ import {TeamInvitation} from '../../core/models/team-invitation';
 
 export class TeamRecruitmentPageComponent implements OnInit, OnDestroy {
   items = [
-    {title: 'Drużyna', link: '/team'}, {title: 'Zarządzanie', link: '/team/manager'}, {title: 'Rekrutacja'}
+    {title: 'Moja drużyna', link: '/team'}, {title: 'Zarządzanie', link: '/team/manager'}, {title: 'Rekrutacja'}
   ];
 
   pageIndex = 1;

@@ -12,7 +12,7 @@ import {Team} from '../models/team';
       <nz-card-meta [nzTitle]="team.name" [nzDescription]="team.managerName"></nz-card-meta>
     </nz-card>
     <ng-template #coverTemplate>
-      <img alt="example" src="/assets/images/home/avatar.png"/>
+      <img alt="example" [src]="getSrc()"/>
     </ng-template>
   `
 })
@@ -29,6 +29,13 @@ export class TeamCardComponent {
     this.viewProfile.emit();
   }
 
+  getSrc() {
+    if (this.team.hasImage) {
+      return '/api/3x3basket/wro/teams/' + this.team.id + '/avatar';
+    } else {
+      return '/assets/images/home/avatar.png';
+    }
+  }
 
 
 }

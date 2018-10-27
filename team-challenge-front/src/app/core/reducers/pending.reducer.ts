@@ -1,31 +1,35 @@
-import {LayoutActionsUnion,} from '../actions/layout.actions';
+import {LayoutActionsUnion} from '../actions/layout.actions';
 import {AuthActionsUnion, AuthActionTypes} from '../../auth/actions/auth.actions';
 import {PlayerActionsUnion, PlayerActionTypes} from '../actions/player.actions';
 import {ManagerActionTypes} from '../actions/manager.actions';
+import {CommunityTeamsActionTypes} from '../../community/actions/community-teams.actions';
+import {PlayerCreatorActionTypes} from '../actions/player-creator.actions';
 
 const START_PENDING_ACTION_TYPES: any[] = [
   PlayerActionTypes.LoadCurrent,
-  PlayerActionTypes.Register,
   PlayerActionTypes.AcceptTeamInvitation,
   PlayerActionTypes.DeclineTeamInvitation,
   PlayerActionTypes.LoadTeamInvitations,
+  PlayerCreatorActionTypes.Register,
   AuthActionTypes.Login,
   AuthActionTypes.Register,
   ManagerActionTypes.Invite,
   ManagerActionTypes.CancelInvitation,
-  ManagerActionTypes.LoadTeamInvitations
+  ManagerActionTypes.LoadTeamInvitations,
+  CommunityTeamsActionTypes.LoadPage,
+  CommunityTeamsActionTypes.LoadTeam
 ];
 const FINISH_PENDING_ACTION_TYPES: any[] = [
   PlayerActionTypes.LoadCurrentSuccess,
-  PlayerActionTypes.RegisterSuccess,
   PlayerActionTypes.LoadCurrentFailure,
-  PlayerActionTypes.RegisterFailure,
   PlayerActionTypes.AcceptTeamInvitationSuccess,
   PlayerActionTypes.AcceptTeamInvitationFailure,
   PlayerActionTypes.DeclineTeamInvitationSuccess,
   PlayerActionTypes.DeclineTeamInvitationFailure,
   PlayerActionTypes.LoadTeamInvitationsSuccess,
   PlayerActionTypes.LoadTeamInvitationsFailure,
+  PlayerCreatorActionTypes.RegisterSuccess,
+  PlayerCreatorActionTypes.RegisterFailure,
   AuthActionTypes.LoginSuccess,
   AuthActionTypes.LoginFailure,
   AuthActionTypes.RegisterSuccess,
@@ -36,6 +40,10 @@ const FINISH_PENDING_ACTION_TYPES: any[] = [
   ManagerActionTypes.CancelInvitationFailure,
   ManagerActionTypes.LoadTeamInvitationsSuccess,
   ManagerActionTypes.LoadTeamInvitationsFailure,
+  CommunityTeamsActionTypes.LoadPageSuccess,
+  CommunityTeamsActionTypes.LoadPageFailure,
+  CommunityTeamsActionTypes.LoadTeamSuccess,
+  CommunityTeamsActionTypes.LoadTeamFailure
 ];
 
 export interface State {

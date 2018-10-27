@@ -2,14 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {Player, PlayerRegistrationForm} from '../../core/models/player';
-import * as fromRoot from '../../reducers/index';
+import * as fromRoot from '../../core/reducers/index';
 import {
-  selectPlayerCreatorStep,
-  selectPlayerJustRegistered,
   selectPlayerProfile,
   selectPlayerProfileNotExisting
-} from '../../reducers';
-import {Register} from '../../core/actions/player.actions';
+} from '../../core/reducers/index';
+import {selectStage} from '../../core/selectors/player-creator.selectors';
+import {Register} from '../../core/actions/player-creator.actions';
 
 // TODO refactor success alerts - maybe tosster
 @Component({
@@ -28,7 +27,7 @@ import {Register} from '../../core/actions/player.actions';
         <div nz-row nzGutter="16">
           <div nz-col class="gutter-row" nzXs="0" nzSm="6"></div>
           <div nz-col class="gutter-row" nzXs="24" nzSm="12">
-            <nz-steps [nzCurrent]="step$ | async">
+            <nz-steps [nzCurrent]="stage$ | async">
               <nz-step nzTitle="Podstawowe dane"></nz-step>
               <nz-step nzTitle="Zdjęcie"></nz-step>
             </nz-steps>
@@ -37,9 +36,9 @@ import {Register} from '../../core/actions/player.actions';
 
         <div class="steps-content">
 
-          <app-player-registration *ngIf="(step$ | async) === 0" (submitted)="onPlayerRegistrationSubmitted($event)">
+          <app-player-registration *ngIf="(stage$ | async) === 0" (submitted)="onPlayerRegistrationSubmitted($event)">
           </app-player-registration>
-          <app-player-creator-load-photo *ngIf="(step$ | async) === 1"></app-player-creator-load-photo>
+          <app-player-creator-load-photo *ngIf="(stage$ | async) === 1"></app-player-creator-load-photo>
         </div>
 
       </div>
@@ -73,20 +72,17 @@ export class PlayerProfileCreatorPageComponent {
   ];
 
   notExisting$: Observable<boolean>;
-  justRegistered$: Observable<boolean>;
   player$: Observable<Player>;
-  registerSuccessMessage = 'Profil zawodnika został utworzony.';
-  registerSuccessDetails = 'Dodaj swoje zdjęcie (Todo ładniejszy tekst)';
+  // registerSuccessMessage = 'Profil zawodnika został utworzony.';
+  // registerSuccessDetails = 'Dodaj swoje zdjęcie (Todo ładniejszy tekst)';
 
-  step$: Observable<number>;
+  stage$: Observable<number>;
 
   constructor(private store: Store<fromRoot.State>) {
     this.notExisting$ = this.store.pipe(select(selectPlayerProfileNotExisting));
-    this.justRegistered$ = this.store.pipe(select(selectPlayerJustRegistered));
     this.player$ = this.store.pipe(select(selectPlayerProfile));
-    this.step$ = this.store.pipe(select(selectPlayerCreatorStep));
+    this.stage$ = this.store.pipe(select(selectStage));
   }
-
 
   onPlayerRegistrationSubmitted(registrationForm: PlayerRegistrationForm) {
     this.store.dispatch(new Register(registrationForm));

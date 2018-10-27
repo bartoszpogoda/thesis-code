@@ -2,6 +2,7 @@ package com.github.bartoszpogoda.thesis.teamchallengeapi.core.team;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.Player;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.position.Position;
 import lombok.Builder;
 import lombok.Data;
 
@@ -26,6 +27,10 @@ public class Team {
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL) // TODO for now eager to rethink
     private List<Player> players;
 
+    @OneToOne
+    @JoinColumn(name = "HomeID")
+    private Position home;
+
     @Column(name = "DisciplineID")
     @JsonIgnore
     private String disciplineId;
@@ -42,5 +47,8 @@ public class Team {
 
     @Column(name = "Balance")
     private Integer balance;
+
+    @Column(name = "ImagePath")
+    private String imagePath;
 
 }

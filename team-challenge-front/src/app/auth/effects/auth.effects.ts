@@ -22,6 +22,8 @@ import {AuthState, selectTokenRenewalPending} from '../reducers';
 import {CoreActionTypes, EnterApplication, NoAction} from '../../core/actions/core.actions';
 import {select, Store} from '@ngrx/store';
 import {UsersService} from '../service/users.service';
+import {successMessageEffect} from '../../core/util/functions';
+import {PlayerCreatorActionTypes, UploadAvatarSuccess} from '../../core/actions/player-creator.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -130,7 +132,13 @@ export class AuthEffects {
     ofType<RenewTokenReceived>(AuthActionTypes.RenewTokenReceived),
     map(action => action.payload),
     map(payload => new DecodeToken(payload))
-  )
+  );
+
+  @Effect()
+  $logoutOnRenewTokenFailure = this.actions$.pipe(
+    ofType<RenewTokenFailure>(AuthActionTypes.RenewTokenFailure),
+    map(() => new Logout())
+  );
 
   @Effect({dispatch: false})
   $logout = this.actions$.pipe(

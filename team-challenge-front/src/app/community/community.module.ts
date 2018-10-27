@@ -16,6 +16,7 @@ import {AuthEffects} from '../auth/effects/auth.effects';
 import {CommunityEffects} from './effects/community.effects';
 import {CommunityService} from './service/community.service';
 import {CommunityTeamsProfilePageComponent} from './containers/community-teams-profile-page.component';
+import {TeamModule} from '../team/team.module';
 
 export const COMPONENTS = [CommunityPageComponent, CommunityPlayersPageComponent, CommunityTeamsPageComponent,
   CommunityTeamsProfilePageComponent];
@@ -25,6 +26,7 @@ export const COMPONENTS = [CommunityPageComponent, CommunityPlayersPageComponent
     CommonModule,
     CommunityRoutingModule,
     CoreModule,
+    TeamModule, // because it neeeds team display, maybe it should be moved to core TODO
     NgZorroAntdModule,
     StoreModule.forFeature('community', reducers),
     EffectsModule.forFeature([CommunityEffects]),

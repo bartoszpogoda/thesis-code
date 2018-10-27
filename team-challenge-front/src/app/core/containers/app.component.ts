@@ -2,7 +2,7 @@ import {Component, OnDestroy} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {Observable, Subscription, timer} from 'rxjs';
 
-import * as fromRoot from '../../reducers';
+import * as fromRoot from '../reducers/index';
 import * as fromAuth from '../../auth/reducers';
 import * as fromPending from '../reducers/pending.reducer';
 import * as LayoutActions from '../actions/layout.actions';

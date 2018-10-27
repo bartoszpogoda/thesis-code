@@ -1,17 +1,15 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {TeamInvitation} from '../../core/models/team-invitation';
-import {OutputEmitter} from '@angular/compiler/src/output/abstract_emitter';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {Player} from '../../core/models/player';
-import {NzMessageService, UploadFile} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-player-card',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nz-card (click)="onCardClicked()" nzHoverable [nzCover]="coverTemplate">
-      <nz-card-meta nzTitle="Imię Nazwisko" nzDescription="Coś.."></nz-card-meta>
+      <nz-card-meta [nzTitle]="player.fullName" [nzDescription]="'Wiek: ' + player.age"></nz-card-meta>
     </nz-card>
     <ng-template #coverTemplate>
-      <img alt="example" src="/assets/images/home/avatar.png"/>
+      <img alt="example" [src]="getAvatarUrl()"/>
     </ng-template>
   `
 })
@@ -26,6 +24,14 @@ export class PlayerCardComponent {
 
   onCardClicked() {
     this.viewProfile.emit();
+  }
+
+  getAvatarUrl() {
+    if (this.player.hasImage) {
+      return '/api/3x3basket/players/' + this.player.id + '/avatar';
+    } else {
+      return '/assets/images/home/avatar.png';
+    }
   }
 
 

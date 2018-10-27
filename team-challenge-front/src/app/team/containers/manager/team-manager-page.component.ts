@@ -7,14 +7,15 @@ import {Component} from '@angular/core';
     <div class="spaces-sides">
       <app-breadcrumb [items]="items"></app-breadcrumb>
       <div class="content-container">
-        <h1 routerLink="recruitment">(TODO: Styling) Rekrutacja</h1>
+        <h2 class="tempStyling" routerLink="recruitment">(TODO: Styling) Rekrutacja</h2>
+        <h2 class="tempStyling" routerLink="home">(TODO: Styling) Punkt macierzysty</h2>
       </div>
     </div>
   `
 })
 export class TeamManagerPageComponent {
   items = [
-    {title: 'Drużyna', link: '/team'}, {title: 'Zarządzanie'}
+    {title: 'Moja drużyna', link: '/team'}, {title: 'Zarządzanie'}
   ];
 
 }

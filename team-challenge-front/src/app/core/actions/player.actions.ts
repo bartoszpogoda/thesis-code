@@ -8,11 +8,6 @@ export enum PlayerActionTypes {
   LoadCurrent = '[Player] Load Current',
   LoadCurrentSuccess = '[Player] Load Current Success',
   LoadCurrentFailure = '[Player] Load Current Failure',
-  Register = '[Player] Register',
-  RegisterSuccess = '[Player] Register Success',
-  RegisterFailure = '[Player] Register Failure',
-  ShowJustRegistered = '[Player] Show Just Registered',
-  HideJustRegistered = '[Player] Hide Just Registered',
   LoadTeamInvitations = '[Player] Load Team Invitations',
   LoadTeamInvitationsSuccess = '[Player] Load Team Invitations Success',
   LoadTeamInvitationsFailure = '[Player] Load Team Invitations Failure',
@@ -21,9 +16,7 @@ export enum PlayerActionTypes {
   AcceptTeamInvitationFailure = '[Player] Accept Team Invitation Failure',
   DeclineTeamInvitation = '[Player] Decline Team Invitation',
   DeclineTeamInvitationSuccess = '[Player] Decline Team Invitation Success',
-  DeclineTeamInvitationFailure = '[Player] Decline Team Invitation Failure',
-  UploadAvatar = '[Player] Upload Avatar',
-  UploadAvatarSuccess = '[Player] Upload Avatar Success', // TODO what if failure?
+  DeclineTeamInvitationFailure = '[Player] Decline Team Invitation Failure'
 }
 
 export class LoadCurrent implements Action {
@@ -40,32 +33,6 @@ export class LoadCurrentFailure implements Action {
   readonly type = PlayerActionTypes.LoadCurrentFailure;
 
   constructor(public payload: ApiError) {}
-}
-
-export class Register implements Action {
-  readonly type = PlayerActionTypes.Register;
-
-  constructor(public payload: PlayerRegistrationForm) {}
-}
-
-export class RegisterSuccess implements Action {
-  readonly type = PlayerActionTypes.RegisterSuccess;
-
-  constructor(public payload: Player) {}
-}
-
-export class RegisterFailure implements Action {
-  readonly type = PlayerActionTypes.RegisterFailure;
-
-  constructor(public payload: ApiError) {}
-}
-
-export class ShowJustRegistered implements Action {
-  readonly type = PlayerActionTypes.ShowJustRegistered;
-}
-
-export class HideJustRegistered implements Action {
-  readonly type = PlayerActionTypes.HideJustRegistered;
 }
 
 export class LoadTeamInvitations implements Action {
@@ -118,22 +85,9 @@ export class DeclineTeamInvitationFailure implements Action {
   constructor(public payload: ApiError) {}
 }
 
-export class UploadAvatar implements Action {
-  readonly type = PlayerActionTypes.UploadAvatar;
 
-}
-
-export class UploadAvatarSuccess implements Action {
-  readonly type = PlayerActionTypes.UploadAvatarSuccess;
-
-  constructor(public payload: string) {}
-}
-
-
-export type PlayerActionsUnion = LoadCurrent | LoadCurrentSuccess | LoadCurrentFailure | Register
-  | RegisterSuccess | RegisterFailure | ShowJustRegistered | HideJustRegistered
+export type PlayerActionsUnion = LoadCurrent | LoadCurrentSuccess | LoadCurrentFailure
   | LoadTeamInvitations | LoadTeamInvitationsFailure | LoadTeamInvitationsSuccess
   | AcceptTeamInvitation | AcceptTeamInvitationSuccess | AcceptTeamInvitationFailure
-  | DeclineTeamInvitation | DeclineTeamInvitationSuccess | DeclineTeamInvitationFailure
-  | UploadAvatar | UploadAvatarSuccess;
+  | DeclineTeamInvitation | DeclineTeamInvitationSuccess | DeclineTeamInvitationFailure;
 

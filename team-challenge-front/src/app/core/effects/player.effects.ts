@@ -11,7 +11,6 @@ import {
   DeclineTeamInvitation,
   DeclineTeamInvitationFailure,
   DeclineTeamInvitationSuccess,
-  HideJustRegistered,
   LoadCurrent,
   LoadCurrentFailure,
   LoadCurrentSuccess,
@@ -19,10 +18,6 @@ import {
   LoadTeamInvitationsFailure,
   LoadTeamInvitationsSuccess,
   PlayerActionTypes,
-  Register,
-  RegisterFailure,
-  RegisterSuccess,
-  ShowJustRegistered
 } from '../actions/player.actions';
 
 import * as fromTeam from '../actions/team.actions';
@@ -35,7 +30,7 @@ import {AuthActionTypes, LoginSuccess} from '../../auth/actions/auth.actions';
 import {PlayerService} from '../service/player.service';
 import {TeamActionTypes} from '../actions/team.actions';
 import {selectTokenRenewalPending} from '../../auth/reducers';
-import {selectPlayerProfile} from '../../reducers';
+import {selectPlayerProfile} from '../reducers/index';
 import {NoAction} from '../actions/core.actions';
 
 @Injectable()
@@ -57,35 +52,20 @@ export class PlayerEffects {
       );
     })
   );
+  //
+  // @Effect()
+  // $registerPlayer = this.actions$.pipe(
+  //   ofType<Register>(PlayerActionTypes.Register),
+  //   map(action => action.payload),
+  //   exhaustMap((registrationForm) => {
+  //     return this.playerService.registerPlayer(registrationForm).pipe(
+  //       map(player => new RegisterSuccess(player)),
+  //       catchError(error => of(new RegisterFailure(error)))
+  //     );
+  //   })
+  // );
 
-  @Effect()
-  $registerPlayer = this.actions$.pipe(
-    ofType<Register>(PlayerActionTypes.Register),
-    map(action => action.payload),
-    exhaustMap((registrationForm) => {
-      return this.playerService.registerPlayer(registrationForm).pipe(
-        map(player => new RegisterSuccess(player)),
-        catchError(error => of(new RegisterFailure(error)))
-      );
-    })
-  );
 
-  @Effect()
-  $justRegistered = this.actions$.pipe(
-    ofType<RegisterSuccess>(PlayerActionTypes.RegisterSuccess),
-    map(() => new ShowJustRegistered())
-  );
-
-  @Effect()
-  $hideJustRegistered = this.actions$.pipe(
-    ofType<ShowJustRegistered>(PlayerActionTypes.ShowJustRegistered),
-    switchMap(() => {
-      return timer(5000, 100).pipe(
-        map(() => new HideJustRegistered()),
-        take(1)
-      );
-    })
-  );
   //
   // @Effect({dispatch: false})
   // $redirectOnRegisterSuccess = this.actions$.pipe(
