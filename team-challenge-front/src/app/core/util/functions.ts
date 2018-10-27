@@ -1,10 +1,11 @@
 import {Action} from '@ngrx/store';
 import {Effect, ofType} from '@ngrx/effects';
-import {SetHomeSuccess, TeamCreatorActionTypes} from '../actions/team-creator.actions';
+import {SetHomeSuccess, TeamCreatorActionTypes} from '../../team-creator/store/team-creator.actions';
 import {tap} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {Type} from '@angular/core';
-import {NzMessageService} from 'ng-zorro-antd';
+import {NzMessageService, NzModalService} from 'ng-zorro-antd';
+import {ApiError} from '../models/error';
 
 /**
  * Util function to reduce boilerplate code in effects. Maps action to payload.
@@ -33,17 +34,19 @@ export function successMessageEffect<A extends Action>(
  */
 export function failureMessageEffect<A extends Action>(
   actions: Observable<Action>,
-  msgService: NzMessageService,
+  modalService: NzModalService,
   type: any,
-  message: string
+  error: ApiError
 ) {
   return actions.pipe(
     ofType<A>(type),
     tap(() => {
-      msgService.error(message, {nzDuration: 6000});
+      modalService.error({
+        nzTitle: error.message,
+        nzContent: error.details
+      });
     })
   );
 }
-
 
 

@@ -5,25 +5,26 @@ import {from} from 'rxjs';
 
 import * as fromRoot from '../reducers/index';
 import {map, take, withLatestFrom} from 'rxjs/operators';
-import {selectLoggedIn} from '../../auth/reducers';
+import {selectLoggedIn} from '../../auth/reducers/index';
+import {selectPlayerProfileNotExisting} from '../selectors/my-player.selectors';
 
 @Injectable()
-export class LoggedInAuthGuard implements CanActivate {
+export class PlayerCreatorGuard implements CanActivate {
 
   canActivate(): boolean {
     let can = false;
 
     this.store.pipe(
-      select(selectLoggedIn),
+      select(selectPlayerProfileNotExisting),
       take(1)
-    ).subscribe(loggedIn => can = loggedIn);
+    ).subscribe(notExisting => can = !notExisting);
 
     console.log('Can' + (can ? ' ' : ' not ') + 'activate');
 
     if (!can) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/player/new']);
+      return true;
     }
-
     return can;
   }
 

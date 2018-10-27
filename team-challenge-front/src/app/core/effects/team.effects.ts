@@ -16,9 +16,9 @@ import {
   LoadCurrentSuccess as LoadCurrentPlayerSuccess,
   PlayerActionTypes,
 } from '../actions/player.actions';
-import {selectPlayerProfile} from '../reducers/index';
 import {Router} from '@angular/router';
 import {NzMessageService} from 'ng-zorro-antd';
+import {selectPlayerProfile} from '../selectors/my-player.selectors';
 
 @Injectable()
 export class TeamEffects {

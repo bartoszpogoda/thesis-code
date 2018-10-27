@@ -3,7 +3,7 @@ import {AuthActionsUnion, AuthActionTypes} from '../../auth/actions/auth.actions
 import {PlayerActionsUnion, PlayerActionTypes} from '../actions/player.actions';
 import {ManagerActionTypes} from '../actions/manager.actions';
 import {CommunityTeamsActionTypes} from '../../community/actions/community-teams.actions';
-import {PlayerCreatorActionTypes} from '../actions/player-creator.actions';
+import {PlayerCreatorActionTypes} from '../../player-creator/store/player-creator.actions';
 
 const START_PENDING_ACTION_TYPES: any[] = [
   PlayerActionTypes.LoadCurrent,

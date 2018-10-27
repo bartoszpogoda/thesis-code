@@ -23,7 +23,7 @@ import {CoreActionTypes, EnterApplication, NoAction} from '../../core/actions/co
 import {select, Store} from '@ngrx/store';
 import {UsersService} from '../service/users.service';
 import {successMessageEffect} from '../../core/util/functions';
-import {PlayerCreatorActionTypes, UploadAvatarSuccess} from '../../core/actions/player-creator.actions';
+import {PlayerCreatorActionTypes, UploadAvatarSuccess} from '../../player-creator/store/player-creator.actions';
 
 @Injectable()
 export class AuthEffects {

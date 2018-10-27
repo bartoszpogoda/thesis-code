@@ -6,26 +6,16 @@ import {LoggedInAuthGuard} from './core/service/auth-guard.service';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
+    loadChildren: './core/core.module#CoreModule',
+    canActivate: [LoggedInAuthGuard]
   },
   {
     path: 'home',
     loadChildren: './home/home.module#HomeModule'
   },
   {
-    path: 'player',
-    loadChildren: './player/player.module#PlayerModule',
-    canActivate: [LoggedInAuthGuard]
-  },
-  {
     path: 'community',
     loadChildren: './community/community.module#CommunityModule',
-    canActivate: [LoggedInAuthGuard]
-  },
-  {
-    path: 'team',
-    loadChildren: './team/team.module#TeamModule',
     canActivate: [LoggedInAuthGuard]
   },
   {

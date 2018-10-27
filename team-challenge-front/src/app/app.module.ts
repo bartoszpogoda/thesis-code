@@ -16,7 +16,6 @@ import {NgProgressModule} from '@ngx-progressbar/core';
 import {PlayerEffects} from './core/effects/player.effects';
 import {PlayerService} from './core/service/player.service';
 import {LoggedInAuthGuard} from './core/service/auth-guard.service';
-import {TeamEffects} from './core/effects/team.effects';
 import {NguiMapModule} from '@ngui/map';
 
 @NgModule({

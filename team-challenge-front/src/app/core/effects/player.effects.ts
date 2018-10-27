@@ -30,8 +30,8 @@ import {AuthActionTypes, LoginSuccess} from '../../auth/actions/auth.actions';
 import {PlayerService} from '../service/player.service';
 import {TeamActionTypes} from '../actions/team.actions';
 import {selectTokenRenewalPending} from '../../auth/reducers';
-import {selectPlayerProfile} from '../reducers/index';
 import {NoAction} from '../actions/core.actions';
+import {selectPlayerProfile} from '../selectors/my-player.selectors';
 
 @Injectable()
 export class PlayerEffects {
@@ -59,7 +59,7 @@ export class PlayerEffects {
   //   map(action => action.payload),
   //   exhaustMap((registrationForm) => {
   //     return this.playerService.registerPlayer(registrationForm).pipe(
-  //       map(player => new RegisterSuccess(player)),
+  //       map(myPlayer => new RegisterSuccess(myPlayer)),
   //       catchError(error => of(new RegisterFailure(error)))
   //     );
   //   })
@@ -71,7 +71,7 @@ export class PlayerEffects {
   // $redirectOnRegisterSuccess = this.actions$.pipe(
   //   ofType<RegisterSuccess>(PlayerActionTypes.RegisterSuccess),
   //   tap(() => {
-  //     this.router.navigate(['/player']);
+  //     this.router.navigate(['/myPlayer']);
   //   })
   // );
 
