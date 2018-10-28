@@ -10,13 +10,13 @@ export enum TeamActionTypes {
   LoadCurrent = '[Team] Load Current',
   LoadCurrentSuccess = '[Team] Load Current Success',
   LoadCurrentFailure = '[Team] Load Current Failure',
-  ShowJustJoined = '[Team] Show Just Joined',
-  HideJustJoined = '[Team] Hide Just Joined',
   UpdateIsManager = '[Team] Update Is Manager'
 }
 
 export class LoadCurrent implements Action {
   readonly type = TeamActionTypes.LoadCurrent;
+
+  constructor(public payload: string) {}
 }
 
 export class LoadCurrentSuccess implements Action {

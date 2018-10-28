@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {TeamInvitation} from '../../core/models/team-invitation';
 import {OutputEmitter} from '@angular/compiler/src/output/abstract_emitter';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {TeamCreationForm} from '../../core/models/team';
 
 @Component({
   selector: 'app-creator-base-data',
@@ -29,7 +30,7 @@ export class CreatorBaseDataComponent implements OnInit {
   validateForm: FormGroup;
 
   @Output()
-  submitted = new EventEmitter<string>(); // temp string, change to object when more data
+  submitted = new EventEmitter<TeamCreationForm>();
 
   submitForm(): void {
     for (const i of Object.keys(this.validateForm.controls)) {
@@ -38,7 +39,11 @@ export class CreatorBaseDataComponent implements OnInit {
     }
 
     if (this.validateForm.valid) {
-      this.submitted.emit(this.validateForm.value.teamName);
+      this.submitted.emit({
+        name: this.validateForm.value.teamName,
+        disciplineId: '3x3basket',
+        regionId: 'wro'
+      });
     }
   }
 

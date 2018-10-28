@@ -65,7 +65,7 @@ public class TeamResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TeamDto> getTeam(@PathVariable String id) throws UnknownRegionException, UnknownDisciplineException, TeamNotFoundException {
+    public ResponseEntity<TeamDto> getTeam(@PathVariable String id) throws TeamNotFoundException {
         return teamService.findById(id)
                 .map(mappingService::mapToDto)
                 .map(ResponseEntity::ok)
@@ -85,8 +85,7 @@ public class TeamResource {
     }
 
     @GetMapping("/{id}/home")
-    public ResponseEntity<PositionDto> getHome(@PathVariable String id) throws PositionNotFoundException,
-            UnknownDisciplineException, UnknownRegionException {
+    public ResponseEntity<PositionDto> getHome(@PathVariable String id) throws PositionNotFoundException {
         Position home = this.teamService.getHome(id);
         return ResponseEntity.ok(mappingService.mapToDto(home));
     }
@@ -94,27 +93,24 @@ public class TeamResource {
 
     @PostMapping("/{id}/home")
     public ResponseEntity<PositionDto> setHome(@PathVariable String id, @RequestBody @Valid PositionDto position)
-            throws UnknownDisciplineException, UnknownRegionException, TeamNotFoundException,
-            AccessForbiddenException, PlayerNotFoundException {
+            throws TeamNotFoundException, AccessForbiddenException {
 
         Position home = this.teamService.setHome(id, position);
         return ResponseEntity.created(ResponseUtil.createLocationCurrentRequest()).body(mappingService.mapToDto(home));
     }
 
-    @PostMapping("/{id}/avatar")
-    public ResponseEntity<?> uploadTeamAvatar(@PathVariable String id, @RequestParam("file") MultipartFile file)
-            throws IOException, UnknownDisciplineException, UnknownRegionException, PlayerNotFoundException,
-            AccessForbiddenException, TeamNotFoundException {
+    @PostMapping("/{id}/image")
+    public ResponseEntity<?> uploadImage(@PathVariable String id, @RequestParam("file") MultipartFile file)
+            throws IOException, AccessForbiddenException, TeamNotFoundException {
 
         this.teamService.saveTeamAvatar(id, file);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/{id}/avatar")
+    @GetMapping("/{id}/image")
     @ResponseBody
-    public ResponseEntity<Resource> getTeamAvatar(@PathVariable String id)
-            throws MalformedURLException, ImageNotFoundException, TeamNotFoundException,
-            UnknownDisciplineException, UnknownRegionException {
+    public ResponseEntity<Resource> getImage(@PathVariable String id)
+            throws MalformedURLException, ImageNotFoundException, TeamNotFoundException {
 
         Resource file = teamService.getTeamAvatar(id);
         return ResponseEntity.ok()

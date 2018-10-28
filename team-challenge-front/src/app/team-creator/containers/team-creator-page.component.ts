@@ -83,11 +83,7 @@ export class TeamCreatorPageComponent {
 
   stage$: Observable<number>;
 
-  baseStageSubmitted(teamName: string) {
-    const teamCreationForm = {
-      name: teamName
-    };
-
+  baseStageSubmitted(teamCreationForm: TeamCreationForm) {
     this.store.dispatch(new CreateTeam(teamCreationForm));
   }
 

@@ -10,4 +10,6 @@ export interface Team {
 
 export interface TeamCreationForm {
   name: string;
+  disciplineId: string;
+  regionId: string;
 }

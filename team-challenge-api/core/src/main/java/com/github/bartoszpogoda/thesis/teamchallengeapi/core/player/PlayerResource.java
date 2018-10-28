@@ -89,8 +89,8 @@ public class PlayerResource {
                 .orElseThrow(PlayerNotFoundException::new);
     }
 
-    @PostMapping("/{id}/avatar")
-    public ResponseEntity<?> uploadAvatar(@PathVariable String id, @RequestParam("file") MultipartFile file)
+    @PostMapping("/{id}/image")
+    public ResponseEntity<?> uploadImage(@PathVariable String id, @RequestParam("file") MultipartFile file)
             throws IOException, UnknownDisciplineException,
             PlayerNotFoundException, AccessForbiddenException {
         this.playerService.saveAvatar(id, file);
@@ -98,10 +98,9 @@ public class PlayerResource {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/{id}/avatar")
+    @GetMapping("/{id}/image")
     @ResponseBody
-    public ResponseEntity<Resource> getAvatar(@PathVariable String disciplineId,
-                                              @PathVariable String id) throws MalformedURLException, ImageNotFoundException, PlayerNotFoundException {
+    public ResponseEntity<Resource> getImage(@PathVariable String id) throws MalformedURLException, ImageNotFoundException, PlayerNotFoundException {
         Resource file = this.playerService.getAvatar(id);
 
         return ResponseEntity.ok()

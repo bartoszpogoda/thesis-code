@@ -13,8 +13,10 @@ export class CommunityService {
   getTeamsPage(page: number = 0, size: number = 10): Observable<Page<Team>> {
     const params = new HttpParams()
       .set('page', '' + page)
-      .set('size', '' + size);
-    return this.http.get<Page<Team>>('/api/3x3basket/wro/teams', {params: params});
+      .set('size', '' + size)
+      .set('disciplineId', '3x3basket')
+      .set('regionId', 'wro');
+    return this.http.get<Page<Team>>('/api/teams', {params: params});
   }
 
 }

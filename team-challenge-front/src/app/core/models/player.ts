@@ -3,6 +3,7 @@ export interface Player {
   age: number;
   fullName: string;
   height: number;
+  teamId: string | null;
   teamName: string;
   yearsOfExperience: number;
   hasImage: boolean;
@@ -11,6 +12,8 @@ export interface Player {
 export interface PlayerRegistrationForm {
   height: number;
   yearsOfExperience: number;
+  disciplineId: string;
+  regionId: string;
 }
 
 export interface InvitablePlayer {

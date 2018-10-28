@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {PlayerRegistrationForm} from '../../core/models/player';
 
+/* TODO ADD REGION PICKER */
 
 @Component({
   selector: 'app-player-registration',
@@ -57,13 +58,18 @@ export class PlayerRegistrationComponent implements OnInit {
   @Output() submitted = new EventEmitter<PlayerRegistrationForm>();
 
   submitForm(): void {
-    for (const i in this.validateForm.controls) {
+    for (const i of Object.keys(this.validateForm.controls)) {
       this.validateForm.controls[ i ].markAsDirty();
       this.validateForm.controls[ i ].updateValueAndValidity();
     }
 
     if (this.validateForm.valid) {
-      this.submitted.emit(this.validateForm.value);
+      this.submitted.emit({
+        height: this.validateForm.value.height,
+        yearsOfExperience: this.validateForm.value.yearsOfExperience,
+        disciplineId: '3x3basket',
+        regionId: 'wro'
+      });
     }
   }
 

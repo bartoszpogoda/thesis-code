@@ -19,6 +19,8 @@ public class PlayerDto {
 
     private int yearsOfExperience;
 
+    private String teamId;
+
     private String teamName;
 
     private boolean hasImage;

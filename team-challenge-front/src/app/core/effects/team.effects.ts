@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {catchError, exhaustMap, map, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
+import {catchError, exhaustMap, filter, map, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
 import {of, timer} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {State} from '../reducers/index';
@@ -19,27 +19,26 @@ import {
 import {Router} from '@angular/router';
 import {NzMessageService} from 'ng-zorro-antd';
 import {selectPlayerProfile} from '../selectors/my-player.selectors';
+import {NoAction} from '../actions/core.actions';
+import {toPayload} from '../util/functions';
 
 @Injectable()
 export class TeamEffects {
 
-  // @Effect()
-  // $loadPlayersTeamOnLoginSuccess = this.actions$.pipe(
-  //   ofType<LoginSuccess>(AuthActionTypes.LoginSuccess),
-  //   map(() => new LoadCurrent())
-  // );
-
   @Effect()
   $loadPlayersTeamOnPlayerLoaded = this.actions$.pipe(
     ofType<LoadCurrentPlayerSuccess>(PlayerActionTypes.LoadCurrentSuccess),
-    map(() => new LoadCurrent())
+    withLatestFrom(this.store.pipe(select(selectPlayerProfile))),
+    filter(([, player]) => player.teamId !== null),
+    map(([, player]) => new LoadCurrent(player.teamId))
   );
 
   @Effect()
   $loadCurrentTeam = this.actions$.pipe(
     ofType<LoadCurrent>(TeamActionTypes.LoadCurrent),
-    exhaustMap(() => {
-        return this.teamService.getCurrent().pipe(
+    map(toPayload),
+    exhaustMap((id) => {
+        return this.teamService.get(id).pipe(
           map(team => new LoadCurrentSuccess(team)),
           catchError(error => of(new LoadCurrentFailure(error)))
         );

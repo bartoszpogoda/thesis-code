@@ -31,12 +31,6 @@ import {Player} from '../models/player';
 
         <h2>Zawodnicy</h2>
 
-        <div nz-row nzGutter="16">
-          <div nz-col nzXs="0" nzSm="4">
-            <app-player-card [player]="testPlayer"></app-player-card>
-          </div>
-        </div>
-
       </div>
     </div>
   `
@@ -45,16 +39,6 @@ export class TeamPageComponent {
   items = [
     {title: 'Moja drużyna'}
   ];
-
-  testPlayer: Player = {
-    id: '0',
-    yearsOfExperience: 2,
-    height: 172,
-    age: 17,
-    fullName: 'Andrzej Pietruszka',
-    teamName: 'Team RZODKIEWKA',
-    hasImage: false
-  };
 
   playersTeam$: Observable<Team>;
   isManager$: Observable<boolean>;

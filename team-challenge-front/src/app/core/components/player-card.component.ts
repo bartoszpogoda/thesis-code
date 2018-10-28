@@ -28,7 +28,7 @@ export class PlayerCardComponent {
 
   getAvatarUrl() {
     if (this.player.hasImage) {
-      return '/api/3x3basket/players/' + this.player.id + '/avatar';
+      return '/api/players/' + this.player.id + '/image';
     } else {
       return '/assets/images/home/avatar.png';
     }

@@ -102,7 +102,9 @@ export class PlayerEffects {
   @Effect()
   $loadCurrentTeamAfterAcceptation = this.actions$.pipe(
     ofType<AcceptTeamInvitationSuccess>(PlayerActionTypes.AcceptTeamInvitationSuccess),
-    map(() => new fromTeam.LoadCurrent())
+    withLatestFrom(this.store.pipe(select(selectPlayerProfile))),
+    filter(([, player]) => player.teamId !== null),
+    map(([, player]) => new fromTeam.LoadCurrent(player.teamId))
   );
 
   @Effect({dispatch: false})
