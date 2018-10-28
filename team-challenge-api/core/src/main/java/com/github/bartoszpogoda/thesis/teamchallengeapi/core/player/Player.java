@@ -29,6 +29,10 @@ public class Player {
     @JsonIgnore
     private String disciplineId;
 
+    @Column(name = "RegionID")
+    @JsonIgnore
+    private String regionId;
+
     @Column(name = "Height")
     private int height;
 

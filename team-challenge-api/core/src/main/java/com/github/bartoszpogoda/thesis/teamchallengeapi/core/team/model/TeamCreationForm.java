@@ -14,5 +14,10 @@ public class TeamCreationForm {
     @Length(min = 5, max = 30, message = "Name must be between 5 and 30 characters long")
     private String name;
 
+    @NotNull(message = "Region for which team is created must be specified. ")
+    private String regionId;
+
+    @NotNull(message = "Discipline for which team is created must be specified. ")
+    private String disciplineId;
 
 }

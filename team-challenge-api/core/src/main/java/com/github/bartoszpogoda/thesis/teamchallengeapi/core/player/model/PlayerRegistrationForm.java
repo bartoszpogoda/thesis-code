@@ -11,16 +11,21 @@ import javax.validation.constraints.NotNull;
 @Data
 public class PlayerRegistrationForm {
 
-    @NotNull(message = "Height of the player must be specified.")
+    @NotNull(message = "Height of the player must be specified. ")
     @Min(25)
     @Max(250)
     private Integer height;
 
 
-    @NotNull(message = "Years of experience of the player must be specified.")
+    @NotNull(message = "Years of experience of the player must be specified. ")
     @Min(0)
     @Max(100)
     private Integer yearsOfExperience;
 
+    @NotNull(message = "Discipline for which player registers must be specified. ")
+    private String disciplineId;
+
+    @NotNull(message = "Region for which player registers must be specified. ")
+    private String regionId;
 
 }

@@ -7,6 +7,10 @@ public class PlayerDto {
 
     private String id;
 
+    private String disciplineId;
+
+    private String regionId;
+
     private String fullName;
 
     private int age;

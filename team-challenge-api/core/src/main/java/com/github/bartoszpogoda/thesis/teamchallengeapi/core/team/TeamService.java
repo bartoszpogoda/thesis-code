@@ -1,23 +1,25 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.team;
 
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.discipline.DisciplineService;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.PlayerAlreadyInTeamException;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.PlayerNotFoundException;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.UnknownDisciplineException;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.UnknownRegionException;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.*;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.Player;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.PlayerService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.region.RegionService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.model.TeamCreationForm;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.Predicate;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
 @Service
@@ -28,13 +30,19 @@ public class TeamService {
     private DisciplineService disciplineService;
     private RegionService regionService;
 
+
+    public Optional<Team> findById(String id) {
+        return teamRepository.findById(id);
+    }
+
     @Transactional
-    public Optional<Team> createTeamForCurrentPlayer(String disciplineId, String regionId, @Valid TeamCreationForm teamCreationForm) throws UnknownDisciplineException, UnknownRegionException, PlayerNotFoundException, PlayerAlreadyInTeamException {
+    public Optional<Team> createTeamForCurrentPlayer(@Valid TeamCreationForm teamCreationForm)
+            throws UnknownDisciplineException, UnknownRegionException, PlayerNotFoundException, PlayerAlreadyInTeamException {
 
-        disciplineService.checkDisciplineExists(disciplineId);
-        regionService.checkRegionExists(regionId);
+        disciplineService.checkDisciplineExists(teamCreationForm.getDisciplineId());
+        regionService.checkRegionExists(teamCreationForm.getRegionId());
 
-        Optional<Player> currentPlayerOpt = playerService.getCurrentPlayer(disciplineId);
+        Optional<Player> currentPlayerOpt = playerService.getCurrentPlayer(teamCreationForm.getDisciplineId());
         if(!currentPlayerOpt.isPresent()) {
             throw new PlayerNotFoundException();
         }
@@ -46,7 +54,7 @@ public class TeamService {
             throw new PlayerAlreadyInTeamException();
         }
 
-        Team newTeam = createNewTeam(disciplineId, regionId, teamCreationForm.getName(), currentPlayer);
+        Team newTeam = createNewTeam(teamCreationForm.getDisciplineId(), teamCreationForm.getRegionId(), teamCreationForm.getName(), currentPlayer);
         currentPlayer.setTeam(newTeam);
 
         return Optional.of(teamRepository.save(newTeam));
@@ -61,47 +69,10 @@ public class TeamService {
         return newTeam;
     }
 
-    public TeamService(TeamRepository teamRepository, PlayerService playerService, DisciplineService disciplineService, RegionService regionService) {
-        this.teamRepository = teamRepository;
-        this.playerService = playerService;
-        this.disciplineService = disciplineService;
-        this.regionService = regionService;
-    }
-
-    public Page<Team> findByName(Pageable pageable, String disciplineId, String regionId, String nameFragment) throws UnknownDisciplineException, UnknownRegionException {
-        disciplineService.checkDisciplineExists(disciplineId);
-        regionService.checkRegionExists(regionId);
-
-        return teamRepository.findByDisciplineIdAndRegionIdAndNameContainingIgnoreCase(pageable, disciplineId, regionId, nameFragment);
-    }
-
-    public Page<Team> findAllTeams(Pageable pageable, String disciplineId, String regionId) throws UnknownRegionException, UnknownDisciplineException {
-        disciplineService.checkDisciplineExists(disciplineId);
-        regionService.checkRegionExists(regionId);
-
-        return teamRepository.findAllByDisciplineIdAndRegionId(pageable, disciplineId, regionId);
-    }
-
-    public Optional<Team> getByIdAndDisciplineAndRegion(String id, String disciplineId, String regionId) throws UnknownRegionException, UnknownDisciplineException {
-        disciplineService.checkDisciplineExists(disciplineId);
-        regionService.checkRegionExists(regionId);
-
-        return teamRepository.findByIdAndDisciplineIdAndRegionId(id, disciplineId, regionId);
-    }
-
-    public Optional<Team> getByIdAndDiscipline(String id, String disciplineId) throws UnknownDisciplineException {
-        disciplineService.checkDisciplineExists(disciplineId);
-
-        return teamRepository.findByIdAndDisciplineId(id, disciplineId);
-    }
-
-    public List<Player> getTeamMembers(String disciplineId, String regionId, String id) throws UnknownDisciplineException, UnknownRegionException {
-        disciplineService.checkDisciplineExists(disciplineId);
-        regionService.checkRegionExists(regionId);
-
-        return teamRepository.findByIdAndDisciplineIdAndRegionId(id, disciplineId, regionId)
+    public List<Player> getTeamMembers(String id) throws TeamNotFoundException {
+        return teamRepository.findById(id)
                 .map(team -> team.getPlayers())
-                .orElse(Collections.emptyList());
+                .orElseThrow(TeamNotFoundException::new);
     }
 
     public Optional<Team> getCurrentPlayerTeam(String disciplineId) throws UnknownDisciplineException {
@@ -109,4 +80,34 @@ public class TeamService {
 
         return playerService.getCurrentPlayer(disciplineId).map(Player::getTeam);
     }
+
+    public Page<Team> query(Pageable pageable, Optional<String> name, Optional<String> disciplineId, Optional<String> regionId) {
+        return teamRepository.findAll(teamQuery(name, disciplineId, regionId), pageable);
+
+    }
+
+    private Specification<Team> teamQuery(Optional<String> nameFragment, Optional<String> disciplineId, Optional<String> regionId) {
+        return (Specification<Team>) (root, query, builder) -> {
+
+            List<Optional<Predicate>> potentialPredicates = new ArrayList<>();
+
+            potentialPredicates.add(nameFragment.map(fragment -> builder.like(
+                    builder.lower(root.get("name")), "%" + fragment.toLowerCase() + "%")));
+            potentialPredicates.add(disciplineId.map(disc -> builder.equal(root.get("disciplineId"), disc)));
+            potentialPredicates.add(regionId.map(reg -> builder.equal(root.get("regionId"), reg)));
+
+            List<Predicate> effectivePredicates = potentialPredicates.stream()
+                    .filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
+
+            return builder.and(effectivePredicates.toArray(new Predicate[effectivePredicates.size()]));
+        };
+    }
+
+    public TeamService(TeamRepository teamRepository, PlayerService playerService, DisciplineService disciplineService, RegionService regionService) {
+        this.teamRepository = teamRepository;
+        this.playerService = playerService;
+        this.disciplineService = disciplineService;
+        this.regionService = regionService;
+    }
+
 }

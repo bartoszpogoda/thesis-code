@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import java.util.Optional;
+
 import static com.github.bartoszpogoda.thesis.teamchallengeapi.core.util.ResponseUtil.createLocationByAddingIdToCurentRequest;
 
 @RestController
-@RequestMapping("/{disciplineId}/players")
+@RequestMapping("players")
 public class PlayerResource {
 
     private PlayerService playerService;
@@ -31,9 +33,10 @@ public class PlayerResource {
     private DtoMappingService mappingService;
 
     @PostMapping
-    public ResponseEntity<PlayerDto> register(@PathVariable("disciplineId") String disciplineId,
-                                              @Valid @RequestBody PlayerRegistrationForm registrationForm) throws PlayerAlreadyInTeamException, UnknownDisciplineException, InternalServerException {
-        return playerService.registerCurrentUser(disciplineId, registrationForm)
+    public ResponseEntity<PlayerDto> register(@Valid @RequestBody PlayerRegistrationForm registrationForm)
+            throws PlayerAlreadyInTeamException, UnknownDisciplineException, InternalServerException {
+
+        return playerService.registerCurrentUser(registrationForm)
                 .map(mappingService::mapToDto)
                 .map(playerDto ->
                         ResponseEntity.created(createLocationByAddingIdToCurentRequest(playerDto.getId())).body(playerDto))
@@ -47,41 +50,28 @@ public class PlayerResource {
                     value = "Number of records per page.")
     })
     @GetMapping
-    public ResponseEntity<CustomPage<PlayerDto>> getPlayers(@PathVariable("disciplineId") String disciplineId,
-                                                            Pageable pageable, @RequestParam(name = "name", required = false) String nameFragment,
-                                                            @RequestParam(name = "withoutTeam", required = false) boolean withoutTeam) throws UnknownDisciplineException {
+    public ResponseEntity<CustomPage<PlayerDto>> queryPlayers(Pageable pageable,
+                                                              @RequestParam Optional<String> name,
+                                                              @RequestParam boolean withoutTeam,
+                                                              @RequestParam Optional<String> disciplineId,
+                                                              @RequestParam Optional<String> regionId) {
 
-        Page<Player> players;
-        if (nameFragment != null) {
-            if (withoutTeam) {
-                players = playerService.findWithoutTeamByName(pageable, disciplineId, nameFragment);
-            } else {
-                players = playerService.findByName(pageable, disciplineId, nameFragment);
-            }
-        } else {
-            if (withoutTeam) {
-                players = playerService.findAllPlayersWithoutTeam(pageable, disciplineId);
-            } else {
-                players = playerService.findAllPlayers(pageable, disciplineId);
-            }
-        }
-
-        Page<PlayerDto> playersDto = players.map(mappingService::mapToDto);
-
-        return ResponseEntity.ok(PaginationUtil.toCustomPage(playersDto));
+        Page<PlayerDto> playerDtos = playerService.query(pageable, name, withoutTeam, disciplineId, regionId).map(mappingService::mapToDto);
+        return ResponseEntity.ok(PaginationUtil.toCustomPage(playerDtos));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PlayerDto> getPlayer(@PathVariable("disciplineId") String disciplineId, @PathVariable("id") String id) throws UnknownDisciplineException, PlayerNotFoundException {
+    public ResponseEntity<PlayerDto> getPlayer(@PathVariable("id") String id) throws UnknownDisciplineException, PlayerNotFoundException {
 
-        return playerService.getByIdAndDiscipline(id, disciplineId)
+        return playerService.getById(id)
                 .map(mappingService::mapToDto)
                 .map(ResponseEntity::ok)
                 .orElseThrow(PlayerNotFoundException::new);
     }
 
     @GetMapping("/current")
-    public ResponseEntity<PlayerDto> getCurrentPlayer(@PathVariable String disciplineId) throws UnknownDisciplineException, PlayerNotFoundException {
+    public ResponseEntity<PlayerDto> getCurrentPlayer(@RequestParam(required = true) String disciplineId)
+                                                        throws UnknownDisciplineException, PlayerNotFoundException {
         return playerService.getCurrentPlayer(disciplineId)
                 .map(mappingService::mapToDto)
                 .map(ResponseEntity::ok)
