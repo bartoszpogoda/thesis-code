@@ -14,4 +14,8 @@ public class ResponseUtil {
                 .buildAndExpand(id)
                 .toUri();
     }
+
+    public static URI createLocationCurrentRequest() {
+        return ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+    }
 }

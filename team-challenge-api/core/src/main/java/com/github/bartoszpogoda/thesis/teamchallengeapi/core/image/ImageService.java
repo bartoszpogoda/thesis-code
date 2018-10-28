@@ -1,6 +1,7 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.image;
 
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.ImageNotFoundException;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.PlayerService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.user.User;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.user.UserService;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,6 +49,23 @@ public class ImageService {
         }
     }
 
+    public String saveTeamAvatar(String teamId, MultipartFile file) throws IOException {
+        Files.copy(file.getInputStream(), this.imagesRoot.resolve("teams/" + teamId), REPLACE_EXISTING);
+
+        return teamId;
+    }
+
+    public Resource getTeamAvatar(String id) throws MalformedURLException, ImageNotFoundException {
+        Path file = imagesRoot.resolve("teams/" + id);
+        Resource resource = new UrlResource(file.toUri());
+
+        if (resource.exists() || resource.isReadable()) {
+            return resource;
+        } else {
+            throw new ImageNotFoundException();
+        }
+    }
+
     public void clear() {
         FileSystemUtils.deleteRecursively(imagesRoot.toFile());
     }
@@ -55,11 +73,11 @@ public class ImageService {
     public void createDir() throws IOException {
         Files.createDirectory(imagesRoot);
         Files.createDirectory(imagesRoot.resolve("users/"));
+        Files.createDirectory(imagesRoot.resolve("teams/"));
     }
 
     public ImageService(@Value("${teamchallengeapi.images.upload.dir}") String imagesRoot, UserService userService) {
         this.imagesRoot = Paths.get(imagesRoot);
         this.userService = userService;
     }
-
 }

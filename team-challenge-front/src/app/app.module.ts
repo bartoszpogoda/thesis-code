@@ -6,7 +6,7 @@ import {AppComponent} from './core/containers/app.component';
 import {CoreModule} from './core/core.module';
 import {CommonModule} from '@angular/common';
 import {StoreModule} from '@ngrx/store';
-import {metaReducers, reducers} from './reducers';
+import {metaReducers, reducers} from './core/reducers/index';
 import {StoreRouterConnectingModule} from '@ngrx/router-store';
 import {environment} from '../environments/environment';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
@@ -16,7 +16,7 @@ import {NgProgressModule} from '@ngx-progressbar/core';
 import {PlayerEffects} from './core/effects/player.effects';
 import {PlayerService} from './core/service/player.service';
 import {LoggedInAuthGuard} from './core/service/auth-guard.service';
-import {TeamEffects} from './core/effects/team.effects';
+import {NguiMapModule} from '@ngui/map';
 
 @NgModule({
   imports: [
@@ -40,6 +40,8 @@ import {TeamEffects} from './core/effects/team.effects';
     EffectsModule.forRoot([PlayerEffects]),
 
     CoreModule.forRoot(),
+
+    NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyCyK7i7jhCaOVD9iA8D_bxDAy1-NoumZ1c'}),
 
     NgProgressModule.forRoot({
       spinner: false,

@@ -3,6 +3,8 @@ package com.github.bartoszpogoda.thesis.teamchallengeapi.core.mapping;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.Player;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.PlayerService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.model.PlayerDto;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.position.Position;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.position.model.PositionDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.Team;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.model.TeamDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.teaminvitation.TeamInvitation;
@@ -23,7 +25,7 @@ public class DtoMappingService {
         playerDto.setFullName(player.getUser().getFullName());
         playerDto.setAge(playerService.calculateAge(player.getUser().getBirthdayDate()));
         playerDto.setTeamName(player.getTeam() == null ? "" : player.getTeam().getName());
-        playerDto.setImageId(player.getUser().getImagePath());
+        playerDto.setHasImage(player.getUser().getImagePath() != null);
 
         return playerDto;
     }
@@ -33,6 +35,7 @@ public class DtoMappingService {
 
         teamDto.setManagerName(team.getManager().getUser().getFullName());
         teamDto.setManagerId(team.getManager().getId());
+        teamDto.setHasImage(team.getImagePath() != null);
 
         return teamDto;
     }
@@ -47,6 +50,10 @@ public class DtoMappingService {
         teamInvitationDto.setPlayerName(teamInvitation.getTargetPlayer().getUser().getFullName());
 
         return teamInvitationDto;
+    }
+
+    public PositionDto mapToDto(Position position) {
+        return modelMapper.map(position, PositionDto.class);
     }
 
     public DtoMappingService(ModelMapper modelMapper, PlayerService playerService) {

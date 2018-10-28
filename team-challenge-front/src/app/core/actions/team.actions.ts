@@ -12,10 +12,7 @@ export enum TeamActionTypes {
   LoadCurrentFailure = '[Team] Load Current Failure',
   ShowJustJoined = '[Team] Show Just Joined',
   HideJustJoined = '[Team] Hide Just Joined',
-  UpdateIsManager = '[Team] Update Is Manager',
-  CreateTeam = '[Team] Create Team',
-  CreateTeamSuccess = '[Team] Create Team Success',
-  CreateTeamFailure = '[Team] Create Team Failure',
+  UpdateIsManager = '[Team] Update Is Manager'
 }
 
 export class LoadCurrent implements Action {
@@ -34,38 +31,11 @@ export class LoadCurrentFailure implements Action {
   constructor(public payload: ApiError) {}
 }
 
-export class ShowJustJoined implements Action {
-  readonly type = TeamActionTypes.ShowJustJoined;
-}
-
-export class HideJustJoined implements Action {
-  readonly type = TeamActionTypes.HideJustJoined;
-}
-
 export class UpdateIsManager implements Action {
   readonly type = TeamActionTypes.UpdateIsManager;
 
   constructor(public payload: boolean) {}
 }
 
-export class CreateTeam implements Action {
-  readonly type = TeamActionTypes.CreateTeam;
-
-  constructor(public payload: TeamCreationForm) {}
-}
-
-export class CreateTeamSuccess implements Action {
-  readonly type = TeamActionTypes.CreateTeamSuccess;
-
-  constructor(public payload: Team) {}
-}
-
-export class CreateTeamFailure implements Action {
-  readonly type = TeamActionTypes.CreateTeamFailure;
-
-  constructor(public payload: ApiError) {}
-}
-
-export type TeamActionsUnion = LoadCurrent | LoadCurrentSuccess | LoadCurrentFailure | ShowJustJoined | HideJustJoined | UpdateIsManager
-  | CreateTeam | CreateTeamSuccess | CreateTeamFailure;
+export type TeamActionsUnion = LoadCurrent | LoadCurrentSuccess | LoadCurrentFailure | UpdateIsManager;
 

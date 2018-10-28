@@ -27,6 +27,14 @@ CREATE TABLE Disciplines (
   DisciplineID VARCHAR(10) PRIMARY KEY
 );
 
+/* POSITIONS */
+
+CREATE TABLE Positions (
+  PositionID VARCHAR(10) AUTO_INCREMENT PRIMARY KEY,
+  Lat DOUBLE,
+  Lng DOUBLE
+);
+
 /* REGIONS */
 
 CREATE TABLE Regions (
@@ -70,15 +78,18 @@ CREATE TABLE Players (
 CREATE TABLE Teams (
   TeamID VARCHAR(64) AUTO_INCREMENT PRIMARY KEY,
   DisciplineID VARCHAR(64) NOT NULL,
+  HomeID VARCHAR(64),
   RegionID VARCHAR(10) NOT NULL,
   ManagerID VARCHAR(64) NOT NULL,
   Name VARCHAR(32) NOT NULL,
   Active BIT (1),
   Balance INTEGER,
+  ImagePath VARCHAR(64),
 
   FOREIGN KEY (ManagerID) REFERENCES Players(PlayerID),
   FOREIGN KEY (DisciplineID) REFERENCES Disciplines(DisciplineID),
-  FOREIGN KEY (RegionID) REFERENCES Regions(RegionID)
+  FOREIGN KEY (RegionID) REFERENCES Regions(RegionID),
+  FOREIGN KEY (HomeID) REFERENCES Positions(PositionID)
 );
 
 ALTER TABLE Players ADD CONSTRAINT FK_Team_ID FOREIGN KEY (TeamID) REFERENCES Teams(TeamID);

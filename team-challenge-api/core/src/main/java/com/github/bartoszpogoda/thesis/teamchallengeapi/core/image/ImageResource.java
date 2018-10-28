@@ -35,6 +35,26 @@ public class ImageResource {
                 .body(file);
     }
 
+
+//    @PostMapping("teams")
+//    public ResponseEntity<ImagePathDto> uploadTeamAvatar(@RequestParam("file") MultipartFile file) throws IOException {
+//        String id = imageService.saveTeamAvatar(file);
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(new ImagePathDto(id));
+//    }
+//
+//    @GetMapping(value = "teams/{id}")
+//    @ResponseBody
+//    public ResponseEntity<Resource> getTeamAvatar(@PathVariable String id) throws MalformedURLException, ImageNotFoundException {
+//        Resource file = imageService.getTeamAvatar(id);
+//        return ResponseEntity.ok()
+//                .contentType(MediaType.IMAGE_JPEG)
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+//                .body(file);
+//    }
+//
+
+
     public ImageResource(ImageService imageService) {
         this.imageService = imageService;
     }

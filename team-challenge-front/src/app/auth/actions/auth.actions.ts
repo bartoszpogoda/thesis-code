@@ -20,6 +20,7 @@ export enum AuthActionTypes {
   RenewTokenSuccess = '[Auth] Renew Token Success',
   RenewTokenFailure = '[Auth] Renew Token Failure',
   Logout = '[Auth] Logout',
+  SessionTimeout = '[Auth] Session timeout'
 }
 
 export class Login implements Action {
@@ -100,8 +101,13 @@ export class Logout implements Action {
   readonly type = AuthActionTypes.Logout;
 }
 
+export class SessionTimeout implements Action {
+  readonly type = AuthActionTypes.SessionTimeout;
+}
+
 export type AuthActionsUnion = Login | LoginSuccess | LoginFailure
   | Register | RegisterSuccess | RegisterFailure | DecodeToken | DecodeTokenSuccess
   | GenerateTokenSuccess | DecodeTokenFailureExpired
-  | RenewToken | RenewTokenReceived | RenewTokenSuccess | RenewTokenFailure | Logout;
+  | RenewToken | RenewTokenReceived | RenewTokenSuccess | RenewTokenFailure | Logout
+  | SessionTimeout;
 

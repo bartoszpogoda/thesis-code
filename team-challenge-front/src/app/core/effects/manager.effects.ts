@@ -4,7 +4,7 @@ import {AuthActionTypes, LoginSuccess} from '../../auth/actions/auth.actions';
 import {catchError, debounceTime, exhaustMap, filter, map, switchMap, take, withLatestFrom} from 'rxjs/operators';
 import {asyncScheduler, Observable, of, timer} from 'rxjs';
 import {Action, select, Store} from '@ngrx/store';
-import {selectInvitePlayerNameSearch, selectInvitePlayerPage, selectManagementInvitations, selectPlayerTeam, State} from '../../reducers';
+import {selectInvitePlayerNameSearch, selectInvitePlayerPage, selectManagementInvitations, selectPlayerTeam, State} from '../reducers/index';
 import {PlayerService} from '../service/player.service';
 import {TeamService} from '../service/team.service';
 import {

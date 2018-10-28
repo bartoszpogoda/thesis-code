@@ -5,6 +5,7 @@ export interface Team {
   managerId: string;
   managerName: string;
   name: string;
+  hasImage: boolean;
 }
 
 export interface TeamCreationForm {

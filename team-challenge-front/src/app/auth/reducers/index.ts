@@ -1,4 +1,4 @@
-import * as fromRoot from '../../reducers';
+import * as fromRoot from '../../core/reducers/index';
 import * as fromAuth from './auth.reducer';
 import * as fromLogin from './login.reducer';
 import * as fromRegister from './register.reducer';

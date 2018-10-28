@@ -84,7 +84,7 @@ export class RegisterFormComponent implements OnInit {
   @Output() submitted = new EventEmitter<RegisterForm>();
 
   submitForm(): void {
-    for (const i in this.validateForm.controls) {
+    for (const i of Object.keys(this.validateForm.controls)) {
       this.validateForm.controls[ i ].markAsDirty();
       this.validateForm.controls[ i ].updateValueAndValidity();
     }

@@ -1,20 +1,25 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.player;
 
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.discipline.DisciplineService;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.PlayerAlreadyInTeamException;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.UnknownDisciplineException;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.*;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.image.ImageService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.model.PlayerRegistrationForm;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.Team;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.user.User;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.user.UserService;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Optional;
-import java.util.stream.DoubleStream;
 
 @Service
 public class PlayerService {
@@ -24,6 +29,8 @@ public class PlayerService {
     private DisciplineService disciplineService;
 
     private UserService userService;
+
+    private ImageService imageService;
 
     public Optional<Player> registerCurrentUser(String disciplineId, @Valid PlayerRegistrationForm registrationForm) throws UnknownDisciplineException, PlayerAlreadyInTeamException {
         disciplineService.checkDisciplineExists(disciplineId);
@@ -96,10 +103,11 @@ public class PlayerService {
         return Years.yearsBetween(birthDate, now).getYears();
     }
 
-    public PlayerService(PlayerRepository playerRepository, DisciplineService disciplineService, UserService userService) {
+    public PlayerService(PlayerRepository playerRepository, DisciplineService disciplineService, UserService userService, ImageService imageService) {
         this.playerRepository = playerRepository;
         this.disciplineService = disciplineService;
         this.userService = userService;
+        this.imageService = imageService;
     }
 
     public Optional<Player> getByIdAndDiscipline(String id, String disciplineId) throws UnknownDisciplineException {
@@ -112,5 +120,27 @@ public class PlayerService {
         disciplineService.checkDisciplineExists(disciplineId);
 
         return playerRepository.findByUserIdAndDisciplineId(userId, disciplineId);
+    }
+
+    public Resource getAvatar(String disciplineId, String id) throws UnknownDisciplineException, PlayerNotFoundException, MalformedURLException, ImageNotFoundException {
+        disciplineService.checkDisciplineExists(disciplineId);
+
+        Player player = getByIdAndDiscipline(id, disciplineId).orElseThrow(PlayerNotFoundException::new);
+
+        return this.imageService.getUserAvatar(player.getUser().getImagePath());
+    }
+
+    @Transactional
+    public void saveAvatar(String disciplineId, String playerId, MultipartFile file) throws UnknownDisciplineException, IOException, PlayerNotFoundException, AccessForbiddenException {
+        disciplineService.checkDisciplineExists(disciplineId);
+
+        Player currentPlayer = getCurrentPlayer(disciplineId).orElseThrow(PlayerNotFoundException::new);
+
+        if (!currentPlayer.getId().equals(playerId)) {
+            throw new AccessForbiddenException();
+        }
+
+        String imagePath = this.imageService.saveUserAvatar(file);
+        currentPlayer.getUser().setImagePath(imagePath);
     }
 }

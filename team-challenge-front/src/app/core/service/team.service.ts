@@ -7,6 +7,7 @@ import {Team, TeamCreationForm} from '../models/team';
 import {Page} from '../models/page';
 import {TeamInvitation} from '../models/team-invitation';
 import {ɵINTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS} from '@angular/platform-browser-dynamic';
+import {Position} from '../models/position';
 
 @Injectable()
 export class TeamService {
@@ -15,6 +16,14 @@ export class TeamService {
 
   getCurrent(): Observable<Team> {
     return this.http.get<Team>('/api/3x3basket/teams/current');
+  }
+
+  get(id: string): Observable<Team> {
+    return this.http.get<Team>('/api/3x3basket/wro/teams/' + id);
+  }
+
+  getPlayers(id: string): Observable<Player[]> {
+    return this.http.get<Player[]>('/api/3x3basket/wro/teams/' + id + '/players');
   }
 
   isManager(team: Team, player: Player): boolean {
@@ -54,5 +63,9 @@ export class TeamService {
 
   createTeam(creationForm: TeamCreationForm): Observable<Team> {
     return this.http.post<Team>('/api/3x3basket/wro/teams/', creationForm);
+  }
+
+  setHome(teamId: string, home: Position): Observable<Position> {
+    return this.http.post<Position>('/api/3x3basket/wro/teams/' + teamId + '/home', home);
   }
 }

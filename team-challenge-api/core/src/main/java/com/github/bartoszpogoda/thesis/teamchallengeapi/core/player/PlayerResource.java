@@ -1,10 +1,7 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.player;
 
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.discipline.DisciplineService;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.InternalServerException;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.PlayerAlreadyInTeamException;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.PlayerNotFoundException;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.UnknownDisciplineException;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.*;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.mapping.DtoMappingService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.model.PlayerDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.model.PlayerRegistrationForm;
@@ -13,12 +10,18 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.util.CustomPage;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.util.PaginationUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.concurrent.TimeUnit;
 
 import static com.github.bartoszpogoda.thesis.teamchallengeapi.core.util.ResponseUtil.createLocationByAddingIdToCurentRequest;
 
@@ -95,6 +98,28 @@ public class PlayerResource {
                 .map(mappingService::mapToDto)
                 .map(ResponseEntity::ok)
                 .orElseThrow(PlayerNotFoundException::new);
+    }
+
+    @PostMapping("/{id}/avatar")
+    public ResponseEntity<?> uploadAvatar(@PathVariable String disciplineId,
+                                              @PathVariable String id,
+                                              @RequestParam("file") MultipartFile file) throws IOException, UnknownDisciplineException, UnknownRegionException, PlayerNotFoundException, AccessForbiddenException, TeamNotFoundException {
+        this.playerService.saveAvatar(disciplineId, id, file);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/{id}/avatar")
+    @ResponseBody
+    public ResponseEntity<Resource> getAvatar(@PathVariable String disciplineId,
+                                                  @PathVariable String id) throws MalformedURLException, ImageNotFoundException, TeamNotFoundException, UnknownDisciplineException, UnknownRegionException, PlayerNotFoundException {
+        Resource file = this.playerService.getAvatar(disciplineId , id);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .cacheControl(CacheControl.maxAge(600, TimeUnit.SECONDS))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                .body(file);
     }
 
     public PlayerResource(UserService userService, PlayerService playerService, DisciplineService disciplineService, DtoMappingService mappingService) {
