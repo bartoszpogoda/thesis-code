@@ -7,6 +7,10 @@ public class TeamDto {
 
     private String id;
 
+    private String disciplineId;
+
+    private String regionId;
+
     private String name;
 
     private String managerId;

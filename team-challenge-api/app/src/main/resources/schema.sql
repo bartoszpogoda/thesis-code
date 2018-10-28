@@ -67,11 +67,13 @@ CREATE TABLE Players (
   UserID VARCHAR(64) NOT NULL,
   TeamID VARCHAR(64),
   DisciplineID VARCHAR(64) NOT NULL,
+  RegionID VARCHAR(64) NOT NULL,
   Height INTEGER,
   YearsOfExperience INTEGER,
 
   FOREIGN KEY (UserID) REFERENCES Users(UserID),
-  FOREIGN KEY (DisciplineID) REFERENCES Disciplines(DisciplineID)
+  FOREIGN KEY (DisciplineID) REFERENCES Disciplines(DisciplineID),
+  FOREIGN KEY (RegionID) REFERENCES Regions(RegionID)
 );
 
 /* TEAMS */

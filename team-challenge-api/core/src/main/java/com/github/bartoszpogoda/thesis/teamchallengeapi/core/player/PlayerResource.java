@@ -22,11 +22,12 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
+import java.util.Optional;
 
 import static com.github.bartoszpogoda.thesis.teamchallengeapi.core.util.ResponseUtil.createLocationByAddingIdToCurentRequest;
 
 @RestController
-@RequestMapping("/{disciplineId}/players")
+@RequestMapping("players")
 public class PlayerResource {
 
     private PlayerService playerService;
@@ -34,9 +35,10 @@ public class PlayerResource {
     private DtoMappingService mappingService;
 
     @PostMapping
-    public ResponseEntity<PlayerDto> register(@PathVariable("disciplineId") String disciplineId,
-                                              @Valid @RequestBody PlayerRegistrationForm registrationForm) throws PlayerAlreadyInTeamException, UnknownDisciplineException, InternalServerException {
-        return playerService.registerCurrentUser(disciplineId, registrationForm)
+    public ResponseEntity<PlayerDto> register(@Valid @RequestBody PlayerRegistrationForm registrationForm)
+            throws PlayerAlreadyInTeamException, UnknownDisciplineException, InternalServerException {
+
+        return playerService.registerCurrentUser(registrationForm)
                 .map(mappingService::mapToDto)
                 .map(playerDto ->
                         ResponseEntity.created(createLocationByAddingIdToCurentRequest(playerDto.getId())).body(playerDto))
@@ -50,41 +52,28 @@ public class PlayerResource {
                     value = "Number of records per page.")
     })
     @GetMapping
-    public ResponseEntity<CustomPage<PlayerDto>> getPlayers(@PathVariable("disciplineId") String disciplineId,
-                                                            Pageable pageable, @RequestParam(name = "name", required = false) String nameFragment,
-                                                            @RequestParam(name = "withoutTeam", required = false) boolean withoutTeam) throws UnknownDisciplineException {
+    public ResponseEntity<CustomPage<PlayerDto>> queryPlayers(Pageable pageable,
+                                                              @RequestParam Optional<String> name,
+                                                              @RequestParam boolean withoutTeam,
+                                                              @RequestParam Optional<String> disciplineId,
+                                                              @RequestParam Optional<String> regionId) {
 
-        Page<Player> players;
-        if (nameFragment != null) {
-            if (withoutTeam) {
-                players = playerService.findWithoutTeamByName(pageable, disciplineId, nameFragment);
-            } else {
-                players = playerService.findByName(pageable, disciplineId, nameFragment);
-            }
-        } else {
-            if (withoutTeam) {
-                players = playerService.findAllPlayersWithoutTeam(pageable, disciplineId);
-            } else {
-                players = playerService.findAllPlayers(pageable, disciplineId);
-            }
-        }
-
-        Page<PlayerDto> playersDto = players.map(mappingService::mapToDto);
-
-        return ResponseEntity.ok(PaginationUtil.toCustomPage(playersDto));
+        Page<PlayerDto> playerDtos = playerService.query(pageable, name, withoutTeam, disciplineId, regionId).map(mappingService::mapToDto);
+        return ResponseEntity.ok(PaginationUtil.toCustomPage(playerDtos));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PlayerDto> getPlayer(@PathVariable("disciplineId") String disciplineId, @PathVariable("id") String id) throws UnknownDisciplineException, PlayerNotFoundException {
+    public ResponseEntity<PlayerDto> getPlayer(@PathVariable("id") String id) throws PlayerNotFoundException {
 
-        return playerService.getByIdAndDiscipline(id, disciplineId)
+        return playerService.getById(id)
                 .map(mappingService::mapToDto)
                 .map(ResponseEntity::ok)
                 .orElseThrow(PlayerNotFoundException::new);
     }
 
     @GetMapping("/current")
-    public ResponseEntity<PlayerDto> getCurrentPlayer(@PathVariable String disciplineId) throws UnknownDisciplineException, PlayerNotFoundException {
+    public ResponseEntity<PlayerDto> getCurrentPlayer(@RequestParam(required = true) String disciplineId)
+            throws UnknownDisciplineException, PlayerNotFoundException {
         return playerService.getCurrentPlayer(disciplineId)
                 .map(mappingService::mapToDto)
                 .map(ResponseEntity::ok)
@@ -101,10 +90,10 @@ public class PlayerResource {
     }
 
     @PostMapping("/{id}/avatar")
-    public ResponseEntity<?> uploadAvatar(@PathVariable String disciplineId,
-                                              @PathVariable String id,
-                                              @RequestParam("file") MultipartFile file) throws IOException, UnknownDisciplineException, UnknownRegionException, PlayerNotFoundException, AccessForbiddenException, TeamNotFoundException {
-        this.playerService.saveAvatar(disciplineId, id, file);
+    public ResponseEntity<?> uploadAvatar(@PathVariable String id, @RequestParam("file") MultipartFile file)
+            throws IOException, UnknownDisciplineException,
+            PlayerNotFoundException, AccessForbiddenException {
+        this.playerService.saveAvatar(id, file);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -112,8 +101,8 @@ public class PlayerResource {
     @GetMapping("/{id}/avatar")
     @ResponseBody
     public ResponseEntity<Resource> getAvatar(@PathVariable String disciplineId,
-                                                  @PathVariable String id) throws MalformedURLException, ImageNotFoundException, TeamNotFoundException, UnknownDisciplineException, UnknownRegionException, PlayerNotFoundException {
-        Resource file = this.playerService.getAvatar(disciplineId , id);
+                                              @PathVariable String id) throws MalformedURLException, ImageNotFoundException, PlayerNotFoundException {
+        Resource file = this.playerService.getAvatar(id);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_JPEG)
