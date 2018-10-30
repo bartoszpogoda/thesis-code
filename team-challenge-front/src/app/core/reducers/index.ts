@@ -23,11 +23,12 @@ import { storeFreeze } from 'ngrx-store-freeze';
  */
 import * as fromLayout from './layout.reducer';
 import * as fromMyPlayer from './my-player.reducer';
-import * as fromTeam from './team.reducer';
+import * as fromMyTeam from './my-team.reducer';
 import * as fromPending from './pending.reducer';
 import * as fromManager from './manager.reducer';
-import * as fromTeamCreator from '../../team-creator/store/team-creator.reducer';
 import * as fromNotification from './notification.reducer';
+import * as fromCore from './core.reducer';
+import {selectTeamState} from '../selectors/my-team.selectors';
 
 
 /**
@@ -35,11 +36,12 @@ import * as fromNotification from './notification.reducer';
  * our top level state interface is just a map of keys to inner state types.
  */
 export interface State {
+  core: fromCore.State;
   layout: fromLayout.State;
   pending: fromPending.State;
   router: fromRouter.RouterReducerState;
   myPlayer: fromMyPlayer.State;
-  team: fromTeam.State;
+  myTeam: fromMyTeam.State;
   manager: fromManager.State;
   notification: fromNotification.State;
 }
@@ -50,11 +52,12 @@ export interface State {
  * and the current or initial state and return a new immutable state.
  */
 export const reducers: ActionReducerMap<State> = {
+  core: fromCore.reducer,
   layout: fromLayout.reducer,
   pending: fromPending.reducer,
   router: fromRouter.routerReducer,
   myPlayer: fromMyPlayer.reducer,
-  team: fromTeam.reducer,
+  myTeam: fromMyTeam.reducer,
   manager: fromManager.reducer,
   notification: fromNotification.reducer
 };
@@ -103,28 +106,6 @@ export const selectPending = createSelector(
 );
 
 
-/**
- * Team Selectors
- */
-export const selectTeamState = createFeatureSelector<State, fromTeam.State>('team');
-
-export const selectHasTeam = createSelector(
-  selectTeamState,
-  fromTeam.getHasTeam
-);
-
-export const selectPlayerTeam = createSelector(
-  selectTeamState,
-  fromTeam.getCurrent
-);
-
-export const selectIsManager = createSelector(
-  selectTeamState,
-  fromTeam.getIsManager
-);
-
-
-
 
 /**
  * Manager Selectors
@@ -162,6 +143,10 @@ export const selectManagementInvitations = createSelector(
   fromManager.getInvitations
 );
 
+export const selectMyTeamHomeNotSet = createSelector(
+  selectManagerState,
+  fromManager.getHomeNotSet
+);
 
 
 

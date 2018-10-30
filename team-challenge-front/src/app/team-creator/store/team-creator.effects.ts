@@ -15,7 +15,7 @@ import {
   SetHomeSuccess,
   TeamCreatorActionTypes
 } from './team-creator.actions';
-import {LoadCurrent} from '../../core/actions/team.actions';
+import {LoadCurrent} from '../../core/actions/my-team.actions';
 import {toPayload} from '../../core/util/functions';
 import {selectTeam} from './team-creator.selectors';
 
@@ -25,7 +25,7 @@ export class TeamCreatorEffects {
   @Effect()
   $createTeam = this.actions$.pipe(
     ofType<CreateTeam>(TeamCreatorActionTypes.CreateTeam),
-    map(action => action.payload),
+    map(toPayload),
     switchMap((creationForm) => {
       return this.teamService.createTeam(creationForm).pipe(
         map(createdTeam => new CreateTeamSuccess(createdTeam)),
@@ -37,7 +37,8 @@ export class TeamCreatorEffects {
   @Effect()
   $loadCurrentTeamAfterCreation = this.actions$.pipe(
     ofType<CreateTeamSuccess>(TeamCreatorActionTypes.CreateTeamSuccess),
-    map(() => new LoadCurrent())
+    map(toPayload),
+    map((team) => new LoadCurrent(team.id))
   );
 
   @Effect({dispatch: false})

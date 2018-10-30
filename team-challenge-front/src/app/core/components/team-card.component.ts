@@ -31,7 +31,7 @@ export class TeamCardComponent {
 
   getSrc() {
     if (this.team.hasImage) {
-      return '/api/3x3basket/wro/teams/' + this.team.id + '/avatar';
+      return '/api/teams/' + this.team.id + '/image';
     } else {
       return '/assets/images/home/avatar.png';
     }

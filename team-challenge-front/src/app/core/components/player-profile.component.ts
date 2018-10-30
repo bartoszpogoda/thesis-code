@@ -27,7 +27,7 @@ export class PlayerProfileComponent {
 
   getSrc() {
     if (this.player.hasImage) {
-     return '/api/3x3basket/players/' + this.player.id + '/avatar' + '?' + new Date();
+     return '/api/players/' + this.player.id + '/image' + '?' + new Date();
     } else {
       return '/assets/images/home/avatar.png';
     }

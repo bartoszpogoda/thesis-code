@@ -32,25 +32,31 @@ INSERT Into GrantedAuthorities VALUES('2', 'ROLE_ADMIN');
 -- Disciplines
 INSERT INTO Disciplines VALUES('3x3basket');
 
+-- Positions
+INSERT INTO Positions VALUES('1', 51.110736, 17.033733); -- Wro center
+INSERT INTO Positions VALUES('2', 50.436043, 16.650231); -- Kłodzko center
+
+
 -- Regions
-INSERT INTO Regions VALUES('wro', 'Wrocław');
+INSERT INTO Regions VALUES('wro', 'Wrocław', '1');
+INSERT INTO Regions VALUES('dkl', 'Kłodzko', '2');
 
 -- Test facilities
 INSERT INTO Facilities VALUES('0', '3x3basket', 'SP7 Klodzko');
 INSERT INTO OpenFacilities VALUES('0', 'Temp');
 
 -- Test players
-INSERT INTO Players VALUES('1', '2', NULL, '3x3basket', 190, 3);
-INSERT INTO Players VALUES('2', '4', NULL, '3x3basket', 195, 7);
-INSERT INTO Players VALUES('3', '3', NULL, '3x3basket', 184, 3);
-INSERT INTO Players VALUES('4', '5', NULL, '3x3basket', 178, 3);
-INSERT INTO Players VALUES('5', '6', NULL, '3x3basket', 192, 4);
-INSERT INTO Players VALUES('6', '7', NULL, '3x3basket', 155, 1);
-INSERT INTO Players VALUES('7', '8', NULL, '3x3basket', 163, 2);
-INSERT INTO Players VALUES('8', '9', NULL, '3x3basket', 188, 1);
-INSERT INTO Players VALUES('9', '10', NULL, '3x3basket', 177, 3);
-INSERT INTO Players VALUES('10', '11', NULL, '3x3basket', 166, 4);
-INSERT INTO Players VALUES('11', '12', NULL, '3x3basket', 156, 5);
+INSERT INTO Players VALUES('1', '2', NULL, '3x3basket', 'wro', 190, 3);
+INSERT INTO Players VALUES('2', '4', NULL, '3x3basket', 'wro', 195, 7);
+INSERT INTO Players VALUES('3', '3', NULL, '3x3basket', 'wro', 184, 3);
+INSERT INTO Players VALUES('4', '5', NULL, '3x3basket', 'wro', 178, 3);
+INSERT INTO Players VALUES('5', '6', NULL, '3x3basket', 'wro', 192, 4);
+INSERT INTO Players VALUES('6', '7', NULL, '3x3basket', 'wro', 155, 1);
+INSERT INTO Players VALUES('7', '8', NULL, '3x3basket', 'wro', 163, 2);
+INSERT INTO Players VALUES('8', '9', NULL, '3x3basket', 'wro', 188, 1);
+INSERT INTO Players VALUES('9', '10', NULL, '3x3basket', 'wro', 177, 3);
+INSERT INTO Players VALUES('10', '11', NULL, '3x3basket', 'wro', 166, 4);
+INSERT INTO Players VALUES('11', '12', NULL, '3x3basket', 'wro', 156, 5);
 
 -- Test teams
 INSERT INTO Teams (DisciplineID, RegionID, ManagerID, Name, Active, Balance) VALUES('3x3basket', 'wro', '2', 'TEAM Rodzinka', 0, 100);

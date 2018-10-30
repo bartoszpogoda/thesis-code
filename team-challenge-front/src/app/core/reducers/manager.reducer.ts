@@ -1,5 +1,4 @@
-import {TeamActionsUnion, TeamActionTypes} from '../actions/team.actions';
-import {Team} from '../models/team';
+import {MyTeamActionsUnion, MyTeamActionTypes} from '../actions/my-team.actions';
 import {TeamInvitation} from '../models/team-invitation';
 import {InvitablePlayer, Player} from '../models/player';
 import {Page} from '../models/page';
@@ -16,6 +15,7 @@ export interface State {
     nameSearch: string,
     loading: boolean
   } | null;
+  homeNotSet: boolean;
 }
 
 const initialState: State = {
@@ -26,13 +26,14 @@ const initialState: State = {
     currentPage: 0,
     total: 0,
     nameSearch: '',
-    loading: false
-  }
+    loading: false,
+  },
+  homeNotSet: false
 };
 
 export function reducer(
   state: State = initialState,
-  action: ManagerActionsUnion | AuthActionsUnion
+  action: ManagerActionsUnion | AuthActionsUnion | MyTeamActionsUnion
 ): State {
   switch (action.type) {
 
@@ -94,6 +95,19 @@ export function reducer(
         }
       };
 
+    case ManagerActionTypes.SetHomeSuccess:
+      return {
+        ...state,
+        homeNotSet: false
+      };
+
+    case MyTeamActionTypes.LoadHomeFailure:
+      return {
+        ...state,
+        homeNotSet: action.payload.code === 'POSITION_NOT_FOUND'
+      };
+
+
     default:
       return state;
   }
@@ -105,3 +119,4 @@ export const getInvitePlayerTotal = (state: State) => (state.invitePlayer.page) 
 export const getInvitePlayerLoading = (state: State) => state.invitePlayer.loading;
 export const getInvitePlayerNameSearch = (state: State) => state.invitePlayer.nameSearch;
 export const getInvitations = (state: State) => state.invitations;
+export const getHomeNotSet = (state: State) => state.homeNotSet;

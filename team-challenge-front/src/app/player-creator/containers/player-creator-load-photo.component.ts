@@ -19,7 +19,7 @@ import {selectPlayerProfile} from '../../core/selectors/my-player.selectors';
         <h2>Dodaj zdjęcie</h2>
         <p>Aby inni mogli Cię rozpoznać.</p>
 
-        <app-image-loader [uploadUrl]="'api/3x3basket/players/' + (player$ | async).id + '/avatar'" (startedUpload)="onStartedUpload()"
+        <app-image-loader [uploadUrl]="'api/players/' + (player$ | async).id + '/image'" (startedUpload)="onStartedUpload()"
                           (uploaded)="onUploaded()"></app-image-loader>
 
         <button routerLink="/player" nz-button [nzType]="(avatarUploaded$ | async) ? 'primary' : 'default'"

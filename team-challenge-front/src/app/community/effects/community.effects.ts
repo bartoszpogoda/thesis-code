@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Router} from '@angular/router';
 import {select, Store} from '@ngrx/store';
-import {CommunityState, selectTeamsCurrentPage, selectTeamsPage} from '../reducers';
+import {CommunityState, selectSelectedRegionOrDefault, selectTeamsCurrentPage, selectTeamsPage} from '../reducers';
 import {catchError, filter, map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import {GenerateTokenSuccess} from '../../auth/actions/auth.actions';
 import {
@@ -30,9 +30,9 @@ export class CommunityEffects {
   @Effect()
   $loadPage = this.actions$.pipe(
     ofType<LoadPage>(CommunityTeamsActionTypes.LoadPage),
-    withLatestFrom(this.store.pipe(select(selectTeamsCurrentPage))),
-    switchMap(([, current]) => {
-      return this.communityService.getTeamsPage(+current, 6).pipe(
+    withLatestFrom(this.store.pipe(select(selectTeamsCurrentPage)), this.store.pipe(select(selectSelectedRegionOrDefault))),
+    switchMap(([, current, regionId]) => {
+      return this.communityService.getTeamsPage('' + regionId, +current, 6).pipe(
         map(page => new LoadPageSuccess(page)),
         catchError(err => of(new LoadPageFailure(err)))
       );

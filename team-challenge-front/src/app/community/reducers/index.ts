@@ -1,11 +1,14 @@
 import * as fromRoot from '../../core/reducers/index';
 import * as fromCommunityTeams from './community-teams.reducer';
+import * as fromCommunity from './community.reducer';
 
 import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
 import * as fromAuth from '../../auth/reducers/auth.reducer';
 import {AuthState, selectAuthState} from '../../auth/reducers';
+import {selectPlayerProfile} from '../../core/selectors/my-player.selectors';
 
 export interface CommunityState {
+  common: fromCommunity.State;
   teams: fromCommunityTeams.State;
 }
 
@@ -14,6 +17,7 @@ export interface State extends fromRoot.State {
 }
 
 export const reducers: ActionReducerMap<CommunityState> = {
+  common: fromCommunity.reducer,
   teams: fromCommunityTeams.reducer
 };
 
@@ -59,3 +63,24 @@ export const selectCurrentTeamPlayers = createSelector(
   selectTeamsState,
   fromCommunityTeams.getCurrentTeamPlayers
 );
+
+export const selectCommons = createSelector(
+  selectCommunityState,
+  (state: CommunityState) => state.common
+);
+
+export const selectSelectedRegionId = createSelector(
+  selectCommons,
+  fromCommunity.getSelectedRegionId
+);
+
+export const selectSelectedRegionOrDefault = createSelector(
+  selectPlayerProfile,
+  selectSelectedRegionId,
+  (player, region) => {
+    return region !== null ? region : (player !== null ? player.regionId : 'wro');
+  }
+);
+
+
+

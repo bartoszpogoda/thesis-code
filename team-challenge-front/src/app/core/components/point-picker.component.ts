@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewRef} from '@angular/core';
 import {Player} from '../models/player';
 import { ViewChild } from '@angular/core';
 import MapOptions = google.maps.MapOptions;
@@ -10,7 +10,7 @@ import {Position} from '../models/position';
   template: `
     <!--<div #gmap style="width:100%;height:400px"></div>-->
     <div class="point-picker map-container">
-      <ngui-map [options]="mapOptions" (mapClick)="onMapClick($event)">
+      <ngui-map [options]="mapOptions" (mapClick)="onMapClick($event)" [center]="">
         <marker *ngIf="currentPosition" [position]="currentPosition"></marker>
       </ngui-map>
     </div>
@@ -22,7 +22,13 @@ import {Position} from '../models/position';
 export class PointPickerComponent {
 
   @Input()
-  center: LatLng = new LatLng(51.110736, 17.033733);
+  set center(center: Position) {
+    this.mapOptions = {
+      center: new LatLng(center.lat, center.lng)
+    };
+
+    this.currentPosition = new LatLng(center.lat, center.lng);
+  }
 
   @Input()
   acceptButtonText: String = 'Wybierz';
@@ -36,10 +42,10 @@ export class PointPickerComponent {
   @Output()
   skipped = new EventEmitter();
 
-  currentPosition: LatLng = this.center;
+  currentPosition: LatLng = new LatLng(0.5, 0.5);
 
   mapOptions: MapOptions = {
-    center: this.center,
+    center: new LatLng(0.5, 0.5),
     streetViewControl: false
   };
 

@@ -20,18 +20,16 @@ import {
   PlayerActionTypes,
 } from '../actions/player.actions';
 
-import * as fromTeam from '../actions/team.actions';
+import * as fromTeam from '../actions/my-team.actions';
 
-import * as teamActions from '../actions/team.actions';
+import * as teamActions from '../actions/my-team.actions';
 
 import {select, Store} from '@ngrx/store';
 import {State} from '../../auth/reducers/index';
 import {AuthActionTypes, LoginSuccess} from '../../auth/actions/auth.actions';
 import {PlayerService} from '../service/player.service';
-import {TeamActionTypes} from '../actions/team.actions';
-import {selectTokenRenewalPending} from '../../auth/reducers';
-import {NoAction} from '../actions/core.actions';
 import {selectPlayerProfile} from '../selectors/my-player.selectors';
+import {TeamInvitationService} from '../service/team-invitation.service';
 
 @Injectable()
 export class PlayerEffects {
@@ -80,7 +78,7 @@ export class PlayerEffects {
     ofType<LoadTeamInvitations>(PlayerActionTypes.LoadTeamInvitations),
     withLatestFrom(this.store.pipe(select(selectPlayerProfile))),
     exhaustMap(([, player]) =>
-      this.playerService.getInvitations(player.id).pipe(
+      this.teamInivitationService.getPlayerInvitations(player.id).pipe(
         map(invitations => new LoadTeamInvitationsSuccess(invitations)),
         catchError(err => of(new LoadTeamInvitationsFailure(err)))
       )
@@ -92,7 +90,7 @@ export class PlayerEffects {
     ofType<AcceptTeamInvitation>(PlayerActionTypes.AcceptTeamInvitation),
     map(action => action.payload),
     exhaustMap(invitationId =>
-      this.playerService.acceptInvitation(invitationId).pipe(
+      this.teamInivitationService.acceptInvitation(invitationId).pipe(
         map(() => new AcceptTeamInvitationSuccess()),
         catchError(err => of(new AcceptTeamInvitationFailure(err)))
       )
@@ -102,7 +100,9 @@ export class PlayerEffects {
   @Effect()
   $loadCurrentTeamAfterAcceptation = this.actions$.pipe(
     ofType<AcceptTeamInvitationSuccess>(PlayerActionTypes.AcceptTeamInvitationSuccess),
-    map(() => new fromTeam.LoadCurrent())
+    withLatestFrom(this.store.pipe(select(selectPlayerProfile))),
+    filter(([, player]) => player.teamId !== null),
+    map(([, player]) => new fromTeam.LoadCurrent(player.teamId))
   );
 
   @Effect({dispatch: false})
@@ -110,7 +110,7 @@ export class PlayerEffects {
     ofType<AcceptTeamInvitationSuccess>(PlayerActionTypes.AcceptTeamInvitationSuccess),
     switchMap(() => {
       return this.actions$.pipe(
-        ofType<fromTeam.LoadCurrentSuccess>(fromTeam.TeamActionTypes.LoadCurrentSuccess),
+        ofType<fromTeam.LoadCurrentSuccess>(fromTeam.MyTeamActionTypes.LoadCurrentSuccess),
         take(1),
         tap(() => {
           this.router.navigate(['/team']);
@@ -130,7 +130,7 @@ export class PlayerEffects {
     ofType<DeclineTeamInvitation>(PlayerActionTypes.DeclineTeamInvitation),
     map(action => action.payload),
     exhaustMap(invitationId =>
-      this.playerService.declineInvitation(invitationId).pipe(
+      this.teamInivitationService.declineInvitation(invitationId).pipe(
         map(() => new DeclineTeamInvitationSuccess(invitationId)),
         catchError(err => of(new DeclineTeamInvitationFailure(err)))
       )
@@ -141,6 +141,7 @@ export class PlayerEffects {
     private actions$: Actions,
     private store: Store<State>,
     private playerService: PlayerService,
+    private teamInivitationService: TeamInvitationService,
     private router: Router
   ) {
   }

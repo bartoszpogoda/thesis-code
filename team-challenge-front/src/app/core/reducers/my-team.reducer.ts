@@ -1,22 +1,26 @@
-import {TeamActionsUnion, TeamActionTypes} from '../actions/team.actions';
+import {MyTeamActionsUnion, MyTeamActionTypes} from '../actions/my-team.actions';
 import {Team} from '../models/team';
 import {AuthActionsUnion, AuthActionTypes} from '../../auth/actions/auth.actions';
+import {Position} from '../models/position';
+import {ManagerActionsUnion, ManagerActionTypes} from '../actions/manager.actions';
 
 export interface State {
   hasTeam: boolean;
   current: Team | null;
   isManager: boolean;
+  home: Position;
 }
 
 const initialState: State = {
   hasTeam: false,
   current: null,
-  isManager: false
+  isManager: false,
+  home: null,
 };
 
 export function reducer(
   state: State = initialState,
-  action: TeamActionsUnion | AuthActionsUnion
+  action: MyTeamActionsUnion | AuthActionsUnion | ManagerActionsUnion
 ): State {
   switch (action.type) {
 
@@ -25,24 +29,36 @@ export function reducer(
         ...initialState
       };
 
-    case TeamActionTypes.LoadCurrentSuccess:
+    case MyTeamActionTypes.LoadCurrentSuccess:
       return {
         ...state,
         current: action.payload,
         hasTeam: true
       };
 
-    case TeamActionTypes.LoadCurrentFailure:
+    case MyTeamActionTypes.LoadCurrentFailure:
       return {
         ...state,
         current: null,
         hasTeam: false
       };
 
-    case TeamActionTypes.UpdateIsManager:
+    case MyTeamActionTypes.LoadHomeSuccess:
+      return {
+        ...state,
+        home: action.payload
+      };
+
+    case MyTeamActionTypes.UpdateIsManager:
       return {
         ...state,
         isManager: action.payload
+      };
+
+    case ManagerActionTypes.SetHomeSuccess:
+      return {
+        ...state,
+        home: action.payload
       };
 
     default:
@@ -53,3 +69,4 @@ export function reducer(
 export const getHasTeam = (state: State) => state.hasTeam;
 export const getCurrent = (state: State) => state.current;
 export const getIsManager = (state: State) => state.isManager;
+export const getHome = (state: State) => state.home;

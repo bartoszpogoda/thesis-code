@@ -13,6 +13,7 @@ import {EffectsModule} from '@ngrx/effects';
 import {CommunityEffects} from './effects/community.effects';
 import {CommunityService} from './service/community.service';
 import {CommunityTeamsProfilePageComponent} from './containers/community-teams-profile-page.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 export const COMPONENTS = [CommunityPageComponent, CommunityPlayersPageComponent, CommunityTeamsPageComponent,
   CommunityTeamsProfilePageComponent];
@@ -23,6 +24,8 @@ export const COMPONENTS = [CommunityPageComponent, CommunityPlayersPageComponent
     CommunityRoutingModule,
     CoreModule,
     NgZorroAntdModule,
+    FormsModule,
+    ReactiveFormsModule,
     StoreModule.forFeature('community', reducers),
     EffectsModule.forFeature([CommunityEffects]),
   ],

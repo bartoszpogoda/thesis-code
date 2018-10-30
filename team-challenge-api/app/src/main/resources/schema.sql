@@ -39,7 +39,10 @@ CREATE TABLE Positions (
 
 CREATE TABLE Regions (
   RegionID VARCHAR(10) PRIMARY KEY,
-  Name VARCHAR(25) NOT NULL
+  Name VARCHAR(25) NOT NULL,
+  CenterID VARCHAR(10) NOT NULL,
+
+  FOREIGN KEY (CenterID) REFERENCES Positions(PositionID)
 );
 
 /* FACILITIES */
@@ -67,11 +70,13 @@ CREATE TABLE Players (
   UserID VARCHAR(64) NOT NULL,
   TeamID VARCHAR(64),
   DisciplineID VARCHAR(64) NOT NULL,
+  RegionID VARCHAR(64) NOT NULL,
   Height INTEGER,
   YearsOfExperience INTEGER,
 
   FOREIGN KEY (UserID) REFERENCES Users(UserID),
-  FOREIGN KEY (DisciplineID) REFERENCES Disciplines(DisciplineID)
+  FOREIGN KEY (DisciplineID) REFERENCES Disciplines(DisciplineID),
+  FOREIGN KEY (RegionID) REFERENCES Regions(RegionID)
 );
 
 /* TEAMS */

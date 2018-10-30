@@ -8,6 +8,7 @@ import {Page} from '../models/page';
 import {TeamInvitation} from '../models/team-invitation';
 import {ɵINTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS} from '@angular/platform-browser-dynamic';
 import {Position} from '../models/position';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class TeamService {
@@ -15,57 +16,31 @@ export class TeamService {
   constructor(private http: HttpClient) {}
 
   getCurrent(): Observable<Team> {
-    return this.http.get<Team>('/api/3x3basket/teams/current');
+    return this.http.get<Team>('/api/teams/current');
   }
 
   get(id: string): Observable<Team> {
-    return this.http.get<Team>('/api/3x3basket/wro/teams/' + id);
+    return this.http.get<Team>('/api/teams/' + id);
   }
 
   getPlayers(id: string): Observable<Player[]> {
-    return this.http.get<Player[]>('/api/3x3basket/wro/teams/' + id + '/players');
+    return this.http.get<Player[]>('/api/teams/' + id + '/players');
   }
 
   isManager(team: Team, player: Player): boolean {
     return team.managerId === player.id;
   }
 
-  decodeInvitePlayerPage(page: Page<Player>, invitations: TeamInvitation[]): InvitablePlayer[] {
-    return page.content.map(player => {
-      return {
-        player: player,
-        invited: this.isInvited(player, invitations)
-      };
-    });
-  }
-
-  private isInvited(player: Player, invitations: TeamInvitation[]): boolean {
-    return invitations.filter(invitation => invitation.playerId === player.id).length > 0;
-  }
-
-  getInvitations(teamId: string): Observable<TeamInvitation[]> {
-    const params = new HttpParams().set('teamId', teamId);
-    return this.http.get<TeamInvitation[]>('/api/3x3basket/invitations/', {params: params});
-  }
-
-  cancelInvitation(invitationId: string): Observable<any> {
-    return this.http.delete('/api/3x3basket/invitations/' + invitationId);
-  }
-
-  invite(teamId: string, playerId: string): Observable<TeamInvitation> {
-    const invitation: TeamInvitation = {
-      teamId: teamId,
-      playerId: playerId
-    };
-
-    return this.http.post<TeamInvitation>('/api/3x3basket/invitations', invitation);
-  }
 
   createTeam(creationForm: TeamCreationForm): Observable<Team> {
-    return this.http.post<Team>('/api/3x3basket/wro/teams/', creationForm);
+    return this.http.post<Team>('/api/teams/', creationForm);
   }
 
   setHome(teamId: string, home: Position): Observable<Position> {
-    return this.http.post<Position>('/api/3x3basket/wro/teams/' + teamId + '/home', home);
+    return this.http.post<Position>('/api/teams/' + teamId + '/home', home);
+  }
+
+  getHome(teamId: string): Observable<Position> {
+    return this.http.get<Position>('/api/teams/' + teamId + '/home');
   }
 }

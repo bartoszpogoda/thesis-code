@@ -1,5 +1,6 @@
 export interface Team {
   id: string;
+  regionId: string;
   active: boolean;
   balance: number;
   managerId: string;
@@ -10,4 +11,6 @@ export interface Team {
 
 export interface TeamCreationForm {
   name: string;
+  disciplineId: string;
+  regionId: string;
 }

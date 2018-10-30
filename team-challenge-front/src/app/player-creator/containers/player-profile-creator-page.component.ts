@@ -6,6 +6,8 @@ import * as fromRoot from '../../core/reducers/index';
 import {Register} from '../store/player-creator.actions';
 import {selectPlayerProfile, selectPlayerProfileNotExisting} from '../../core/selectors/my-player.selectors';
 import {selectStage} from '../store/player-creator.selectors';
+import {selectRegions} from '../../core/selectors/core.selectors';
+import {Region} from '../../core/models/region';
 
 // TODO refactor success alerts - maybe tosster
 @Component({
@@ -33,7 +35,8 @@ import {selectStage} from '../store/player-creator.selectors';
 
         <div class="steps-content">
 
-          <app-player-registration *ngIf="(stage$ | async) === 0" (submitted)="onPlayerRegistrationSubmitted($event)">
+          <app-player-registration *ngIf="(stage$ | async) === 0" (submitted)="onPlayerRegistrationSubmitted($event)"
+                                   [regions]="regions$ | async">
           </app-player-registration>
           <app-player-creator-load-photo *ngIf="(stage$ | async) === 1"></app-player-creator-load-photo>
         </div>
@@ -71,12 +74,14 @@ export class PlayerProfileCreatorPageComponent {
   notExisting$: Observable<boolean>;
   player$: Observable<Player>;
   stage$: Observable<number>;
+  regions$: Observable<Region[]>;
 
   constructor(private store: Store<fromRoot.State>) {
 
     this.notExisting$ = this.store.pipe(select(selectPlayerProfileNotExisting));
     this.player$ = this.store.pipe(select(selectPlayerProfile));
     this.stage$ = this.store.pipe(select(selectStage));
+    this.regions$ = this.store.pipe(select(selectRegions));
   }
 
   onPlayerRegistrationSubmitted(registrationForm: PlayerRegistrationForm) {

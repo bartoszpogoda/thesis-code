@@ -22,7 +22,7 @@ import {Team} from '../../core/models/team';
         <h2>Dodaj zdjęcie</h2>
         <p>Spraw aby Twoja drużyna wyróżniała się spośród innych.</p>
 
-        <app-image-loader [uploadUrl]="'api/3x3basket/wro/teams/' + (team$ | async).id + '/avatar'" (startedUpload)="onStartedUpload()"
+        <app-image-loader [uploadUrl]="'api/teams/' + (team$ | async).id + '/image'" (startedUpload)="onStartedUpload()"
                           (uploaded)="onUploaded($event)"></app-image-loader>
 
         <button (click)="onButtonClicked()" nz-button [nzType]="(avatarUploaded$ | async) ? 'primary' : 'default'"

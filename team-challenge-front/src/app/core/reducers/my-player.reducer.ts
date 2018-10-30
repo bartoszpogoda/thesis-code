@@ -47,7 +47,7 @@ export function reducer(
         ...state,
         notExisting: false,
         player: action.payload,
-        avatarUrl: action.payload.hasImage ? '/api/3x3basket/players/' + action.payload.id + '/avatar' : defaultAvatarUrl
+        avatarUrl: action.payload.hasImage ? '/api/players/' + action.payload.id + '/image' : defaultAvatarUrl
       };
 
     case PlayerCreatorActionTypes.RegisterSuccess:
@@ -78,7 +78,7 @@ export function reducer(
     case PlayerCreatorActionTypes.UploadAvatarSuccess:
       return {
         ...state,
-        avatarUrl: '/api/3x3basket/players/' + state.player.id + '/avatar' + '?' + new Date(),
+        avatarUrl: '/api/players/' + state.player.id + '/image' + '?' + new Date(),
         player: {
           ...state.player,
           hasImage: true

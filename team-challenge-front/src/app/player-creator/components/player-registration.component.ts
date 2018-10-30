@@ -1,12 +1,25 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {PlayerRegistrationForm} from '../../core/models/player';
+import {Region} from '../../core/models/region';
 
+/* TODO ADD REGION PICKER */
 
 @Component({
   selector: 'app-player-registration',
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <nz-form-item>
+        <nz-form-label [nzOffset]="4" [nzSm]="6" [nzXs]="24" nzRequired nzFor="regionId">Region</nz-form-label>
+        <nz-form-control [nzSm]="6" [nzXs]="24">
+          <nz-select formControlName="regionId" id="regionId">
+            <nz-option *ngFor="let region of regions" [nzValue]="region.id" [nzLabel]="region.name"></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="validateForm.get('regionId').dirty && validateForm.get('regionId').errors">
+            Wybierz swój region
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzOffset]="4" [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">Wzrost (cm)</nz-form-label>
         <nz-form-control [nzSm]="6" [nzXs]="24">
@@ -54,16 +67,24 @@ import {PlayerRegistrationForm} from '../../core/models/player';
 export class PlayerRegistrationComponent implements OnInit {
   validateForm: FormGroup;
 
+  @Input()
+  regions: Region[];
+
   @Output() submitted = new EventEmitter<PlayerRegistrationForm>();
 
   submitForm(): void {
-    for (const i in this.validateForm.controls) {
+    for (const i of Object.keys(this.validateForm.controls)) {
       this.validateForm.controls[ i ].markAsDirty();
       this.validateForm.controls[ i ].updateValueAndValidity();
     }
 
     if (this.validateForm.valid) {
-      this.submitted.emit(this.validateForm.value);
+      this.submitted.emit({
+        height: this.validateForm.value.height,
+        yearsOfExperience: this.validateForm.value.yearsOfExperience,
+        disciplineId: '3x3basket',
+        regionId: this.validateForm.value.regionId
+      });
     }
   }
 
@@ -73,7 +94,8 @@ export class PlayerRegistrationComponent implements OnInit {
   ngOnInit(): void {
     this.validateForm = this.fb.group({
       height            : [ null, [ Validators.required, Validators.pattern('[0-9]*'), Validators.min(100), Validators.max(230)] ],
-      yearsOfExperience : [ null, [ Validators.required, Validators.pattern('[0-9]*'), Validators.min(0), Validators.max(100)] ]
+      yearsOfExperience : [ null, [ Validators.required, Validators.pattern('[0-9]*'), Validators.min(0), Validators.max(100)] ],
+      regionId: [ null, [ Validators.required] ],
     });
   }
 }

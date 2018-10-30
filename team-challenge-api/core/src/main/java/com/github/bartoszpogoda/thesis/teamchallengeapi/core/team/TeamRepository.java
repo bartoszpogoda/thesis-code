@@ -3,13 +3,16 @@ package com.github.bartoszpogoda.thesis.teamchallengeapi.core.team;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface TeamRepository extends CrudRepository<Team, String> {
+public interface TeamRepository extends CrudRepository<Team, String>, JpaSpecificationExecutor<Team> {
+
+    Optional<Team> findById(String id);
 
     Page<Team> findByDisciplineIdAndRegionIdAndNameContainingIgnoreCase(Pageable pageable, String disciplineId, String regionId, String nameFragment);
 

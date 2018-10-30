@@ -5,6 +5,8 @@ import {InvitablePlayer, Player} from '../models/player';
 import {Page} from '../models/page';
 import {TeamInvitation} from '../models/team-invitation';
 import {PlayerActionTypes} from './player.actions';
+import {Position} from '../models/position';
+import {LoadHomeFailure, MyTeamActionTypes} from './my-team.actions';
 
 export enum ManagerActionTypes {
   LoadTeamInvitations = '[Manager] Load Team Invitations',
@@ -23,6 +25,11 @@ export enum ManagerActionTypes {
   Invite = '[Manager] Invite',
   InviteSuccess = '[Manager] Invite Success',
   InviteFailure = '[Manager] Invite Failure',
+
+
+  SetHome = '[Manager] Set Home',
+  SetHomeSuccess = '[Manager] Set Home Success',
+  SetHomeFailure = '[Manager] Set Home Failure',
 }
 
 export class LoadTeamInvitations implements Action {
@@ -117,9 +124,28 @@ export class InviteFailure implements Action {
   constructor(public payload: ApiError) {}
 }
 
+export class SetHome implements Action {
+  readonly type = ManagerActionTypes.SetHome;
+
+  constructor(public payload: Position) {}
+}
+
+export class SetHomeSuccess implements Action {
+  readonly type = ManagerActionTypes.SetHomeSuccess;
+
+  constructor(public payload: Position) {}
+}
+
+export class SetHomeFailure implements Action {
+  readonly type = ManagerActionTypes.SetHomeFailure;
+
+  constructor(public payload: ApiError) {}
+}
+
 export type ManagerActionsUnion =
   | InvitePlayerPageChanged | InvitePlayerLoadPage | InvitePlayerLoadPageSuccess | InvitePlayerLoadPageFailure | InvitePlayerDecodePage
   | InvitePlayerDecodePageSuccess | LoadTeamInvitations | LoadTeamInvitationsSuccess | LoadTeamInvitationsFailure
   | InvitePlayerNameSearchChanged | CancelInvitation | CancelInvitationSuccess | CancelInvitationFailure
-  | Invite | InviteSuccess | InviteFailure;
+  | Invite | InviteSuccess | InviteFailure
+  | SetHome | SetHomeSuccess | SetHomeFailure;
 

@@ -5,7 +5,7 @@ import {from} from 'rxjs';
 
 import * as fromRoot from '../reducers/index';
 import {take} from 'rxjs/operators';
-import {selectHasTeam} from '../reducers/index';
+import {selectHasTeam} from '../selectors/my-team.selectors';
 
 @Injectable()
 export class TeamJoinRedirectGuard implements CanActivate {
