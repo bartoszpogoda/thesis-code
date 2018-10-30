@@ -20,7 +20,7 @@ import {selectPlayerProfile} from '../selectors/my-player.selectors';
     </div>
   `
 })
-export class PlayerProfilePageComponent {
+export class MyPlayerPageComponent {
   items = [
     {title: 'Mój profil'}
   ];

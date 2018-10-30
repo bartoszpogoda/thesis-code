@@ -67,6 +67,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.GET, "/**/image").permitAll()
                 // permit register
             .antMatchers(HttpMethod.POST, "/users").permitAll()
+            .antMatchers(HttpMethod.GET, "/regions").permitAll()
             .anyRequest().authenticated()
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);

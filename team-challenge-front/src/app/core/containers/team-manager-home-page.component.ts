@@ -2,6 +2,14 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import * as fromRoot from '../reducers/index';
 import {select, Store} from '@ngrx/store';
 import LatLng = google.maps.LatLng;
+import {Observable} from 'rxjs';
+import {Region} from '../models/region';
+import {selectMyPlayerRegion} from '../selectors/core.selectors';
+import {selectMyTeamHome, selectMyTeamHomeOrRegionCenter} from '../selectors/my-team.selectors';
+import {Position} from '../models/position';
+import {map, tap, withLatestFrom} from 'rxjs/operators';
+import {SetHome} from '../actions/manager.actions';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-team-recruitment-page',
@@ -17,7 +25,8 @@ import LatLng = google.maps.LatLng;
         <app-point-picker acceptButtonText="Zapisz"
                           skipButtonText="Anuluj"
                           (accepted)="onAccepted($event)"
-                          (skipped)="onSkipped()">
+                          (skipped)="onSkipped()"
+                          [center]="(center$ | async)">
         </app-point-picker>
       </div>
     </div>
@@ -26,26 +35,23 @@ import LatLng = google.maps.LatLng;
   `
 })
 
-export class TeamManagerHomePageComponent implements OnInit {
+export class TeamManagerHomePageComponent {
   items = [
     {title: 'Moja drużyna', link: '/team'}, {title: 'Zarządzanie', link: '/team/manager'}, {title: 'Punkt macierzysty'}
   ];
 
+  center$: Observable<Position>;
 
-  constructor(private store: Store<fromRoot.State>) {
-
+  constructor(private store: Store<fromRoot.State>, private router: Router) {
+    this.center$ = this.store.pipe(select(selectMyTeamHomeOrRegionCenter));
   }
 
-  ngOnInit(): void {
-
-  }
-
-  onAccepted(position: LatLng) {
-    console.log('onAccepted ' + position);
+  onAccepted(position: Position) {
+    this.store.dispatch(new SetHome(position));
   }
 
   onSkipped() {
-    console.log('onSkipped');
+    this.router.navigate(['/team/manager']);
   }
 
 

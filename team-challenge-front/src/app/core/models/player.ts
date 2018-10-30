@@ -1,5 +1,6 @@
 export interface Player {
   id: string;
+  regionId: string;
   age: number;
   fullName: string;
   height: number;

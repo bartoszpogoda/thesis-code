@@ -31,7 +31,8 @@ import {TeamInvitation} from '../models/team-invitation';
         <div nz-row nzGutter="16">
           <div nz-col nzXs="0" nzSm="16">
             <h2>Zaproś gracza</h2>
-            <nz-input-group nzPrefixIcon="anticon anticon-user" style="margin-bottom: 10px;">
+            <p>Tabela prezentuje zawodników z Twojego regionu, którzy nie są aktualnie w drużynie.</p>
+            <nz-input-group nzPrefixIcon="anticon anticon-user" style="margin: 10px 0;">
               <input type="text" nz-input placeholder="Szukaj po nazwie" [formControl]="nameSearch">
             </nz-input-group>
             <nz-table
@@ -53,12 +54,12 @@ import {TeamInvitation} from '../models/team-invitation';
               </thead>
               <tbody>
               <tr *ngFor="let data of ajaxTable.data">
-                <td>{{data.myPlayer.fullName}}</td>
-                <td>{{data.myPlayer.age}}</td>
-                <td>{{data.myPlayer.yearsOfExperience}}</td>
+                <td>{{data.player.fullName}}</td>
+                <td>{{data.player.age}}</td>
+                <td>{{data.player.yearsOfExperience}}</td>
                 <td>
                   <ng-container *ngIf="data.invited">Zaproszony</ng-container>
-                  <ng-container *ngIf="!data.invited"><a (click)="invite(data.myPlayer.id)">Zaproś</a></ng-container>
+                  <ng-container *ngIf="!data.invited"><a (click)="invite(data.player.id)">Zaproś</a></ng-container>
                 </td>
               </tr>
               </tbody>

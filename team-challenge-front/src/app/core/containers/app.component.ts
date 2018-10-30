@@ -12,6 +12,7 @@ import {TokenService} from '../../auth/service/token.service';
 import {map, skipUntil} from 'rxjs/operators';
 import {selectPlayerAvatarUrl, selectPlayerProfileNotExisting} from '../selectors/my-player.selectors';
 import {selectMyPlayerNotificationsAny} from '../selectors/notification.selectors';
+import {selectHasTeam} from '../selectors/my-team.selectors';
 
 @Component({
   selector: 'app-app',
@@ -92,7 +93,7 @@ export class AppComponent implements OnDestroy {
     this.decodedToken$ = this.store.pipe(select(fromAuth.selectDecodedToken));
     // this.loginPending$ = this.store.pipe(select(fromAuth.selectLoginPending));
     this.playerNotExisting$ = this.store.pipe(select(selectPlayerProfileNotExisting));
-    this.hasTeam$ = this.store.pipe(select(fromRoot.selectHasTeam));
+    this.hasTeam$ = this.store.pipe(select(selectHasTeam));
     this.globalPending$ = this.store.pipe(select(fromRoot.selectPending));
     this.avatarUrl$ = this.store.pipe(select(selectPlayerAvatarUrl));
 

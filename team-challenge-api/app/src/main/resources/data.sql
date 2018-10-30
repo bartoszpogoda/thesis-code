@@ -32,8 +32,14 @@ INSERT Into GrantedAuthorities VALUES('2', 'ROLE_ADMIN');
 -- Disciplines
 INSERT INTO Disciplines VALUES('3x3basket');
 
+-- Positions
+INSERT INTO Positions VALUES('1', 51.110736, 17.033733); -- Wro center
+INSERT INTO Positions VALUES('2', 50.436043, 16.650231); -- Kłodzko center
+
+
 -- Regions
-INSERT INTO Regions VALUES('wro', 'Wrocław');
+INSERT INTO Regions VALUES('wro', 'Wrocław', '1');
+INSERT INTO Regions VALUES('dkl', 'Kłodzko', '2');
 
 -- Test facilities
 INSERT INTO Facilities VALUES('0', '3x3basket', 'SP7 Klodzko');

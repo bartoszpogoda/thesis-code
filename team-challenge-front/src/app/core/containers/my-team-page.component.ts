@@ -3,10 +3,10 @@ import {Observable} from 'rxjs';
 import {TeamInvitation} from '../models/team-invitation';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../reducers/index';
-import {selectIsManager, selectPlayerTeam} from '../reducers/index';
 import {AcceptTeamInvitation, LoadTeamInvitations} from '../actions/player.actions';
 import {Team} from '../models/team';
 import {Player} from '../models/player';
+import {selectIsManager, selectMyTeam} from '../selectors/my-team.selectors';
 
 @Component({
   selector: 'app-team-page',
@@ -35,7 +35,7 @@ import {Player} from '../models/player';
     </div>
   `
 })
-export class TeamPageComponent {
+export class MyTeamPageComponent {
   items = [
     {title: 'Moja drużyna'}
   ];
@@ -44,7 +44,7 @@ export class TeamPageComponent {
   isManager$: Observable<boolean>;
 
   constructor(private store: Store<fromRoot.State>) {
-    this.playersTeam$ = this.store.pipe(select(selectPlayerTeam));
+    this.playersTeam$ = this.store.pipe(select(selectMyTeam));
     this.isManager$ = this.store.pipe(select(selectIsManager));
 
   }

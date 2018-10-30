@@ -5,6 +5,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Player, PlayerRegistrationForm} from '../models/player';
 import {TeamInvitation} from '../models/team-invitation';
 import {Page} from '../models/page';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class PlayerService {
@@ -20,19 +21,6 @@ export class PlayerService {
     return this.http.post<Player>('/api/players', registrationForm);
   }
 
-  getInvitations(playerId: string): Observable<TeamInvitation[]> {
-    const params = new HttpParams().set('playerId', playerId);
-    return this.http.get<TeamInvitation[]>('/api/invitations/', {params: params});
-  }
-
-  acceptInvitation(invitationId: string): Observable<any> {
-    return this.http.post<any>('/api/invitations/' + invitationId + '/acceptance', {});
-  }
-
-  declineInvitation(invitationId: string): Observable<any> {
-    return this.http.delete('/api/invitations/' + invitationId);
-  }
-
   searchByName(name: string = '', page: number = 0, size: number = 10): Observable<Page<Player>> {
     const params = new HttpParams().set('name', name)
       .set('page', '' + page)
@@ -40,11 +28,12 @@ export class PlayerService {
     return this.http.get<Page<Player>>('/api/players', {params: params});
   }
 
-  searchByNameWithoutTeam(name: string = '', page: number = 0, size: number = 5): Observable<Page<Player>> {
+  searchByNameWithoutTeam(name: string = '', regionId: string, page: number = 0, size: number = 5): Observable<Page<Player>> {
     const params = new HttpParams().set('name', name)
       .set('page', '' + page)
       .set('size', '' + size)
-      .set('withoutTeam', 'true');
+      .set('withoutTeam', 'true')
+      .set('regionId', regionId);
     return this.http.get<Page<Player>>('/api/players', {params: params});
   }
 }

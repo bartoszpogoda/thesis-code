@@ -1,5 +1,6 @@
 export interface Team {
   id: string;
+  regionId: string;
   active: boolean;
   balance: number;
   managerId: string;

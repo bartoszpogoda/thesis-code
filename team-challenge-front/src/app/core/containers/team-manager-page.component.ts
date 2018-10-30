@@ -7,6 +7,7 @@ import {Component} from '@angular/core';
     <div class="spaces-sides">
       <app-breadcrumb [items]="items"></app-breadcrumb>
       <div class="content-container">
+        <h2 class="tempStyling" routerLink="base">(TODO: Styling) Podstawowe dane</h2>
         <h2 class="tempStyling" routerLink="recruitment">(TODO: Styling) Rekrutacja</h2>
         <h2 class="tempStyling" routerLink="home">(TODO: Styling) Punkt macierzysty</h2>
       </div>

@@ -5,6 +5,8 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.PlayerServic
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.model.PlayerDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.position.Position;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.position.model.PositionDto;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.region.Region;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.region.model.RegionDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.Team;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.model.TeamDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.teaminvitation.TeamInvitation;
@@ -56,6 +58,16 @@ public class DtoMappingService {
     public PositionDto mapToDto(Position position) {
         return modelMapper.map(position, PositionDto.class);
     }
+
+
+    public RegionDto mapToDto(Region region) {
+        RegionDto regionDto =  modelMapper.map(region, RegionDto.class);
+
+        regionDto.setCenter(mapToDto(region.getCenter()));
+
+        return regionDto;
+    }
+
 
     public DtoMappingService(ModelMapper modelMapper, PlayerService playerService) {
         this.modelMapper = modelMapper;

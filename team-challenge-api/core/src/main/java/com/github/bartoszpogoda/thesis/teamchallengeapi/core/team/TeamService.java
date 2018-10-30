@@ -51,10 +51,13 @@ public class TeamService {
         disciplineService.checkDisciplineExists(teamCreationForm.getDisciplineId());
         regionService.checkRegionExists(teamCreationForm.getRegionId());
 
+
         Optional<Player> currentPlayerOpt = playerService.getCurrentPlayer(teamCreationForm.getDisciplineId());
         if(!currentPlayerOpt.isPresent()) {
             throw new PlayerNotFoundException();
         }
+
+        // TODO check if region is the same as players region
 
         Player currentPlayer = currentPlayerOpt.get();
         Team playerTeam = currentPlayer.getTeam();

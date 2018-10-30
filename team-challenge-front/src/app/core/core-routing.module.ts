@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {PlayerProfilePageComponent} from './containers/player-profile-page.component';
+import {MyPlayerPageComponent} from './containers/my-player-page.component';
 import {PlayerCreatorGuard} from './guard/player-creator-guard.service';
-import {TeamPageComponent} from './containers/team-page.component';
+import {MyTeamPageComponent} from './containers/my-team-page.component';
 import {TeamJoinRedirectGuard} from './guard/team-join-redirect-guard';
 import {TeamJoinPageComponent} from './containers/team-join-page.component';
 import {TeamManagerPageComponent} from './containers/team-manager-page.component';
@@ -13,7 +13,7 @@ import {TeamManagerHomePageComponent} from './containers/team-manager-home-page.
 const routes: Routes = [
   {
     path: 'player',
-    component: PlayerProfilePageComponent,
+    component: MyPlayerPageComponent,
     canActivate: [PlayerCreatorGuard],
     canActivateChild: []
   },
@@ -23,7 +23,7 @@ const routes: Routes = [
   },
   {
     path: 'team',
-    component: TeamPageComponent,
+    component: MyTeamPageComponent,
     canActivate: [TeamJoinRedirectGuard]
   },
   {

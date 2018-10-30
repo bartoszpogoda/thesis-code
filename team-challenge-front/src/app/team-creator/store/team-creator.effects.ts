@@ -15,7 +15,7 @@ import {
   SetHomeSuccess,
   TeamCreatorActionTypes
 } from './team-creator.actions';
-import {LoadCurrent} from '../../core/actions/team.actions';
+import {LoadCurrent} from '../../core/actions/my-team.actions';
 import {toPayload} from '../../core/util/functions';
 import {selectTeam} from './team-creator.selectors';
 

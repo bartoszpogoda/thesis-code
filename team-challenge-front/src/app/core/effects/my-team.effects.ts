@@ -8,9 +8,9 @@ import {TeamService} from '../service/team.service';
 import {
   LoadCurrent,
   LoadCurrentFailure,
-  LoadCurrentSuccess,
-  TeamActionTypes, UpdateIsManager
-} from '../actions/team.actions';
+  LoadCurrentSuccess, LoadHome, LoadHomeFailure, LoadHomeSuccess,
+  MyTeamActionTypes, UpdateIsManager
+} from '../actions/my-team.actions';
 import {
   AcceptTeamInvitationSuccess,
   LoadCurrentSuccess as LoadCurrentPlayerSuccess,
@@ -21,9 +21,10 @@ import {NzMessageService} from 'ng-zorro-antd';
 import {selectPlayerProfile} from '../selectors/my-player.selectors';
 import {NoAction} from '../actions/core.actions';
 import {toPayload} from '../util/functions';
+import {selectMyTeam} from '../selectors/my-team.selectors';
 
 @Injectable()
-export class TeamEffects {
+export class MyTeamEffects {
 
   @Effect()
   $loadPlayersTeamOnPlayerLoaded = this.actions$.pipe(
@@ -35,7 +36,7 @@ export class TeamEffects {
 
   @Effect()
   $loadCurrentTeam = this.actions$.pipe(
-    ofType<LoadCurrent>(TeamActionTypes.LoadCurrent),
+    ofType<LoadCurrent>(MyTeamActionTypes.LoadCurrent),
     map(toPayload),
     exhaustMap((id) => {
         return this.teamService.get(id).pipe(
@@ -47,7 +48,7 @@ export class TeamEffects {
 
   @Effect()
   $updateIsManagerAfterTeamLoaded = this.actions$.pipe(
-    ofType<LoadCurrentSuccess>(TeamActionTypes.LoadCurrentSuccess),
+    ofType<LoadCurrentSuccess>(MyTeamActionTypes.LoadCurrentSuccess),
     map(action => action.payload),
     withLatestFrom(this.store.pipe(select(selectPlayerProfile))),
     map(([team, player]) => {
@@ -55,12 +56,30 @@ export class TeamEffects {
     })
   );
 
+  @Effect()
+  $loadHomeAfterTeamLoaded = this.actions$.pipe(
+    ofType<LoadCurrentSuccess>(MyTeamActionTypes.LoadCurrentSuccess),
+    map(() => new LoadHome())
+  );
+
+  @Effect()
+  $loadHome = this.actions$.pipe(
+    ofType<LoadHome>(MyTeamActionTypes.LoadHome),
+    withLatestFrom(this.store.pipe(select(selectMyTeam))),
+    exhaustMap(([, myTeam]) => this.teamService.getHome(myTeam.id).pipe(
+      map(home => new LoadHomeSuccess(home)),
+      catchError(err => of(new LoadHomeFailure(err)))
+    ))
+  );
+
+
+
   // @Effect({dispatch: false})
   // $redirectToTeamViewAfterCreation = this.actions$.pipe(
-  //   ofType<CreateTeamSuccess>(TeamActionTypes.CreateTeamSuccess),
+  //   ofType<CreateTeamSuccess>(MyTeamActionTypes.CreateTeamSuccess),
   //   switchMap(() => {
   //     return this.actions$.pipe(
-  //       ofType<LoadCurrentSuccess>(TeamActionTypes.LoadCurrentSuccess),
+  //       ofType<LoadCurrentSuccess>(MyTeamActionTypes.LoadCurrentSuccess),
   //       take(1),
   //       tap(() => {
   //         this.router.navigate(['/team']);

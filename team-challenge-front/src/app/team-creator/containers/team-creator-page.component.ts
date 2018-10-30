@@ -7,6 +7,10 @@ import {CreateTeam, SetHome} from '../store/team-creator.actions';
 import {selectStage} from '../store/team-creator.selectors';
 import {Observable} from 'rxjs';
 import {Position} from '../../core/models/position';
+import {Region} from '../../core/models/region';
+import {selectMyPlayerRegion, selectRegions} from '../../core/selectors/core.selectors';
+import {Player} from '../../core/models/player';
+import {selectPlayerProfile} from '../../core/selectors/my-player.selectors';
 
 
 @Component({
@@ -34,7 +38,9 @@ import {Position} from '../../core/models/position';
               <h2>Wprowadź podstawowe dane swojej drużyny</h2>
               <p>Po wprowadzeniu tych danych oraz przesłaniu formularza drużyna zostanie założona.
                 Następnie będziesz mógł uzupełnić dodatkowe dane drużyny.</p>
-              <app-creator-base-data (submitted)="baseStageSubmitted($event)"></app-creator-base-data>
+              <app-creator-base-data (submitted)="baseStageSubmitted($event)" [regions]="regions$ | async"
+                                     [fixedRegionId]="(myPlayerRegion$ | async).id">
+              </app-creator-base-data>
             </div>
             <app-team-creator-load-photo *ngIf="(stage$ | async) == 1"></app-team-creator-load-photo>
             <div *ngIf="(stage$ | async) == 2">
@@ -43,7 +49,7 @@ import {Position} from '../../core/models/position';
                 oraz przeciwników.</p>
               <p>Może to być na przykład Wasze ulubione boisko, lub częste miejsce spotkań bliskie zawodnikom.
                 W przypadku trudności wybierz centrum regionu.</p>
-              <app-point-picker (accepted)="homePointStageSubmitted($event)"
+              <app-point-picker [center]="(myPlayerRegion$ | async).center" (accepted)="homePointStageSubmitted($event)"
                 acceptButtonText="Dalej"></app-point-picker>
             </div>
             </div>
@@ -82,6 +88,8 @@ export class TeamCreatorPageComponent {
   ];
 
   stage$: Observable<number>;
+  regions$: Observable<Region[]>;
+  myPlayerRegion$: Observable<Region>;
 
   baseStageSubmitted(teamCreationForm: TeamCreationForm) {
     this.store.dispatch(new CreateTeam(teamCreationForm));
@@ -93,6 +101,8 @@ export class TeamCreatorPageComponent {
 
   constructor(private store: Store<fromRoot.State>) {
     this.stage$ = this.store.pipe(select(selectStage));
+    this.regions$ = this.store.pipe(select(selectRegions));
+    this.myPlayerRegion$ = this.store.pipe(select(selectMyPlayerRegion));
   }
 
 }

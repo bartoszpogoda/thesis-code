@@ -5,7 +5,7 @@ import {from} from 'rxjs';
 
 import * as fromRoot from '../reducers/index';
 import {map, take, withLatestFrom} from 'rxjs/operators';
-import {selectIsManager} from '../reducers/index';
+import {selectIsManager} from '../selectors/my-team.selectors';
 
 @Injectable()
 export class IsManagerGuard implements CanActivate {
