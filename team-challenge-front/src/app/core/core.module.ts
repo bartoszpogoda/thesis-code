@@ -49,6 +49,8 @@ import {IsManagerGuard} from './guard/is-manager.guard';
 import {RegionService} from './service/region.service';
 import {CoreEffects} from './effects/core.effects';
 import {TeamInvitationService} from './service/team-invitation.service';
+import {RegionFacilityPickerComponent} from './components/region-facility-picker.component';
+import {FacilityService} from './service/facility.service';
 
 export const COMPONENTS = [
   AppComponent,
@@ -66,6 +68,7 @@ export const COMPONENTS = [
   TeamCardComponent,
   MyPlayerPageComponent,
   PlayerProfileComponent,
+  RegionFacilityPickerComponent,
   MyTeamPageComponent, TeamJoinPageComponent, ReceivedInvitationComponent, TeamDisplayComponent,
   TeamManagerPageComponent, TeamRecruitmentPageComponent, SentInvitationComponent, PlayerCardComponent,
   PointPickerComponent, TeamManagerHomePageComponent,
@@ -83,7 +86,7 @@ export const COMPONENTS = [
     useClass: ErrorInterceptor,
     multi: true,
   }, { provide: NZ_MESSAGE_CONFIG, useValue: { nzDuration: 5000 }},
-    TeamService, PlayerService, RegionService, PlayerCreatorGuard, TeamJoinRedirectGuard, IsManagerGuard, TeamInvitationService]
+    TeamService, PlayerService, RegionService, PlayerCreatorGuard, TeamJoinRedirectGuard, IsManagerGuard, TeamInvitationService, FacilityService]
 })
 export class CoreModule {
   static forRoot() {

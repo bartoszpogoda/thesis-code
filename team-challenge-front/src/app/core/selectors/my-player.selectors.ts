@@ -1,7 +1,9 @@
 
 import * as fromMyPlayer from '../reducers/my-player.reducer';
 import {createFeatureSelector, createSelector} from '@ngrx/store';
-import {State} from '../reducers';
+import {selectMyTeamHomeNotSet, State} from '../reducers';
+import {selectMyPlayerRegion} from './core.selectors';
+import {selectMyTeamHome} from './my-team.selectors';
 
 export const selectPlayerState = createFeatureSelector<State, fromMyPlayer.State>('myPlayer');
 
@@ -24,3 +26,4 @@ export const selectPlayerAvatarUrl = createSelector(
   selectPlayerState,
   fromMyPlayer.getAvatarUrl
 );
+

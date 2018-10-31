@@ -26,7 +26,7 @@ import {Router} from '@angular/router';
                           skipButtonText="Anuluj"
                           (accepted)="onAccepted($event)"
                           (skipped)="onSkipped()"
-                          [center]="(center$ | async)">
+                          [center]="(center$ | async)" [icon]="homeIcon">
         </app-point-picker>
       </div>
     </div>
@@ -41,6 +41,13 @@ export class TeamManagerHomePageComponent {
   ];
 
   center$: Observable<Position>;
+
+  homeIcon = {
+    url: '/assets/images/home_spot.png',
+    anchor: [13, 43],
+    size: [27, 43],
+    scaledSize: [27, 43]
+  };
 
   constructor(private store: Store<fromRoot.State>, private router: Router) {
     this.center$ = this.store.pipe(select(selectMyTeamHomeOrRegionCenter));

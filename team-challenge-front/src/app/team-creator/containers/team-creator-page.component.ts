@@ -49,7 +49,7 @@ import {selectPlayerProfile} from '../../core/selectors/my-player.selectors';
                 oraz przeciwników.</p>
               <p>Może to być na przykład Wasze ulubione boisko, lub częste miejsce spotkań bliskie zawodnikom.
                 W przypadku trudności wybierz centrum regionu.</p>
-              <app-point-picker [center]="(myPlayerRegion$ | async).center" (accepted)="homePointStageSubmitted($event)"
+              <app-point-picker [icon]="homeIcon" [center]="(myPlayerRegion$ | async).center" (accepted)="homePointStageSubmitted($event)"
                 acceptButtonText="Dalej"></app-point-picker>
             </div>
             </div>
@@ -90,6 +90,14 @@ export class TeamCreatorPageComponent {
   stage$: Observable<number>;
   regions$: Observable<Region[]>;
   myPlayerRegion$: Observable<Region>;
+
+  homeIcon = {
+    url: '/assets/images/home_spot.png',
+    anchor: [13, 43],
+    size: [27, 43],
+    scaledSize: [27, 43]
+  };
+
 
   baseStageSubmitted(teamCreationForm: TeamCreationForm) {
     this.store.dispatch(new CreateTeam(teamCreationForm));

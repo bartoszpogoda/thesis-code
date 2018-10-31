@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {catchError, exhaustMap, filter, map, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
-import { of, timer} from 'rxjs';
+import {combineLatest, of, timer} from 'rxjs';
 import {Router} from '@angular/router';
 import {NzMessageService} from 'ng-zorro-antd';
 import {
@@ -73,6 +73,8 @@ export class PlayerEffects {
   //   })
   // );
 
+
+  // Bug, when "My team" panel starts loading when current player data wasnt set yet
   @Effect()
   $loadTeamInvitations = this.actions$.pipe(
     ofType<LoadTeamInvitations>(PlayerActionTypes.LoadTeamInvitations),

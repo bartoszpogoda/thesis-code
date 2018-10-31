@@ -149,7 +149,12 @@ export const selectMyTeamHomeNotSet = createSelector(
 );
 
 
-
+export const getRouterState = (state: State) => state.router;
+export const selectRouterPath = createSelector(getRouterState, (state: fromRouter.RouterReducerState) => {
+  if (state) {
+    return state.state.url;
+  }
+});
 
 
 

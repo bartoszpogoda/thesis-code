@@ -1,5 +1,6 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception;
 
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.InternalServerException;
 import lombok.extern.java.Log;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
@@ -52,4 +53,17 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(exceptionResponse, exceptionResponse.getStatus());
     }
+
+    @ExceptionHandler(Exception.class)
+    public final ResponseEntity<ExceptionResponse> handleException() {
+
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder().code(ExceptionCode.INTERNAL_SERVER_ERROR)
+                .message("Server error")
+                .details("")
+                .timestamp(new Date())
+                .build();
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Router} from '@angular/router';
 import {select, Store} from '@ngrx/store';
-import {CommunityState, selectSelectedRegionOrDefault, selectTeamsCurrentPage, selectTeamsPage} from '../reducers';
+import {CommunityState, selectFacilities, selectSelectedRegionIdOrDefault, selectTeamsCurrentPage, selectTeamsPage} from '../reducers';
 import {catchError, filter, map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import {GenerateTokenSuccess} from '../../auth/actions/auth.actions';
 import {
@@ -15,6 +15,14 @@ import {
 import {CommunityService} from '../service/community.service';
 import {of} from 'rxjs';
 import {TeamService} from '../../core/service/team.service';
+import {
+  CommunityFacilitiesActionTypes,
+  LoadFacilities,
+  LoadFacilitiesFailure,
+  LoadFacilitiesSuccess, LoadFacility, LoadFacilityFailure, LoadFacilitySuccess
+} from '../actions/community-facilities.actions';
+import {FacilityService} from '../../core/service/facility.service';
+import {toPayload} from '../../core/util/functions';
 
 @Injectable()
 export class CommunityEffects {
@@ -30,7 +38,7 @@ export class CommunityEffects {
   @Effect()
   $loadPage = this.actions$.pipe(
     ofType<LoadPage>(CommunityTeamsActionTypes.LoadPage),
-    withLatestFrom(this.store.pipe(select(selectTeamsCurrentPage)), this.store.pipe(select(selectSelectedRegionOrDefault))),
+    withLatestFrom(this.store.pipe(select(selectTeamsCurrentPage)), this.store.pipe(select(selectSelectedRegionIdOrDefault))),
     switchMap(([, current, regionId]) => {
       return this.communityService.getTeamsPage('' + regionId, +current, 6).pipe(
         map(page => new LoadPageSuccess(page)),
@@ -63,11 +71,43 @@ export class CommunityEffects {
     })
   );
 
+  @Effect()
+  $loadFacilities = this.actions$.pipe(
+    ofType<LoadFacilities>(CommunityFacilitiesActionTypes.LoadFacilities),
+    withLatestFrom(this.store.pipe(select(selectSelectedRegionIdOrDefault))),
+    switchMap(([, regionId]) => {
+      return this.facilityService.getForRegion('' + regionId).pipe(
+        map(facilities => new LoadFacilitiesSuccess(facilities)),
+        catchError(err => of(new LoadFacilitiesFailure(err)))
+      );
+    })
+  );
+
+  @Effect()
+  $loadFacility = this.actions$.pipe(
+    ofType<LoadFacility>(CommunityFacilitiesActionTypes.LoadFacility),
+    map(toPayload),
+    withLatestFrom(this.store.pipe(select(selectFacilities))),
+    switchMap(([id, facilities]) => {
+      // @ts-ignore
+      const filtered = facilities.filter(fac => fac.id === id);
+      if (filtered.length > 0) {
+        return of(new LoadFacilitySuccess(filtered[0]));
+      }
+
+      return this.facilityService.get(id).pipe(
+        map(facility => new LoadFacilitySuccess(facility)),
+        catchError(err => of(new LoadFacilityFailure(err)))
+      );
+    })
+  );
+
   constructor(
     private actions$: Actions,
     private router: Router,
     private store: Store<CommunityState>,
     private communityService: CommunityService,
-    private teamService: TeamService
+    private teamService: TeamService,
+    private facilityService: FacilityService
   ) {}
 }
