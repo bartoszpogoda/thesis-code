@@ -16,7 +16,9 @@ export enum TeamCreatorActionTypes {
   SetHomeSuccess = '[Team Creator] Set Home Success',
   SetHomeFailure = '[Team Creator] Set Home Failure',
 
-  ProgressStage = '[Team Creator] Progress Stage'
+  ProgressStage = '[Team Creator] Progress Stage',
+
+  Close = '[Team Creator] Close',
 }
 
 export class CreateTeam implements Action {
@@ -67,8 +69,13 @@ export class ProgressStage implements Action {
   readonly type = TeamCreatorActionTypes.ProgressStage;
 }
 
+export class Close implements Action {
+  readonly type = TeamCreatorActionTypes.Close;
+}
+
+
 export type TeamCreatorActionsUnion = CreateTeam | CreateTeamSuccess | CreateTeamFailure
   | UploadAvatar | UploadAvatarSuccess
   | SetHome | SetHomeSuccess | SetHomeFailure
-  | ProgressStage;
+  | ProgressStage | Close;
 

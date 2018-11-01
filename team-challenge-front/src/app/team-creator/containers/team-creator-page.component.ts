@@ -3,7 +3,7 @@ import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../../core/reducers/index';
 import LatLng = google.maps.LatLng;
 import {TeamCreationForm} from '../../core/models/team';
-import {CreateTeam, SetHome} from '../store/team-creator.actions';
+import {Close, CreateTeam, SetHome} from '../store/team-creator.actions';
 import {selectStage} from '../store/team-creator.selectors';
 import {Observable} from 'rxjs';
 import {Position} from '../../core/models/position';
@@ -24,7 +24,6 @@ import {selectPlayerProfile} from '../../core/selectors/my-player.selectors';
           <nz-step nzTitle="Podstawowe dane"></nz-step>
           <nz-step nzTitle="Zdjęcie"></nz-step>
           <nz-step nzTitle="Punkt macierzysty"></nz-step>
-          <nz-step nzTitle="Terminarz"></nz-step>
           <nz-step nzTitle="Rekrutacja"></nz-step>
         </nz-steps>
 
@@ -51,6 +50,10 @@ import {selectPlayerProfile} from '../../core/selectors/my-player.selectors';
                 W przypadku trudności wybierz centrum regionu.</p>
               <app-point-picker [icon]="homeIcon" [center]="(myPlayerRegion$ | async).center" (accepted)="homePointStageSubmitted($event)"
                 acceptButtonText="Dalej"></app-point-picker>
+            </div>
+            <div *ngIf="(stage$ | async) == 3">
+              <app-team-recruitment></app-team-recruitment>
+              <button nz-button nzType="primary" style="margin: 10px" (click)="onRecruitmentDone()">Gotowe</button>
             </div>
             </div>
           </div>
@@ -113,4 +116,7 @@ export class TeamCreatorPageComponent {
     this.myPlayerRegion$ = this.store.pipe(select(selectMyPlayerRegion));
   }
 
+  onRecruitmentDone() {
+    this.store.dispatch(new Close());
+  }
 }

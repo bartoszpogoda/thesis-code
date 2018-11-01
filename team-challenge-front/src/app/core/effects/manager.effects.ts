@@ -135,6 +135,19 @@ export class ManagerEffects {
     )
   );
 
+  @Effect({dispatch: false})
+  $inviteSuccessMessage = successMessageEffect<InviteSuccess>(this.actions$, this.message,
+    ManagerActionTypes.InviteSuccess,
+    'Zawodnik został zaproszony.'
+  );
+
+
+  @Effect({dispatch: false})
+  $cancelInviteSuccessMessage = successMessageEffect<CancelInvitationSuccess>(this.actions$, this.message,
+    ManagerActionTypes.CancelInvitationSuccess,
+    'Zaproszenie zostało anulowane.'
+  );
+
   @Effect()
   $setHome = this.actions$.pipe(
     ofType<SetHome>(ManagerActionTypes.SetHome),

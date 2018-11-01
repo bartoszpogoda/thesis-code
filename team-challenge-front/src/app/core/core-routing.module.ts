@@ -9,6 +9,7 @@ import {TeamManagerPageComponent} from './containers/team-manager-page.component
 import {IsManagerGuard} from './guard/is-manager.guard';
 import {TeamRecruitmentPageComponent} from './containers/team-recruitment-page.component';
 import {TeamManagerHomePageComponent} from './containers/team-manager-home-page.component';
+import {ChallengesPageComponent} from './containers/challenges-page.component';
 
 const routes: Routes = [
   {
@@ -48,6 +49,10 @@ const routes: Routes = [
     path: 'team/manager/home',
     component: TeamManagerHomePageComponent,
     canActivate: [IsManagerGuard]
+  },
+  {
+    path: 'challenges',
+    component: ChallengesPageComponent
   }
 ];
 

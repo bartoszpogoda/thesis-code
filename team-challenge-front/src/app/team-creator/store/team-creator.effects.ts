@@ -8,6 +8,7 @@ import {TeamService} from '../../core/service/team.service';
 import {Router} from '@angular/router';
 import {NzMessageService} from 'ng-zorro-antd';
 import {
+  Close,
   CreateTeam,
   CreateTeamFailure,
   CreateTeamSuccess,
@@ -70,6 +71,14 @@ export class TeamCreatorEffects {
     })
   );
 
+
+  @Effect({dispatch: false})
+  $closeCreator = this.actions$.pipe(
+    ofType<Close>(TeamCreatorActionTypes.Close),
+    tap(() => {
+      this.router.navigate(['/team']);
+    })
+  );
 
   constructor(
     private actions$: Actions,

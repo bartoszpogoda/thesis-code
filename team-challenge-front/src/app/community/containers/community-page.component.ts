@@ -31,17 +31,9 @@ import {LoadFacilities} from '../actions/community-facilities.actions';
         </div>
 
         <div nz-row nzGutter="16" class="one-row-cards-container">
-          <div nz-col class="gutter-row" nzXs="0" nzSm="3"></div>
-          <div nz-col class="gutter-row" nzXs="24" nzSm="6">
-            <h2 routerLink="teams" class="tempStyling">(Link, TODO styling, maybe image?) Drużyny</h2>
-          </div>
-          <div nz-col class="gutter-row" nzXs="24" nzSm="6">
-            <h2 routerLink="players" class="tempStyling">(Link, TODO styling, maybe image?) Zawodnicy</h2>
-          </div>
-          <div nz-col class="gutter-row" nzXs="24" nzSm="6">
-            <h2 routerLink="facilities" class="tempStyling">(Link, TODO styling, maybe image?) Obiekty sportowe</h2>
-          </div>
-          <div nz-col class="gutter-row" nzXs="0" nzSm="3"></div>
+            <h2 routerLink="teams" class="tempStyling">Drużyny</h2>
+            <h2 routerLink="players" class="tempStyling">Zawodnicy</h2>
+            <h2 routerLink="facilities" class="tempStyling">Obiekty sportowe</h2>
         </div>
 
       </div>

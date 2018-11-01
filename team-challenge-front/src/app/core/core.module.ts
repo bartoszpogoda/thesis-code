@@ -51,6 +51,8 @@ import {CoreEffects} from './effects/core.effects';
 import {TeamInvitationService} from './service/team-invitation.service';
 import {RegionFacilityPickerComponent} from './components/region-facility-picker.component';
 import {FacilityService} from './service/facility.service';
+import {TeamRecruitmentComponent} from './containers/team-recruitment.component';
+import {ChallengesPageComponent} from './containers/challenges-page.component';
 
 export const COMPONENTS = [
   AppComponent,
@@ -69,6 +71,8 @@ export const COMPONENTS = [
   MyPlayerPageComponent,
   PlayerProfileComponent,
   RegionFacilityPickerComponent,
+  TeamRecruitmentComponent,
+  ChallengesPageComponent,
   MyTeamPageComponent, TeamJoinPageComponent, ReceivedInvitationComponent, TeamDisplayComponent,
   TeamManagerPageComponent, TeamRecruitmentPageComponent, SentInvitationComponent, PlayerCardComponent,
   PointPickerComponent, TeamManagerHomePageComponent,
