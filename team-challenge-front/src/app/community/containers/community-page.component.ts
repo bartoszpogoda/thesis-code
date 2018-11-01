@@ -6,9 +6,10 @@ import {selectStage} from '../../player-creator/store/player-creator.selectors';
 import {selectRegions} from '../../core/selectors/core.selectors';
 import {Region} from '../../core/models/region';
 import {Observable, Subject} from 'rxjs';
-import {selectSelectedRegionOrDefault} from '../reducers';
+import {selectSelectedRegionIdOrDefault} from '../reducers';
 import {takeUntil} from 'rxjs/operators';
 import {RegionSelectionChanged} from '../actions/community.actions';
+import {LoadFacilities} from '../actions/community-facilities.actions';
 
 @Component({
   selector: 'app-community-page',
@@ -30,14 +31,17 @@ import {RegionSelectionChanged} from '../actions/community.actions';
         </div>
 
         <div nz-row nzGutter="16" class="one-row-cards-container">
-          <div nz-col class="gutter-row" nzXs="0" nzSm="4"></div>
-          <div nz-col class="gutter-row" nzXs="24" nzSm="8">
+          <div nz-col class="gutter-row" nzXs="0" nzSm="3"></div>
+          <div nz-col class="gutter-row" nzXs="24" nzSm="6">
             <h2 routerLink="teams" class="tempStyling">(Link, TODO styling, maybe image?) Drużyny</h2>
           </div>
-          <div nz-col class="gutter-row" nzXs="24" nzSm="8">
+          <div nz-col class="gutter-row" nzXs="24" nzSm="6">
             <h2 routerLink="players" class="tempStyling">(Link, TODO styling, maybe image?) Zawodnicy</h2>
           </div>
-          <div nz-col class="gutter-row" nzXs="0" nzSm="4"></div>
+          <div nz-col class="gutter-row" nzXs="24" nzSm="6">
+            <h2 routerLink="facilities" class="tempStyling">(Link, TODO styling, maybe image?) Obiekty sportowe</h2>
+          </div>
+          <div nz-col class="gutter-row" nzXs="0" nzSm="3"></div>
         </div>
 
       </div>
@@ -62,10 +66,11 @@ export class CommunityPageComponent implements OnDestroy {
   constructor(private store: Store<fromRoot.State>) {
     this.regions$ = this.store.pipe(select(selectRegions));
 
-    this.store.pipe(select(selectSelectedRegionOrDefault)).pipe(takeUntil(this.destroyed$))
+    this.store.pipe(select(selectSelectedRegionIdOrDefault)).pipe(takeUntil(this.destroyed$))
       .subscribe(region => {
           this.selectedRegion = region;
       });
+
   }
 
   ngOnDestroy (): void {

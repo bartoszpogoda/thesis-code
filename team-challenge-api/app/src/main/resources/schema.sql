@@ -50,17 +50,22 @@ CREATE TABLE Regions (
 CREATE TABLE Facilities (
   FacilityID VARCHAR(64) AUTO_INCREMENT PRIMARY KEY,
   DisciplineID VARCHAR(10) NOT NULL,
+  RegionID VARCHAR(10) NOT NULL,
+  UserID VARCHAR(10),
   Name VARCHAR(64) NOT NULL,
+  Address VARCHAR(32) NOT NULL,
+  PositionID VARCHAR(10) NOT NULL,
+  Lighting BIT,
+  SurfaceType VARCHAR(20),
+  PlayingSpots INTEGER,
+  Description VARCHAR(200),
+  TokenPrice INTEGER NOT NULL,
 
-  FOREIGN KEY (DisciplineID) REFERENCES Disciplines(DisciplineID)
-);
 
-CREATE TABLE OpenFacilities (
-  FacilityID VARCHAR(64) NOT NULL,
-  Temp VARCHAR(64) NOT NULL,
-
-  PRIMARY KEY (FacilityID),
-  FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID)
+  FOREIGN KEY (DisciplineID) REFERENCES Disciplines(DisciplineID),
+  FOREIGN KEY (RegionID) REFERENCES Regions(RegionID),
+  FOREIGN KEY (UserID) REFERENCES Users(UserID), /* created by */
+  FOREIGN KEY (PositionID) REFERENCES Positions(PositionID)
 );
 
 /* PLAYERS */

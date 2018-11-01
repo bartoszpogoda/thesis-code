@@ -3,6 +3,7 @@ import {Team} from '../models/team';
 import {AuthActionsUnion, AuthActionTypes} from '../../auth/actions/auth.actions';
 import {Position} from '../models/position';
 import {ManagerActionsUnion, ManagerActionTypes} from '../actions/manager.actions';
+import {TeamCreatorActionsUnion, TeamCreatorActionTypes} from '../../team-creator/store/team-creator.actions';
 
 export interface State {
   hasTeam: boolean;
@@ -20,7 +21,7 @@ const initialState: State = {
 
 export function reducer(
   state: State = initialState,
-  action: MyTeamActionsUnion | AuthActionsUnion | ManagerActionsUnion
+  action: MyTeamActionsUnion | AuthActionsUnion | ManagerActionsUnion | TeamCreatorActionsUnion
 ): State {
   switch (action.type) {
 
@@ -56,6 +57,12 @@ export function reducer(
       };
 
     case ManagerActionTypes.SetHomeSuccess:
+      return {
+        ...state,
+        home: action.payload
+      };
+
+    case TeamCreatorActionTypes.SetHomeSuccess:
       return {
         ...state,
         home: action.payload

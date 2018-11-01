@@ -33,7 +33,8 @@ export const selectMyTeamHomeOrRegionCenter = createSelector(
   selectMyTeamHomeNotSet,
   selectMyPlayerRegion,
   (home, notSet, region) => {
-    return notSet ? region.center : home;
+    return notSet ? region.center : (home ? home : region.center);
   }
 );
+
 

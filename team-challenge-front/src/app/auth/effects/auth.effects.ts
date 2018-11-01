@@ -24,6 +24,7 @@ import {select, Store} from '@ngrx/store';
 import {UsersService} from '../service/users.service';
 import {successMessageEffect} from '../../core/util/functions';
 import {PlayerCreatorActionTypes, UploadAvatarSuccess} from '../../player-creator/store/player-creator.actions';
+import {selectRouterPath} from '../../core/reducers';
 
 @Injectable()
 export class AuthEffects {
@@ -89,9 +90,12 @@ export class AuthEffects {
   @Effect({dispatch: false})
   $loginSuccess = this.actions$.pipe(
     ofType<LoginSuccess>(AuthActionTypes.LoginSuccess),
+    withLatestFrom(this.store.pipe(select(selectRouterPath))),
     tap(() => {
-      // this.router.navigate(['/']);
-      this.router.navigate(['/community']); // temp
+      if (this.router.url.startsWith('/home')) { // refactor
+        console.log(this.router.url);
+        this.router.navigate(['/community']);
+      }
     })
   );
 

@@ -14,9 +14,11 @@ import {CommunityEffects} from './effects/community.effects';
 import {CommunityService} from './service/community.service';
 import {CommunityTeamsProfilePageComponent} from './containers/community-teams-profile-page.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {CommunityFacilitiesPageComponent} from './containers/community-facilities-page.component';
+import {CommunityFacilitiesProfilePageComponent} from './containers/community-facilities-profile-page.component';
 
 export const COMPONENTS = [CommunityPageComponent, CommunityPlayersPageComponent, CommunityTeamsPageComponent,
-  CommunityTeamsProfilePageComponent];
+  CommunityTeamsProfilePageComponent, CommunityFacilitiesPageComponent, CommunityFacilitiesProfilePageComponent];
 
 @NgModule({
   imports: [

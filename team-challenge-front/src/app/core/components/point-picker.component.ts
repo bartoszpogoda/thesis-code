@@ -11,7 +11,7 @@ import {Position} from '../models/position';
     <!--<div #gmap style="width:100%;height:400px"></div>-->
     <div class="point-picker map-container">
       <ngui-map [options]="mapOptions" (mapClick)="onMapClick($event)" [center]="">
-        <marker *ngIf="currentPosition" [position]="currentPosition"></marker>
+        <marker *ngIf="currentPosition" [position]="currentPosition" [icon]="icon"></marker>
       </ngui-map>
     </div>
 
@@ -22,12 +22,25 @@ import {Position} from '../models/position';
 export class PointPickerComponent {
 
   @Input()
+  icon: any;
+
+  @Input()
+  set position(position: Position) {
+    if (position !== null) {
+      this.currentPosition = new LatLng(position.lat, position.lng);
+    }
+  }
+
+  @Input()
   set center(center: Position) {
     this.mapOptions = {
+      ...this.mapOptions,
       center: new LatLng(center.lat, center.lng)
     };
 
-    this.currentPosition = new LatLng(center.lat, center.lng);
+    if (this.currentPosition === null) {
+      this.currentPosition = new LatLng(center.lat, center.lng);
+    }
   }
 
   @Input()
@@ -42,11 +55,12 @@ export class PointPickerComponent {
   @Output()
   skipped = new EventEmitter();
 
-  currentPosition: LatLng = new LatLng(0.5, 0.5);
+  currentPosition = null; //new LatLng(0.5, 0.5);
 
   mapOptions: MapOptions = {
     center: new LatLng(0.5, 0.5),
-    streetViewControl: false
+    streetViewControl: false,
+    minZoom: 10
   };
 
   onMapClick(ev) {

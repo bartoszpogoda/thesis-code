@@ -1,15 +1,18 @@
 import * as fromRoot from '../../core/reducers/index';
 import * as fromCommunityTeams from './community-teams.reducer';
+import * as fromCommunityFacilities from './community-facilities.reducer';
 import * as fromCommunity from './community.reducer';
 
 import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
 import * as fromAuth from '../../auth/reducers/auth.reducer';
 import {AuthState, selectAuthState} from '../../auth/reducers';
 import {selectPlayerProfile} from '../../core/selectors/my-player.selectors';
+import {selectRegions} from '../../core/selectors/core.selectors';
 
 export interface CommunityState {
   common: fromCommunity.State;
   teams: fromCommunityTeams.State;
+  facilities: fromCommunityFacilities.State;
 }
 
 export interface State extends fromRoot.State {
@@ -18,7 +21,8 @@ export interface State extends fromRoot.State {
 
 export const reducers: ActionReducerMap<CommunityState> = {
   common: fromCommunity.reducer,
-  teams: fromCommunityTeams.reducer
+  teams: fromCommunityTeams.reducer,
+  facilities: fromCommunityFacilities.reducer
 };
 
 export const selectCommunityState = createFeatureSelector<State, CommunityState>('community');
@@ -74,13 +78,42 @@ export const selectSelectedRegionId = createSelector(
   fromCommunity.getSelectedRegionId
 );
 
-export const selectSelectedRegionOrDefault = createSelector(
+export const selectSelectedRegionIdOrDefault = createSelector(
   selectPlayerProfile,
   selectSelectedRegionId,
   (player, region) => {
     return region !== null ? region : (player !== null ? player.regionId : 'wro');
   }
 );
+
+
+export const selectSelectedRegionOrDefault = createSelector(
+  selectSelectedRegionIdOrDefault,
+  selectRegions,
+  (regionId, regions) => {
+    const filtered = regions.filter(reg => reg.id === regionId);
+    return filtered.length > 0 ? filtered[0] : null;
+  }
+);
+
+
+/* Facilities */
+
+export const selectFacilitiesState = createSelector(
+  selectCommunityState,
+  (state: CommunityState) => state.facilities
+);
+
+export const selectFacilities = createSelector(
+  selectFacilitiesState,
+  fromCommunityFacilities.getFacilities
+);
+
+export const selectCurrentFacility = createSelector(
+  selectFacilitiesState,
+  fromCommunityFacilities.getCurrent
+);
+
 
 
 

@@ -1,5 +1,7 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.mapping;
 
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.facility.Facility;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.facility.model.FacilityDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.Player;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.PlayerService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.model.PlayerDto;
@@ -66,6 +68,14 @@ public class DtoMappingService {
         regionDto.setCenter(mapToDto(region.getCenter()));
 
         return regionDto;
+    }
+
+    public FacilityDto mapToDto(Facility facility) {
+        FacilityDto facilityDto =  modelMapper.map(facility, FacilityDto.class);
+
+        facilityDto.setPosition(mapToDto(facility.getPosition()));
+
+        return facilityDto;
     }
 
 
