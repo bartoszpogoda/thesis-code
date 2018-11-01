@@ -3,16 +3,17 @@ package com.github.bartoszpogoda.thesis.teamchallengeapi.core.facility.model;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.position.model.PositionDto;
 import lombok.Data;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Data
 public class FacilityRegistrationForm {
 
     @Size(min = 3, max = 30, message = "Facility name must be between 3 and 30 characters long.")
     private String name;
+
+    @NotEmpty
+    @Size(min = 3, max = 32, message = "Address must be between 3 and 32 characters long")
+    private String address;
 
     @NotNull(message = "Discipline for which player registers must be specified. ")
     private String disciplineId;

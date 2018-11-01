@@ -43,8 +43,8 @@ INSERT INTO Regions VALUES('wro', 'Wrocław', '1');
 INSERT INTO Regions VALUES('dkl', 'Kłodzko', '2');
 
 -- Test facilities
-INSERT INTO Facilities VALUES('0', '3x3basket', 'dkl', 'SP7 Klodzko', '2', TRUE, 'Beton', 2, 'Opis..', 100);
-INSERT INTO Facilities VALUES('1', '3x3basket', 'wro', 'Boisko przy Szkole Podstawowej nr 45', '3', FALSE, 'Beton', 4, 'Opis..', 100);
+INSERT INTO Facilities VALUES('0', '3x3basket', 'dkl', NULL, 'SP7 Klodzko', 'Sienkiewicza 3', '2', TRUE, 'Beton', 2, 'Opis..', 100);
+INSERT INTO Facilities VALUES('1', '3x3basket', 'wro', NULL, 'Boisko przy Szkole Podstawowej nr 45', 'Ulica', '3', FALSE, 'Beton', 4, 'Opis..', 100);
 
 -- Test players
 INSERT INTO Players VALUES('1', '2', NULL, '3x3basket', 'wro', 190, 3);

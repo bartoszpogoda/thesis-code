@@ -18,8 +18,10 @@ import LatLng = google.maps.LatLng;
                   [icon]="homeIcon" title="Punkt macierzysty Twojej drużyny">
           </marker>
           <info-window id="iw">
-            {{selectedFacility?.name}}
-            <a (click)="onFacilityShowDetails(selectedFacility)">Szczegóły</a>
+            <h3>{{selectedFacility?.name}}</h3>
+            <p>Adres: {{selectedFacility?.address}}<br />
+              Miejsc do gry: {{selectedFacility?.playingSpots}}</p>
+            <a (click)="onFacilityShowDetails(selectedFacility)">Pokaż szczegóły</a>
           </info-window>
         </ng-container>
       </ngui-map>
@@ -69,7 +71,7 @@ export class RegionFacilityPickerComponent {
   mapOptions: MapOptions = {
     center: new LatLng(0.5, 0.5),
     streetViewControl: false,
-
+    minZoom: 10
   };
 
   onMapClick(ev) {
@@ -90,7 +92,6 @@ export class RegionFacilityPickerComponent {
   }
 
   getBasketIcon() {
-    console.log('xd');
     return {
       url: '/assets/images/basket_spot.png',
       anchor: [13, 43],

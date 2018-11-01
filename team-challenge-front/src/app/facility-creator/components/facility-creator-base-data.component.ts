@@ -16,9 +16,6 @@ import {FacilityCreationForm} from '../../core/models/facility';
           <nz-select formControlName="regionId" id="regionId" [nzDisabled]="true">
             <nz-option *ngFor="let region of regions" [nzValue]="region.id" [nzLabel]="region.name"></nz-option>
           </nz-select>
-          <nz-form-explain *ngIf="validateForm.get('regionId').dirty && validateForm.get('regionId').errors">
-            Wybierz swój region
-          </nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -31,6 +28,15 @@ import {FacilityCreationForm} from '../../core/models/facility';
           <!--<nz-form-extra>Wprowadź nazwę, która pozwoli rozpoznać innym ten obiekt.</nz-form-extra>-->
         </nz-form-control>
       </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">Lokalny adres</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input formControlName="address" id="address">
+          <nz-form-extra>Wprowadź ulicę oraz w miarę możliwości numer budynku.</nz-form-extra>
+        </nz-form-control>
+      </nz-form-item>
+
 
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="description">Ilość koszy</nz-form-label>
@@ -86,6 +92,7 @@ export class FacilityCreatorBaseDataComponent implements OnInit {
       const newBuilder = {
         ...this.builder,
         name: this.validateForm.value.name,
+        address: this.validateForm.value.address,
         regionId: this.validateForm.value.regionId,
         playingSpots: this.validateForm.value.playingSpots
       };
@@ -104,6 +111,7 @@ export class FacilityCreatorBaseDataComponent implements OnInit {
   ngOnInit(): void {
     this.validateForm = this.fb.group({
       name            : [ this.builder.name, [ Validators.required, Validators.minLength(3), Validators.maxLength(30)] ],
+      address: [this.builder.address],
       regionId: [this.fixedRegionId],
       playingSpots: [this.builder.playingSpots]
     });

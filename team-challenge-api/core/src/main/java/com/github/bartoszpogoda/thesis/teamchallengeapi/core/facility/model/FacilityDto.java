@@ -11,6 +11,8 @@ public class FacilityDto {
 
     private String name;
 
+    private String address;
+
     private String disciplineId;
 
     private String regionId;

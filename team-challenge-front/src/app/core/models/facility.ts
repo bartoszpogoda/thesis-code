@@ -3,6 +3,7 @@ import {Position} from './position';
 export interface Facility {
   id: string;
   name: string;
+  address: string;
   disciplineId: string;
   regionId: string;
   position: Position;
@@ -15,6 +16,7 @@ export interface Facility {
 
 export interface FacilityCreationForm {
   name?: string;
+  address?: string;
   disciplineId: string;
   regionId?: string;
   position?: Position;

@@ -18,7 +18,8 @@ import {LoadFacility} from '../actions/community-facilities.actions';
     <div class="spaces-sides">
       <app-breadcrumb [items]="items"></app-breadcrumb>
       <div class="content-container">
-        {{(facility$ | async)?.name}}
+        <h1>{{(facility$ | async)?.name}}</h1>
+        <p>{{ facility$ | async | json }}</p>
       </div>
     </div>
   `

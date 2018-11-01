@@ -34,6 +34,7 @@ export class PointPickerComponent {
   @Input()
   set center(center: Position) {
     this.mapOptions = {
+      ...this.mapOptions,
       center: new LatLng(center.lat, center.lng)
     };
 
@@ -54,11 +55,12 @@ export class PointPickerComponent {
   @Output()
   skipped = new EventEmitter();
 
-  currentPosition = null;  //LatLng = new LatLng(0.5, 0.5);
+  currentPosition = null; //new LatLng(0.5, 0.5);
 
   mapOptions: MapOptions = {
     center: new LatLng(0.5, 0.5),
-    streetViewControl: false
+    streetViewControl: false,
+    minZoom: 10
   };
 
   onMapClick(ev) {

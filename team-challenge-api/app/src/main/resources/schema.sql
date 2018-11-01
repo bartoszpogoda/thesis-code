@@ -51,7 +51,9 @@ CREATE TABLE Facilities (
   FacilityID VARCHAR(64) AUTO_INCREMENT PRIMARY KEY,
   DisciplineID VARCHAR(10) NOT NULL,
   RegionID VARCHAR(10) NOT NULL,
+  UserID VARCHAR(10),
   Name VARCHAR(64) NOT NULL,
+  Address VARCHAR(32) NOT NULL,
   PositionID VARCHAR(10) NOT NULL,
   Lighting BIT,
   SurfaceType VARCHAR(20),
@@ -62,6 +64,7 @@ CREATE TABLE Facilities (
 
   FOREIGN KEY (DisciplineID) REFERENCES Disciplines(DisciplineID),
   FOREIGN KEY (RegionID) REFERENCES Regions(RegionID),
+  FOREIGN KEY (UserID) REFERENCES Users(UserID), /* created by */
   FOREIGN KEY (PositionID) REFERENCES Positions(PositionID)
 );
 

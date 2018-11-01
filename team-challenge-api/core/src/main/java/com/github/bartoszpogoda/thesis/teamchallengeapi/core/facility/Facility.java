@@ -2,6 +2,7 @@ package com.github.bartoszpogoda.thesis.teamchallengeapi.core.facility;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.position.Position;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.user.User;
 import lombok.Builder;
 import lombok.Data;
 
@@ -25,8 +26,15 @@ public class Facility {
     @Column(name = "RegionID")
     private String regionId;
 
+    @ManyToOne
+    @JoinColumn(name = "UserID")
+    private User registeredBy;
+
     @Column(name = "Name")
     private String name;
+
+    @Column(name = "Address")
+    private String address;
 
     @OneToOne
     @JoinColumn(name = "PositionID")
