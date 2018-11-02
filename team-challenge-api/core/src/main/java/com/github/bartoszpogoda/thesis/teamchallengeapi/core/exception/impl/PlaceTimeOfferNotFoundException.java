@@ -6,13 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class TeamInvitationNotFoundException extends ApiException {
+public class PlaceTimeOfferNotFoundException extends ApiException {
 
-    private static final ExceptionCode CODE = ExceptionCode.TEAM_INVITATION_NOT_FOUND;
-    private static final String MESSAGE = "Team invitation not found.";
+    private static final ExceptionCode CODE = ExceptionCode.PLACE_TIME_OFFER_NOT_FOUND;
+    private static final String MESSAGE = "Place Time Offer not found.";
     private static final String DETAILS = "";
 
-    public TeamInvitationNotFoundException() {
+    public PlaceTimeOfferNotFoundException() {
         super(CODE, MESSAGE, DETAILS);
     }
 }

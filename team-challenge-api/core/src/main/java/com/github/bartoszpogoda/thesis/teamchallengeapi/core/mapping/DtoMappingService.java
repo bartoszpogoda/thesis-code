@@ -1,5 +1,11 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.mapping;
 
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.Challenge;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.model.ChallengeDto;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.placetimeoffer.PlaceTimeOffer;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.placetimeoffer.model.PlaceTimeOfferDto;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.result.Result;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.result.model.ResultDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.facility.Facility;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.facility.model.FacilityDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.Player;
@@ -15,6 +21,8 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.teaminvitation.Team
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.teaminvitation.model.TeamInvitationDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.Collectors;
 
 @Service
 public class DtoMappingService {
@@ -78,10 +86,29 @@ public class DtoMappingService {
         return facilityDto;
     }
 
+    public PlaceTimeOfferDto mapToDto(PlaceTimeOffer placeTimeOffer) {
+        PlaceTimeOfferDto placeTimeOfferDto = modelMapper.map(placeTimeOffer, PlaceTimeOfferDto.class);
+
+        placeTimeOfferDto.setOfferingTeamId(placeTimeOffer.getOfferingTeam().getId());
+
+        return placeTimeOfferDto;
+    }
+
+    public ChallengeDto mapToDto(Challenge challenge) {
+        ChallengeDto challengeDto = modelMapper.map(challenge, ChallengeDto.class);
+
+        return challengeDto;
+    }
+
+    public ResultDto mapToDto(Result result) {
+        ResultDto resultDto = modelMapper.map(result, ResultDto.class);
+
+        return resultDto;
+    }
+
 
     public DtoMappingService(ModelMapper modelMapper, PlayerService playerService) {
         this.modelMapper = modelMapper;
         this.playerService = playerService;
     }
-
 }

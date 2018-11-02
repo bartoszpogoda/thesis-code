@@ -5,14 +5,13 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.Exception
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class PlayerNotFoundException extends ApiException {
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class InvalidOperationException extends ApiException {
 
-    private static final ExceptionCode CODE = ExceptionCode.PLAYER_NOT_FOUND;
-    private static final String MESSAGE = "Player not found.";
-    private static final String DETAILS = "";
+    private static final ExceptionCode CODE = ExceptionCode.INVALID_OPERATION_EXCEPTION;
+    private static final String MESSAGE = "Invalid operation.";
 
-    public PlayerNotFoundException() {
-        super(CODE, MESSAGE, DETAILS);
+    public InvalidOperationException(String details) {
+        super(CODE, MESSAGE, details);
     }
 }

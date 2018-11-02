@@ -1,3 +1,25 @@
+--- PRODUCTION READY DATA
+
+-- Place Time Offer Statuses
+INSERT INTO PlaceTimeOfferStatuses VALUES(0, 'Pending');
+INSERT INTO PlaceTimeOfferStatuses VALUES(1, 'Accepted');
+INSERT INTO PlaceTimeOfferStatuses VALUES(2, 'Rejected');
+INSERT INTO PlaceTimeOfferStatuses VALUES(3, 'Cancelled');
+
+-- Challenge Statuses
+INSERT INTO ChallengeStatuses VALUES(0, 'Pending');
+INSERT INTO ChallengeStatuses VALUES(1, 'Accepted');
+INSERT INTO ChallengeStatuses VALUES(2, 'Rejected');
+INSERT INTO ChallengeStatuses VALUES(3, 'Canceled');
+INSERT INTO ChallengeStatuses VALUES(4, 'Finished');
+
+-- Result Statuses
+INSERT INTO ResultStatuses VALUES(0, 'Reported');
+INSERT INTO ResultStatuses VALUES(1, 'Accepted');
+INSERT INTO ResultStatuses VALUES(2, 'Rejected');
+
+
+--- TEST DATA
 
 -- Test user, plain password is 'password'
 INSERT INTO Users (Email, EncodedPassword, Fullname, BirthdayDate) VALUES('test@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Kevin Best', '1996-11-16');
@@ -67,4 +89,3 @@ UPDATE Players SET TeamID = '1' WHERE PlayerID = '2';
 
 -- Test team invitations
 INSERT INTO TeamInvitations VALUES('1', '1', '3');
-

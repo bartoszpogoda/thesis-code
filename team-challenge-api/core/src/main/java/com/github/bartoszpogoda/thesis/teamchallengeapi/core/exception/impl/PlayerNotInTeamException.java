@@ -5,14 +5,14 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.Exception
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class TeamInvitationNotFoundException extends ApiException {
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class PlayerNotInTeamException extends ApiException {
 
-    private static final ExceptionCode CODE = ExceptionCode.TEAM_INVITATION_NOT_FOUND;
-    private static final String MESSAGE = "Team invitation not found.";
-    private static final String DETAILS = "";
+    private static final ExceptionCode CODE = ExceptionCode.PLAYER_NOT_IN_TEAM;
+    private static final String MESSAGE = "Player is not in team.";
+    private static final String DETAILS = "Action not possible.";
 
-    public TeamInvitationNotFoundException() {
+    public PlayerNotInTeamException() {
         super(CODE, MESSAGE, DETAILS);
     }
 }

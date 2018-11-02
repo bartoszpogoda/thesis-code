@@ -22,13 +22,11 @@ CREATE TABLE GrantedAuthorities (
 );
 
 /* DISCIPLINES */
-
 CREATE TABLE Disciplines (
   DisciplineID VARCHAR(10) PRIMARY KEY
 );
 
 /* POSITIONS */
-
 CREATE TABLE Positions (
   PositionID VARCHAR(10) AUTO_INCREMENT PRIMARY KEY,
   Lat DOUBLE,
@@ -36,7 +34,6 @@ CREATE TABLE Positions (
 );
 
 /* REGIONS */
-
 CREATE TABLE Regions (
   RegionID VARCHAR(10) PRIMARY KEY,
   Name VARCHAR(25) NOT NULL,
@@ -46,7 +43,6 @@ CREATE TABLE Regions (
 );
 
 /* FACILITIES */
-
 CREATE TABLE Facilities (
   FacilityID VARCHAR(64) AUTO_INCREMENT PRIMARY KEY,
   DisciplineID VARCHAR(10) NOT NULL,
@@ -69,7 +65,6 @@ CREATE TABLE Facilities (
 );
 
 /* PLAYERS */
-
 CREATE TABLE Players (
   PlayerID VARCHAR(64) AUTO_INCREMENT PRIMARY KEY,
   UserID VARCHAR(64) NOT NULL,
@@ -113,4 +108,88 @@ CREATE TABLE TeamInvitations (
   FOREIGN KEY (TeamID) REFERENCES Teams(TeamID),
   FOREIGN KEY (PlayerID) REFERENCES Players (PlayerID),
   UNIQUE KEY (TeamID, PlayerID)
+);
+
+/* CHALLENGE STATUSES */
+CREATE TABLE ChallengeStatuses (
+  ChallengeStatusID INTEGER AUTO_INCREMENT PRIMARY KEY,
+  Name VARCHAR(10) NOT NULL
+);
+
+/* CHALLENGES */
+CREATE TABLE Challenges (
+  ChallengeID VARCHAR(64) AUTO_INCREMENT PRIMARY KEY,
+  DisciplineID VARCHAR(64) NOT NULL,
+  ChallengeStatusID INTEGER NOT NULL,
+  ChallengingTeamID VARCHAR(64) NOT NULL,
+  ChallengedTeamID VARCHAR(64) NOT NULL,
+  CreationDate DATE NOT NULL,
+
+  FOREIGN KEY (DisciplineID) REFERENCES Disciplines(DisciplineID),
+  FOREIGN KEY (ChallengingTeamID) REFERENCES Teams(TeamID),
+  FOREIGN KEY (ChallengedTeamID) REFERENCES Teams(TeamID),
+  FOREIGN KEY (ChallengeStatusID) REFERENCES ChallengeStatuses(ChallengeStatusID)
+);
+
+/* PLACE TIME OFFER STATUSES */
+CREATE TABLE PlaceTimeOfferStatuses (
+  PlaceTimeOfferStatusID INTEGER AUTO_INCREMENT PRIMARY KEY,
+  Name VARCHAR(10) NOT NULL
+);
+
+/* PLACE TIME OFFERS */
+CREATE TABLE PlaceTimeOffers (
+  PlaceTimeOfferID VARCHAR(64) AUTO_INCREMENT PRIMARY KEY,
+  PlaceTimeOfferStatusID INTEGER NOT NULL,
+  ChallengeID VARCHAR(64) NOT NULL,
+  OfferingTeamID VARCHAR(64) NOT NULL,
+  OfferedDate DATETIME NOT NULL,
+  OfferedFacilityID VARCHAR(64) NOT NULL,
+
+  FOREIGN KEY (ChallengeID) REFERENCES Challenges(ChallengeID),
+  FOREIGN KEY (OfferingTeamID) REFERENCES Teams(TeamID),
+  FOREIGN KEY (PlaceTimeOfferStatusID) REFERENCES PlaceTimeOfferStatuses(PlaceTimeOfferStatusID),
+  FOREIGN KEY (OfferedFacilityID) REFERENCES Facilities(FacilityID)
+);
+
+/* TEAM REVIEWS */
+CREATE TABLE TeamReviews (
+  TeamReviewID VARCHAR(64) AUTO_INCREMENT PRIMARY KEY,
+  ChallengeID VARCHAR(64) NOT NULL,
+  ReviewingTeamID VARCHAR(64) NOT NULL,
+  ReviewedTeamID VARCHAR(64) NOT NULL,
+  ReviewDate DATETIME NOT NULL,
+
+  FairPlayLevel TINYINT UNSIGNED, /* 1 - 10 */
+  PlayAgain BIT,
+  BlackList BIT,
+
+  FOREIGN KEY (ChallengeID) REFERENCES Challenges(ChallengeID),
+  FOREIGN KEY (ReviewingTeamID) REFERENCES Teams(TeamID),
+  FOREIGN KEY (ReviewedTeamID) REFERENCES Teams(TeamID)
+);
+
+
+/* CHALLENGE RESULT STATUSES */
+CREATE TABLE ResultStatuses (
+  ResultStatusID INTEGER AUTO_INCREMENT PRIMARY KEY,
+  Name VARCHAR(10) NOT NULL
+);
+
+/* CHALLENGE RESULTS */
+CREATE TABLE Results (
+  ResultID VARCHAR(64) AUTO_INCREMENT PRIMARY KEY,
+  ChallengeID VARCHAR(64) NOT NULL,
+
+  WinnerTeamID VARCHAR(64) NOT NULL,
+  WinnerPoints INTEGER,
+  LoserPoints INTEGER,
+  ReportingTeamID VARCHAR(64) NOT NULL,
+  ReportedDate DATETIME NOT NULL,
+  ResultStatusID INTEGER NOT NULL,
+
+  FOREIGN KEY (ChallengeID) REFERENCES Challenges(ChallengeID),
+  FOREIGN KEY (WinnerTeamID) REFERENCES Teams(TeamID),
+  FOREIGN KEY (ReportingTeamID) REFERENCES Teams(TeamID),
+  FOREIGN KEY (ResultStatusID) REFERENCES ResultStatuses(ResultStatusID)
 );

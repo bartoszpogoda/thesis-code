@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-abstract public class AbstractException extends Exception {
+abstract public class ApiException extends Exception {
 
     @Getter
     private ExceptionCode exceptionCode;
