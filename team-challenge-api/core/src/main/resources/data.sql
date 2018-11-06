@@ -13,7 +13,7 @@ INSERT INTO ChallengeStatuses VALUES(2, 'Rejected');
 INSERT INTO ChallengeStatuses VALUES(3, 'Canceled');
 INSERT INTO ChallengeStatuses VALUES(4, 'Finished');
 
--- Result Statuses
+-- ResultDto Statuses
 INSERT INTO ResultStatuses VALUES(0, 'Reported');
 INSERT INTO ResultStatuses VALUES(1, 'Accepted');
 INSERT INTO ResultStatuses VALUES(2, 'Rejected');
@@ -40,6 +40,7 @@ INSERT INTO Users (Email, EncodedPassword, Fullname, BirthdayDate) VALUES('user2
 INSERT INTO Users (Email, EncodedPassword, Fullname, BirthdayDate) VALUES('user3@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'The User 3', '1991-01-11');
 INSERT INTO Users (Email, EncodedPassword, Fullname, BirthdayDate) VALUES('user4@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'The User 4', '1992-08-10');
 INSERT INTO Users (Email, EncodedPassword, Fullname, BirthdayDate) VALUES('user5@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'User 5', '1993-12-12');
+
 
 INSERT INTO Authorities VALUES('ROLE_USER');
 INSERT INTO Authorities VALUES('ROLE_MOD');
@@ -89,3 +90,102 @@ UPDATE Players SET TeamID = '1' WHERE PlayerID = '2';
 
 -- Test team invitations
 INSERT INTO TeamInvitations VALUES('1', '1', '3');
+
+
+-- Drużyna studentów elektroniki PWR, średnio zaawansowani (2-3 lata doświadczenia)
+INSERT INTO Users (UserId, Email, EncodedPassword, Fullname, BirthdayDate)
+VALUES('300', 'mm1@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Student W4 1', '1996-10-12');
+INSERT INTO Users (UserId, Email, EncodedPassword, Fullname, BirthdayDate)
+VALUES('301', 'mm2@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Student W4 2', '1996-12-10');
+INSERT INTO Users (UserId, Email, EncodedPassword, Fullname, BirthdayDate)
+VALUES('302', 'mm3@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Student W4 3', '1995-01-12');
+
+INSERT INTO Players VALUES('300', '300', NULL, '3x3basket', 'wro', 182, 2);
+INSERT INTO Positions VALUES('300', 51.108961, 17.0591722); -- Budynek C1
+
+INSERT INTO Teams (TeamId, DisciplineID, HomeID, RegionID, ManagerID, Name, Active, Balance)
+VALUES('300', '3x3basket', '300', 'wro', '300', 'PWR Elektronika', 1, 100);
+
+UPDATE Players SET TeamID = '300' WHERE PlayerID = '300';
+INSERT INTO Players VALUES('301', '301', '300', '3x3basket', 'wro', 176, 2);
+INSERT INTO Players VALUES('302', '302', '300', '3x3basket', 'wro', 184, 3);
+
+
+-- Drużyna studentów mechaniki PWR, średnio zaawansowani (2-3 lata doświadczenia)
+INSERT INTO Users (UserId, Email, EncodedPassword, Fullname, BirthdayDate)
+VALUES('303', 'mm4@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Student W10 1', '1993-09-12');
+INSERT INTO Users (UserId, Email, EncodedPassword, Fullname, BirthdayDate)
+VALUES('304', 'mm5@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Student W10 2', '1995-02-10');
+INSERT INTO Users (UserId, Email, EncodedPassword, Fullname, BirthdayDate)
+VALUES('305', 'mm6@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Student W10 3', '1994-01-12');
+
+INSERT INTO Players VALUES('303', '303', NULL, '3x3basket', 'wro', 170, 3);
+INSERT INTO Positions VALUES('303', 51.108218, 17.065157); -- Budynek wydziału mechanicznego
+
+INSERT INTO Teams (TeamId, DisciplineID, HomeID, RegionID, ManagerID, Name, Active, Balance)
+VALUES('303', '3x3basket', '303', 'wro', '303', 'PWR Mechanika', 1, 100);
+
+UPDATE Players SET TeamID = '303' WHERE PlayerID = '303';
+INSERT INTO Players VALUES('304', '304', '303', '3x3basket', 'wro', 180, 2);
+INSERT INTO Players VALUES('305', '305', '303', '3x3basket', 'wro', 185, 3);
+
+
+
+-- Drużyna seniorow Sepolno (50-60 lat)
+INSERT INTO Users (UserId, Email, EncodedPassword, Fullname, BirthdayDate)
+VALUES('306', 'mm7@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Senior Sepolno 1', '1968-11-20');
+INSERT INTO Users (UserId, Email, EncodedPassword, Fullname, BirthdayDate)
+VALUES('307', 'mm8@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Senior Sepolno 2', '1965-05-07');
+INSERT INTO Users (UserId, Email, EncodedPassword, Fullname, BirthdayDate)
+VALUES('308', 'mm9@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Senior Seplno 3', '1969-02-13');
+
+INSERT INTO Players VALUES('306', '306', NULL, '3x3basket', 'wro', 165, 5);
+INSERT INTO Positions VALUES('306', 51.109952, 17.098530); -- Centrum sepolna
+
+INSERT INTO Teams (TeamId, DisciplineID, HomeID, RegionID, ManagerID, Name, Active, Balance)
+VALUES('306', '3x3basket', '306', 'wro', '306', 'Seniorzy Sepolno', 1, 100);
+
+UPDATE Players SET TeamID = '306' WHERE PlayerID = '306';
+INSERT INTO Players VALUES('307', '307', '306', '3x3basket', 'wro', 168, 3);
+INSERT INTO Players VALUES('308', '308', '306', '3x3basket', 'wro', 170, 6);
+
+
+-- Juniorzy Sepolno (13-15 lat)
+INSERT INTO Users (UserId, Email, EncodedPassword, Fullname, BirthdayDate)
+VALUES('309', 'mm10@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Junior Sepolno 1', '2005-11-20');
+INSERT INTO Users (UserId, Email, EncodedPassword, Fullname, BirthdayDate)
+VALUES('310', 'mm11@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Junior Sepolno 2', '2004-05-07');
+INSERT INTO Users (UserId, Email, EncodedPassword, Fullname, BirthdayDate)
+VALUES('311', 'mm12@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Junior Seplno 3', '2004-02-13');
+
+INSERT INTO Players VALUES('309', '309', NULL, '3x3basket', 'wro', 163, 1);
+INSERT INTO Positions VALUES('309', 51.109568, 17.095805); -- SP nr 45 na sepolnie
+
+INSERT INTO Teams (TeamId, DisciplineID, HomeID, RegionID, ManagerID, Name, Active, Balance)
+VALUES('309', '3x3basket', '309', 'wro', '309', 'Juniorzy Sepolno SP45', 1, 100);
+
+UPDATE Players SET TeamID = '309' WHERE PlayerID = '309';
+INSERT INTO Players VALUES('310', '310', '309', '3x3basket', 'wro', 158, 2);
+INSERT INTO Players VALUES('311', '311', '309', '3x3basket', 'wro', 163, 1);
+
+
+-- Juniorzy Centrum (13-15 lat)
+INSERT INTO Users (UserId, Email, EncodedPassword, Fullname, BirthdayDate)
+VALUES('312', 'mm13@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Junior Centrum 1', '2005-07-22');
+INSERT INTO Users (UserId, Email, EncodedPassword, Fullname, BirthdayDate)
+VALUES('313', 'mm14@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Junior Centrum 2', '2004-05-03');
+INSERT INTO Users (UserId, Email, EncodedPassword, Fullname, BirthdayDate)
+VALUES('314', 'mm15@test.com', '$2a$10$ve0zm7QveRaoCZbNrRAByO6bNYqF9W/jP1A2pZmHzi.4Ocai1bZ5u', 'Junior Centrum 3', '2005-01-12');
+
+INSERT INTO Players VALUES('312', '312', NULL, '3x3basket', 'wro', 165, 2);
+INSERT INTO Positions VALUES('312', 51.106060, 17.036367); -- SP nr 63 centrum
+
+INSERT INTO Teams (TeamId, DisciplineID, HomeID, RegionID, ManagerID, Name, Active, Balance)
+VALUES('312', '3x3basket', '312', 'wro', '312', 'Juniorzy Centrum SP63', 1, 100);
+
+UPDATE Players SET TeamID = '312' WHERE PlayerID = '312';
+INSERT INTO Players VALUES('313', '313', '312', '3x3basket', 'wro', 160, 1);
+INSERT INTO Players VALUES('314', '314', '312', '3x3basket', 'wro', 164, 2);
+
+
+

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ResultNotFoundException extends ApiException {
 
     private static final ExceptionCode CODE = ExceptionCode.RESULT_NOT_FOUND;
-    private static final String MESSAGE = "Result not found.";
+    private static final String MESSAGE = "ResultDto not found.";
     private static final String DETAILS = "";
 
     public ResultNotFoundException() {

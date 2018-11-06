@@ -1,6 +1,7 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.team;
 
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.discipline.DisciplineService;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.ApiException;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.*;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.image.ImageService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.Player;
@@ -151,6 +152,16 @@ public class TeamService {
         User currentUser = userService.getCurrentUser().orElseThrow(AccessForbiddenException::new);
 
         return team.getManager().getUser().equals(currentUser);
+    }
+
+    /**
+     * Returns list of teams that are ready for matchmaking in specified region.
+     */
+    public List<Team> getTeamsReadyForMatchmaking(String disciplineId, String regionId) throws ApiException {
+        disciplineService.checkDisciplineExists(disciplineId);
+        regionService.checkRegionExists(regionId);
+
+        return this.teamRepository.findByRegionIdAndDisciplineIdAndActiveIsTrue(regionId, disciplineId);
     }
 
     public TeamService(TeamRepository teamRepository, PlayerService playerService, DisciplineService disciplineService, RegionService regionService, PositionService positionService, ImageService imageService, UserService userService) {

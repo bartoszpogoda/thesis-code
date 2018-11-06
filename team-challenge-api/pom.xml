@@ -10,8 +10,6 @@
 
     <modules>
         <module>core</module>
-        <module>app</module>
-        <module>matchmaking</module>
     </modules>
 
 </project>

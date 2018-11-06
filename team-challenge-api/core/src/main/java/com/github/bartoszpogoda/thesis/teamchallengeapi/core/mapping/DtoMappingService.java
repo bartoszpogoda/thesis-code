@@ -8,6 +8,13 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.result.Re
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.result.model.ResultDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.facility.Facility;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.facility.model.FacilityDto;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.Criteria;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.algorithm.criterion.BooleanCriterion;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.algorithm.criterion.NormalizedCriterion;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.algorithm.criterion.NumericCriterion;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.model.BooleanCriteriaDto;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.model.CriteriaDto;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.model.NumericCriteriaDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.Player;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.PlayerService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.model.PlayerDto;
@@ -95,17 +102,43 @@ public class DtoMappingService {
     }
 
     public ChallengeDto mapToDto(Challenge challenge) {
-        ChallengeDto challengeDto = modelMapper.map(challenge, ChallengeDto.class);
-
-        return challengeDto;
+        return modelMapper.map(challenge, ChallengeDto.class);
     }
 
     public ResultDto mapToDto(Result result) {
-        ResultDto resultDto = modelMapper.map(result, ResultDto.class);
-
-        return resultDto;
+        return modelMapper.map(result, ResultDto.class);
     }
 
+    public CriteriaDto mapToDto(Criteria criteria) {
+        CriteriaDto comparisonDto = new CriteriaDto();
+
+        comparisonDto.setNumericCriteria(criteria.getNormalizedNumericCriteria().stream()
+                .map(this::mapNumericCriteria).collect(Collectors.toList()));
+
+        comparisonDto.setBooleanCriteria(criteria.getNormalizedBooleanCriteria().stream()
+                .map(this::mapBooleanCriteria).collect(Collectors.toList()));
+
+        return comparisonDto;
+    }
+
+    private BooleanCriteriaDto mapBooleanCriteria(NormalizedCriterion<BooleanCriterion> criteria) {
+        BooleanCriteriaDto booleanCriteriaDto = new BooleanCriteriaDto();
+
+        booleanCriteriaDto.setValue(criteria.getOriginalCriteria().isValue());
+        booleanCriteriaDto.setType(criteria.getOriginalCriteria().getType().toString());
+
+        return booleanCriteriaDto;
+    }
+
+    private NumericCriteriaDto mapNumericCriteria(NormalizedCriterion<NumericCriterion> criteria) {
+        NumericCriteriaDto numericCriteriaDto = new NumericCriteriaDto();
+
+        numericCriteriaDto.setOriginal(criteria.getOriginalCriteria().getValue());
+        numericCriteriaDto.setNormalized(criteria.getNormalizedValue());
+        numericCriteriaDto.setType(criteria.getOriginalCriteria().getType().toString());
+
+        return numericCriteriaDto;
+    }
 
     public DtoMappingService(ModelMapper modelMapper, PlayerService playerService) {
         this.modelMapper = modelMapper;

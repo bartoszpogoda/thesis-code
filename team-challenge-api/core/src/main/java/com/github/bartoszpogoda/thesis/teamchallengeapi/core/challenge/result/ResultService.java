@@ -99,7 +99,7 @@ public class ResultService {
         }
 
         if(result.getStatus() != ResultStatus.Reported) {
-            throw new InvalidOperationException("Result already confirmed or rejected.");
+            throw new InvalidOperationException("ResultDto already confirmed or rejected.");
         }
 
         result.setStatus(status);

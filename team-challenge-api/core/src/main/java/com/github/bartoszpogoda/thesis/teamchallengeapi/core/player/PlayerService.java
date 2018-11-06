@@ -4,12 +4,10 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.discipline.Discipli
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.*;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.image.ImageService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.model.PlayerRegistrationForm;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.Team;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.user.User;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.user.UserService;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +20,6 @@ import javax.persistence.criteria.Predicate;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Optional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -68,6 +65,10 @@ public class PlayerService {
 
         return userService.getCurrentUser()
                 .flatMap(user -> playerRepository.findByUserAndDisciplineId(user, disciplineId));
+    }
+
+    public int getAge(Player player) {
+        return calculateAge(player.getUser().getBirthdayDate());
     }
 
     public int calculateAge(LocalDate birthDate) {
@@ -118,6 +119,7 @@ public class PlayerService {
 
         return this.imageService.getUserAvatar(player.getUser().getImagePath());
     }
+
 
     @Transactional
     public void saveAvatar(String playerId, MultipartFile file) throws UnknownDisciplineException, IOException, PlayerNotFoundException, AccessForbiddenException {
