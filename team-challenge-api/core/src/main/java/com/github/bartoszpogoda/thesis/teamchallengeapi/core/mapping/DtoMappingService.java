@@ -9,12 +9,16 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.result.mo
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.facility.Facility;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.facility.model.FacilityDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.Criteria;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.SearchResult;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.algorithm.ScoredTeam;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.algorithm.criterion.BooleanCriterion;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.algorithm.criterion.NormalizedCriterion;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.algorithm.criterion.NumericCriterion;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.model.BooleanCriteriaDto;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.model.CriteriaDto;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.model.NumericCriteriaDto;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.model.comparison.BooleanCriteriaDto;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.model.comparison.CriteriaDto;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.model.comparison.NumericCriteriaDto;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.model.search.ScoredTeamDto;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.model.search.SearchResultDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.Player;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.PlayerService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.model.PlayerDto;
@@ -139,6 +143,25 @@ public class DtoMappingService {
 
         return numericCriteriaDto;
     }
+
+    public SearchResultDto mapToDto(SearchResult searchResult) {
+        SearchResultDto searchResultDto = new SearchResultDto();
+
+        searchResultDto.setResults(searchResult.getResults().stream().map(this::mapToDto).collect(Collectors.toList()));
+
+        return searchResultDto;
+    }
+
+    private ScoredTeamDto mapToDto(ScoredTeam scoredTeam) {
+        ScoredTeamDto scoredTeamDto = new ScoredTeamDto();
+
+        scoredTeamDto.setTeamId(scoredTeam.getTeam().getId());
+        scoredTeamDto.setTotalScore(scoredTeam.getTotalScore());
+        scoredTeamDto.setCriteria(mapToDto(scoredTeam.getCriteria()));
+
+        return scoredTeamDto;
+    }
+
 
     public DtoMappingService(ModelMapper modelMapper, PlayerService playerService) {
         this.modelMapper = modelMapper;

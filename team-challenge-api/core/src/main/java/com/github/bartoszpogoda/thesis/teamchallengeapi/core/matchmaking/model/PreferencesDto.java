@@ -9,6 +9,6 @@ public class PreferencesDto {
     private double weightDistance;
     private double weightExperienceDiff;
 
-    private boolean playAgain;
+    private boolean friendly;
     // TODO friendly etc.
 }

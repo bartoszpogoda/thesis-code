@@ -1,6 +1,7 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.algorithm;
 
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.algorithm.criterion.*;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.Player;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.PlayerService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.position.PositionService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.Team;
@@ -11,7 +12,6 @@ import java.util.List;
 
 /**
  * Generates criterion with values based on data existing in the system.
- *
  */
 @Service
 public class CriteriaGeneratorService {
@@ -24,6 +24,7 @@ public class CriteriaGeneratorService {
 
         criteria.add(ageCriteria(hostTeam, otherTeam));
         criteria.add(distanceCriterion(hostTeam, otherTeam));
+        criteria.add(experienceCriterion(hostTeam, otherTeam));
 
         return criteria;
     }
@@ -49,10 +50,21 @@ public class CriteriaGeneratorService {
         return new DistanceCriterion(this.positionService.distance(hostTeam.getHome(), otherTeam.getHome()));
     }
 
+    public ExperienceCriterion experienceCriterion(Team hostTeam, Team otherTeam) {
+        double sumBest3HostTeam = hostTeam.getPlayers().stream()
+                .mapToDouble(Player::getYearsOfExperience).sorted().limit(3).sum();
+        double sumBest3OtherTeam = otherTeam.getPlayers().stream()
+                .mapToDouble(Player::getYearsOfExperience).sorted().limit(3).sum();
+
+        return new ExperienceCriterion(sumBest3OtherTeam - sumBest3HostTeam);
+    }
+
+
     public FriendlyCriterion friendlyCriteria(Team hostTeam, Team otherTeam) {
         // temp - always friendly
         return new FriendlyCriterion(true);
     }
+
 
     public CriteriaGeneratorService(PlayerService playerService, PositionService positionService) {
         this.playerService = playerService;

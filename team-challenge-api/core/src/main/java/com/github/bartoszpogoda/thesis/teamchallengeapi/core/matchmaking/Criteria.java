@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 public class Criteria {
 
-    List<NormalizedCriterion<NumericCriterion>> normalizedNumericCriteria;
-    List<NormalizedCriterion<BooleanCriterion>> normalizedBooleanCriteria;
+    private List<NormalizedCriterion<NumericCriterion>> normalizedNumericCriteria;
+    private List<NormalizedCriterion<BooleanCriterion>> normalizedBooleanCriteria;
 
 }

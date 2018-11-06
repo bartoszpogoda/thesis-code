@@ -1,4 +1,4 @@
-package com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.model;
+package com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.model.comparison;
 
 import lombok.Data;
 

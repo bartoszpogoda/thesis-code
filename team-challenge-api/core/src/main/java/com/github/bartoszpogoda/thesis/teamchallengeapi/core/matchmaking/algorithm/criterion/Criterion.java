@@ -7,6 +7,8 @@ public abstract class Criterion {
 
     private CriterionType type;
 
+//    private double weight;
+
     public Criterion(CriterionType type) {
         this.type = type;
     }
@@ -14,6 +16,14 @@ public abstract class Criterion {
     public CriterionType getType() {
         return type;
     }
+
+//    public double getWeight() {
+//        return weight;
+//    }
+//
+//    public void setWeight(double weight) {
+//        this.weight = weight;
+//    }
 }
 
 
