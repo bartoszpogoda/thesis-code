@@ -19,9 +19,13 @@ public class WeightConfiguration {
 
         double weightPoolLeft = 1.0;
 
-        if(friendly) {
+        if (friendly) {
             weights.put(CriterionType.FRIENDLY, 0.10);
             weightPoolLeft -= 0.10;
+        } else {
+            // TODO it is for safety but the weight should be checked when its not configured
+            // it should not be generated as criteria in Criteria Generator Service
+            weights.put(CriterionType.FRIENDLY, 0.00);
         }
 
         // other boolean criterias here

@@ -5,6 +5,7 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.mapping.DtoMappingS
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.model.ComparisonRequestDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.model.SearchRequestDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.model.comparison.CriteriaDto;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.model.search.SearchResultDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +32,7 @@ public class MatchmakingResource {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<?> search(@RequestBody @Valid SearchRequestDto searchRequest) throws ApiException {
+    public ResponseEntity<SearchResultDto> search(@RequestBody @Valid SearchRequestDto searchRequest) throws ApiException {
 
         SearchResult result = this.matchmakingService.search(searchRequest.getPreferences(), searchRequest.getSearchingTeamId());
 

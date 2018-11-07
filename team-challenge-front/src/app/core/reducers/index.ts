@@ -28,6 +28,8 @@ import * as fromPending from './pending.reducer';
 import * as fromManager from './manager.reducer';
 import * as fromNotification from './notification.reducer';
 import * as fromCore from './core.reducer';
+import * as fromSearch from './search.reducer';
+
 import {selectTeamState} from '../selectors/my-team.selectors';
 
 
@@ -44,6 +46,7 @@ export interface State {
   myTeam: fromMyTeam.State;
   manager: fromManager.State;
   notification: fromNotification.State;
+  search: fromSearch.State;
 }
 
 /**
@@ -59,7 +62,8 @@ export const reducers: ActionReducerMap<State> = {
   myPlayer: fromMyPlayer.reducer,
   myTeam: fromMyTeam.reducer,
   manager: fromManager.reducer,
-  notification: fromNotification.reducer
+  notification: fromNotification.reducer,
+  search: fromSearch.reducer
 };
 
 // console.log all actions

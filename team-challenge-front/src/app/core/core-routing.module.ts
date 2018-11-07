@@ -10,6 +10,8 @@ import {IsManagerGuard} from './guard/is-manager.guard';
 import {TeamRecruitmentPageComponent} from './containers/team-recruitment-page.component';
 import {TeamManagerHomePageComponent} from './containers/team-manager-home-page.component';
 import {ChallengesPageComponent} from './containers/challenges-page.component';
+import {ChallengesSearchPageComponent} from './containers/challenges-search-page.component';
+import {ChallengesSearchResultPageComponent} from './containers/challenges-search-result-page.component';
 
 const routes: Routes = [
   {
@@ -53,6 +55,14 @@ const routes: Routes = [
   {
     path: 'challenges',
     component: ChallengesPageComponent
+  },
+  {
+    path: 'challenges/search',
+    component: ChallengesSearchPageComponent
+  },
+  {
+    path: 'challenges/search/result',
+    component: ChallengesSearchResultPageComponent
   }
 ];
 

@@ -53,6 +53,11 @@ import {RegionFacilityPickerComponent} from './components/region-facility-picker
 import {FacilityService} from './service/facility.service';
 import {TeamRecruitmentComponent} from './containers/team-recruitment.component';
 import {ChallengesPageComponent} from './containers/challenges-page.component';
+import {ChallengeSearchFormComponent} from './components/challenge-search-form.component';
+import {ChallengesSearchPageComponent} from './containers/challenges-search-page.component';
+import {ChallengesSearchResultPageComponent} from './containers/challenges-search-result-page.component';
+import {SearchEffects} from './effects/search.effects';
+import {SearchService} from './service/search.service';
 
 export const COMPONENTS = [
   AppComponent,
@@ -73,6 +78,9 @@ export const COMPONENTS = [
   RegionFacilityPickerComponent,
   TeamRecruitmentComponent,
   ChallengesPageComponent,
+  ChallengeSearchFormComponent,
+  ChallengesSearchPageComponent,
+  ChallengesSearchResultPageComponent,
   MyTeamPageComponent, TeamJoinPageComponent, ReceivedInvitationComponent, TeamDisplayComponent,
   TeamManagerPageComponent, TeamRecruitmentPageComponent, SentInvitationComponent, PlayerCardComponent,
   PointPickerComponent, TeamManagerHomePageComponent,
@@ -82,7 +90,7 @@ export const COMPONENTS = [
   imports: [CommonModule, RouterModule, NgZorroAntdModule, AuthModule, CoreRoutingModule,
     NguiMapModule, ReactiveFormsModule,
     NgProgressModule.forRoot(),
-    EffectsModule.forFeature([MyTeamEffects, ManagerEffects, PlayerEffects, CoreEffects])],
+    EffectsModule.forFeature([MyTeamEffects, ManagerEffects, PlayerEffects, CoreEffects, SearchEffects])],
   declarations: COMPONENTS,
   exports: COMPONENTS,
   providers: [{ provide: NZ_I18N, useValue: en_US }, {
@@ -90,7 +98,7 @@ export const COMPONENTS = [
     useClass: ErrorInterceptor,
     multi: true,
   }, { provide: NZ_MESSAGE_CONFIG, useValue: { nzDuration: 5000 }},
-    TeamService, PlayerService, RegionService, PlayerCreatorGuard, TeamJoinRedirectGuard, IsManagerGuard, TeamInvitationService, FacilityService]
+    TeamService, PlayerService, RegionService, SearchService, PlayerCreatorGuard, TeamJoinRedirectGuard, IsManagerGuard, TeamInvitationService, FacilityService]
 })
 export class CoreModule {
   static forRoot() {
