@@ -21,4 +21,35 @@ export const selectResult = createSelector(
   fromSearch.getResult
 );
 
+export const selectSelected = createSelector(
+  selectSearchState,
+  fromSearch.getSelected
+);
+
+export const selectThreeSelected = createSelector(
+  selectSelected,
+  selected => selected.length >= 3
+);
+
+export const selectOneSelected = createSelector(
+  selectSelected,
+  selected => selected.length === 1
+);
+
+export const selectMoreThanOneSelected = createSelector(
+  selectSelected,
+  selected => selected.length > 1
+);
+
+export const selectSelectedHomes = createSelector(
+  selectSearchState,
+  fromSearch.getHomePoints
+);
+
+export const selectSelectedPlayers = createSelector(
+  selectSearchState,
+  fromSearch.getPlayers
+);
+
+
 

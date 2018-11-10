@@ -17,7 +17,7 @@ public class PlayerDto {
 
     private int height;
 
-    private int yearsOfExperience;
+    private int skill;
 
     private String teamId;
 

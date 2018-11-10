@@ -14,4 +14,5 @@ export class SearchService {
     return this.http.post<SearchResult>('/api/matchmaking/search', form);
   }
 
+
 }

@@ -12,6 +12,7 @@ import {TeamManagerHomePageComponent} from './containers/team-manager-home-page.
 import {ChallengesPageComponent} from './containers/challenges-page.component';
 import {ChallengesSearchPageComponent} from './containers/challenges-search-page.component';
 import {ChallengesSearchResultPageComponent} from './containers/challenges-search-result-page.component';
+import {ComparisonPageComponent} from './containers/comparison-page.component';
 
 const routes: Routes = [
   {
@@ -63,6 +64,10 @@ const routes: Routes = [
   {
     path: 'challenges/search/result',
     component: ChallengesSearchResultPageComponent
+  },
+  {
+    path: 'challenges/search/result/comparison',
+    component: ComparisonPageComponent
   }
 ];
 

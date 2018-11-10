@@ -1,11 +1,12 @@
+import {Team} from './team';
 
 export interface SearchResult {
   results: ScoredTeam[];
 }
 
 export interface ScoredTeam {
-  teamScore: number;
-  teamId: string;
+  totalScore: number;
+  team: Team;
   criteria: Criteria;
 }
 
@@ -25,6 +26,6 @@ export interface BooleanCriteria {
   value: boolean;
 }
 
-export type NumericCriteriaType = 'AGE' | 'DISTANCE' | 'EXPERIENCE';
+export type NumericCriteriaType = 'AGE' | 'DISTANCE' | 'SKILL';
 export type BooleanCriteriaType = 'FRIENDLY';
 

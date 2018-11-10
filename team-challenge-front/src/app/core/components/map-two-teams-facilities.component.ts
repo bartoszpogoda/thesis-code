@@ -5,7 +5,7 @@ import MapOptions = google.maps.MapOptions;
 import LatLng = google.maps.LatLng;
 
 @Component({
-  selector: 'app-region-facility-picker',
+  selector: 'app-map-two-teams-facilities',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="point-picker map-container">
@@ -14,25 +14,35 @@ import LatLng = google.maps.LatLng;
           <marker *ngFor="let facility of facilities" [position]="facility.position"
                   (click)="onMarkerClicked($event, facility)" [icon]="getBasketIcon()">
           </marker>
-          <marker *ngIf="home" [position]="getLatLngPosition(home)"
-                  [icon]="homeIcon" title="Punkt macierzysty Twojej drużyny">
+          <marker *ngIf="myHome" [position]="getLatLngPosition(myHome)"
+                  [icon]="myHomeIcon" title="Punkt macierzysty Twojej drużyny">
           </marker>
-          <info-window id="iw">
-            <h3>{{selectedFacility?.name}}</h3>
-            <p>Adres: {{selectedFacility?.address}}<br />
-              Miejsc do gry: {{selectedFacility?.playingSpots}}</p>
-            <a (click)="onFacilityShowDetails(selectedFacility)">Pokaż szczegóły</a>
-          </info-window>
+          <marker *ngIf="theirHome" [position]="getLatLngPosition(theirHome)"
+                  [icon]="theirHomeIcon" title="Punkt macierzysty drugiej drużyny">
+          </marker>
+          <!--<info-window id="iw">-->
+            <!--<h3>{{selectedFacility?.name}}</h3>-->
+            <!--<p>Adres: {{selectedFacility?.address}}<br />-->
+              <!--Miejsc do gry: {{selectedFacility?.playingSpots}}</p>-->
+            <!--<a (click)="onFacilityShowDetails(selectedFacility)">Pokaż szczegóły</a>-->
+          <!--</info-window>-->
         </ng-container>
       </ngui-map>
     </div>
 
   `
 })
-export class RegionFacilityPickerComponent {
+export class MapTwoTeamsFacilitiesComponent {
 
-  homeIcon = {
+  myHomeIcon = {
     url: '/assets/images/home_spot.png',
+    anchor: [13, 43],
+    size: [27, 43],
+    scaledSize: [27, 43]
+  };
+
+  theirHomeIcon = {
+    url: '/assets/images/their_home_spot.png',
     anchor: [13, 43],
     size: [27, 43],
     scaledSize: [27, 43]
@@ -42,16 +52,13 @@ export class RegionFacilityPickerComponent {
   facilities: Facility[];
 
   @Input()
-  height = 200;
+  myHome: Position;
 
   @Input()
-  home: Position | null;
+  theirHome: Position;
 
-  @Output()
-  picked =  new EventEmitter<Facility>();
-
-  selectedFacility: Facility;
-
+  @Input()
+  height = 200;
 
   @Input()
   set center(center: Position) {
@@ -63,15 +70,17 @@ export class RegionFacilityPickerComponent {
     this.currentPosition = new LatLng(center.lat, center.lng);
   }
 
-  @Output()
-  clicked = new EventEmitter<Facility>();
+  selectedFacility: Facility;
 
   currentPosition: LatLng = new LatLng(0.5, 0.5);
 
   mapOptions: MapOptions = {
     center: new LatLng(0.5, 0.5),
     streetViewControl: false,
+    fullscreenControl: false,
+    mapTypeControl: false,
     minZoom: 10,
+    zoom: 11
   };
 
   onMapClick(ev) {
@@ -85,10 +94,6 @@ export class RegionFacilityPickerComponent {
   onMarkerClicked({target: marker}, facility) {
     this.selectedFacility = facility;
     marker.nguiMapComponent.openInfoWindow('iw', marker);
-  }
-
-  onFacilityShowDetails(selectedFacility: Facility) {
-    this.picked.emit((selectedFacility));
   }
 
   getBasketIcon() {

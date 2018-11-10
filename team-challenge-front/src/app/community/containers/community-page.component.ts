@@ -31,9 +31,15 @@ import {LoadFacilities} from '../actions/community-facilities.actions';
         </div>
 
         <div nz-row nzGutter="16" class="one-row-cards-container">
+          <div nz-col nzXs="24" nzSm="8">
             <h2 routerLink="teams" class="tempStyling">Drużyny</h2>
+          </div>
+          <div nz-col nzXs="24" nzSm="8">
             <h2 routerLink="players" class="tempStyling">Zawodnicy</h2>
+          </div>
+          <div nz-col nzXs="24" nzSm="8">
             <h2 routerLink="facilities" class="tempStyling">Obiekty sportowe</h2>
+          </div>
         </div>
 
       </div>
@@ -60,12 +66,12 @@ export class CommunityPageComponent implements OnDestroy {
 
     this.store.pipe(select(selectSelectedRegionIdOrDefault)).pipe(takeUntil(this.destroyed$))
       .subscribe(region => {
-          this.selectedRegion = region;
+        this.selectedRegion = region;
       });
 
   }
 
-  ngOnDestroy (): void {
+  ngOnDestroy(): void {
     this.destroyed$.next();
   }
 

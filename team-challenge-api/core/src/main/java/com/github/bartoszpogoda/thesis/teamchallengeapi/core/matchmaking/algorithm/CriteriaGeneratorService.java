@@ -24,7 +24,7 @@ public class CriteriaGeneratorService {
 
         criteria.add(ageCriteria(hostTeam, otherTeam));
         criteria.add(distanceCriterion(hostTeam, otherTeam));
-        criteria.add(experienceCriterion(hostTeam, otherTeam));
+        criteria.add(skillCriterion(hostTeam, otherTeam));
 
         return criteria;
     }
@@ -50,13 +50,13 @@ public class CriteriaGeneratorService {
         return new DistanceCriterion(this.positionService.distance(hostTeam.getHome(), otherTeam.getHome()));
     }
 
-    public ExperienceCriterion experienceCriterion(Team hostTeam, Team otherTeam) {
+    public SkillCriterion skillCriterion(Team hostTeam, Team otherTeam) {
         double sumBest3HostTeam = hostTeam.getPlayers().stream()
-                .mapToDouble(Player::getYearsOfExperience).sorted().limit(3).sum();
+                .mapToDouble(Player::getSkill).sorted().limit(3).sum();
         double sumBest3OtherTeam = otherTeam.getPlayers().stream()
-                .mapToDouble(Player::getYearsOfExperience).sorted().limit(3).sum();
+                .mapToDouble(Player::getSkill).sorted().limit(3).sum();
 
-        return new ExperienceCriterion(sumBest3OtherTeam - sumBest3HostTeam);
+        return new SkillCriterion(sumBest3OtherTeam - sumBest3HostTeam);
     }
 
 

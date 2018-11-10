@@ -7,6 +7,7 @@ import {Component} from '@angular/core';
       <app-breadcrumb [items]="items"></app-breadcrumb>
       <div class="content-container">
         <h1>Zawodnicy</h1>
+        <app-prototype-notification [unavailable]="true" [inline]="true"></app-prototype-notification>
       </div>
     </div>
   `

@@ -2,7 +2,7 @@
 export interface Preferences {
   weightAgeDiff: number;
   weightDistance: number;
-  weightExperienceDiff: number;
+  weightSkillDiff: number;
   friendly: boolean;
 }
 

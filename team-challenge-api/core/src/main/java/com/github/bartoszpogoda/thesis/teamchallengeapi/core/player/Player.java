@@ -36,7 +36,7 @@ public class Player {
     @Column(name = "Height")
     private int height;
 
-    @Column(name = "YearsOfExperience")
-    private int yearsOfExperience;
+    @Column(name = "Skill")
+    private int skill;
 
 }

@@ -19,7 +19,8 @@ import {LoadFacility} from '../actions/community-facilities.actions';
       <app-breadcrumb [items]="items"></app-breadcrumb>
       <div class="content-container">
         <h1>{{(facility$ | async)?.name}}</h1>
-        <p>{{ facility$ | async | json }}</p>
+        <pre *ngIf="(facility$ | async) !== null">{{ facility$ | async | json }}</pre>
+        <app-prototype-notification></app-prototype-notification>
       </div>
     </div>
   `

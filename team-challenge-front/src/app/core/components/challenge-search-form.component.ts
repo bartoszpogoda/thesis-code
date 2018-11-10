@@ -29,14 +29,14 @@ import {SearchForm} from '../models/search-form';
           </nz-form-item>
 
           <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Różnica stażu gry</nz-form-label>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Różnica poziomu umiejętności</nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24">
               <div nz-row [nzGutter]="8">
                 <div nz-col [nzSm]="23">
-                  <nz-slider [nzTipFormatter]="formatter" [nzMin]="0" [nzMax]="100" formControlName="weightExperienceDiff"></nz-slider>
+                  <nz-slider [nzTipFormatter]="formatter" [nzMin]="0" [nzMax]="100" formControlName="weightSkillDiff"></nz-slider>
                 </div>
                 <div nz-col [nzSm]="1">
-                  {{validateForm.get('weightExperienceDiff').value}}%
+                  {{validateForm.get('weightSkillDiff').value}}%
                 </div>
               </div>
               <nz-form-extra>Jeśli zależy Ci na grze z osobami o podobnym doświadczeniu</nz-form-extra>
@@ -130,7 +130,7 @@ export class ChallengeSearchFormComponent implements OnInit {
         preferences: {
           ...this.builder.preferences,
           weightAgeDiff: this.validateForm.controls.weightAgeDiff.value / 100,
-          weightExperienceDiff: this.validateForm.controls.weightExperienceDiff.value / 100,
+          weightSkillDiff: this.validateForm.controls.weightSkillDiff.value / 100,
           weightDistance: this.validateForm.controls.weightDistance.value / 100,
           friendly: this.validateForm.controls.friendly.value
         }
@@ -147,17 +147,17 @@ export class ChallengeSearchFormComponent implements OnInit {
     this.validateForm = this.fb.group({
       weightAgeDiff: [this.builder.preferences.weightAgeDiff * 100],
       weightDistance: [this.builder.preferences.weightDistance * 100],
-      weightExperienceDiff: [this.builder.preferences.weightExperienceDiff * 100],
+      weightSkillDiff: [this.builder.preferences.weightSkillDiff * 100],
       friendly: [this.builder.preferences.friendly],
       playAgain: [false]
     });
 
     const slider1 = this.validateForm.controls.weightAgeDiff;
-    const slider2 = this.validateForm.controls.weightExperienceDiff;
+    const slider2 = this.validateForm.controls.weightSkillDiff;
     const slider3 = this.validateForm.controls.weightDistance;
 
     this.validateForm.get('weightAgeDiff').valueChanges.subscribe(this.provideSliderOnChangeCallback(slider1, slider2, slider3));
-    this.validateForm.get('weightExperienceDiff').valueChanges.subscribe(this.provideSliderOnChangeCallback(slider2, slider1, slider3));
+    this.validateForm.get('weightSkillDiff').valueChanges.subscribe(this.provideSliderOnChangeCallback(slider2, slider1, slider3));
     this.validateForm.get('weightDistance').valueChanges.subscribe(this.provideSliderOnChangeCallback(slider3, slider1, slider2));
   }
 

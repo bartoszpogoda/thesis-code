@@ -155,7 +155,7 @@ public class DtoMappingService {
     private ScoredTeamDto mapToDto(ScoredTeam scoredTeam) {
         ScoredTeamDto scoredTeamDto = new ScoredTeamDto();
 
-        scoredTeamDto.setTeamId(scoredTeam.getTeam().getId());
+        scoredTeamDto.setTeam(mapToDto(scoredTeam.getTeam()));
         scoredTeamDto.setTotalScore(scoredTeam.getTotalScore());
         scoredTeamDto.setCriteria(mapToDto(scoredTeam.getCriteria()));
 

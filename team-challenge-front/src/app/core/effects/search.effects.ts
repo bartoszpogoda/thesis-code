@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {catchError, exhaustMap, filter, map, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
-import {of, timer} from 'rxjs';
+import {forkJoin, of, timer} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {State} from '../reducers/index';
 import {TeamService} from '../service/team.service';
@@ -22,9 +22,19 @@ import {selectPlayerProfile} from '../selectors/my-player.selectors';
 import {NoAction} from '../actions/core.actions';
 import {toPayload} from '../util/functions';
 import {selectMyTeam} from '../selectors/my-team.selectors';
-import {Search, SearchActionTypes, SearchFailure, SearchSuccess} from '../actions/search.actions';
+import {
+  CompareLoadHomePoints, CompareLoadHomePointsFailure, CompareLoadHomePointsSuccess,
+  CompareLoadPlayers, CompareLoadPlayersFailure,
+  CompareLoadPlayersSuccess,
+  Search,
+  SearchActionTypes,
+  SearchFailure,
+  SearchSuccess
+} from '../actions/search.actions';
 import {selectCurrentTeam} from '../../community/reducers';
 import {SearchService} from '../service/search.service';
+import {selectResult, selectSelected} from '../selectors/search.selectors';
+import {Position} from '../models/position';
 
 @Injectable()
 export class SearchEffects {
@@ -49,10 +59,44 @@ export class SearchEffects {
     })
   );
 
+  @Effect()
+  $loadPlayers = this.actions$.pipe(
+    ofType<CompareLoadPlayers>(SearchActionTypes.CompareLoadPlayers),
+    withLatestFrom(this.store.pipe(select(selectSelected))),
+    filter(([, selected]) => selected.length > 0),
+    exhaustMap(([, selected]) => {
+      const getPlayersObservables = selected.map(one => one.team.id)
+        .map(id => this.teamService.getPlayers(id));
+
+      return forkJoin(getPlayersObservables).pipe(
+        map((players) => new CompareLoadPlayersSuccess(players)),
+        catchError(err => of(new CompareLoadPlayersFailure(err)))
+      );
+    })
+  );
+
+
+  @Effect()
+  $loadHomePoints = this.actions$.pipe(
+    ofType<CompareLoadHomePoints>(SearchActionTypes.CompareLoadHomePoints),
+    withLatestFrom(this.store.pipe(select(selectSelected))),
+    filter(([, selected]) => selected.length > 0),
+    exhaustMap(([, selected]) => {
+      const getHomeObservables = selected.map(one => one.team.id)
+        .map(id => this.teamService.getHome(id));
+
+      return forkJoin(getHomeObservables).pipe(
+        map((homePoints) => new CompareLoadHomePointsSuccess(homePoints)),
+        catchError(err => of(new CompareLoadHomePointsFailure(err)))
+      );
+    })
+  );
+
   constructor(
     private actions$: Actions,
     private store: Store<State>,
     private searchService: SearchService,
+    private teamService: TeamService,
     private router: Router,
     private message: NzMessageService
   ) {}

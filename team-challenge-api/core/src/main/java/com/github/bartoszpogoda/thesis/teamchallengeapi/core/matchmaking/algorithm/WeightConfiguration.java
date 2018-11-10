@@ -13,7 +13,7 @@ public class WeightConfiguration {
 
     Map<CriterionType, Double> weights = new HashMap<>();
 
-    public WeightConfiguration(double weightAgeDiff, double weightDistance, double weightExperienceDiff,
+    public WeightConfiguration(double weightAgeDiff, double weightDistance, double weightSkillDiff,
                                boolean friendly) {
 
 
@@ -32,7 +32,7 @@ public class WeightConfiguration {
 
         weights.put(CriterionType.AGE, weightPoolLeft * weightAgeDiff);
         weights.put(CriterionType.DISTANCE, weightPoolLeft * weightDistance);
-        weights.put(CriterionType.EXPERIENCE, weightPoolLeft * weightExperienceDiff);
+        weights.put(CriterionType.SKILL, weightPoolLeft * weightSkillDiff);
     }
 
     public double getWeight(CriterionType type) {

@@ -53,7 +53,7 @@ public class PlayerService {
             player.setDisciplineId(registrationForm.getDisciplineId());
             player.setRegionId(registrationForm.getRegionId());
             player.setHeight(registrationForm.getHeight());
-            player.setYearsOfExperience(registrationForm.getYearsOfExperience());
+            player.setSkill(registrationForm.getSkill());
 
             return Optional.ofNullable(playerRepository.save(player));
         }

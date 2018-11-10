@@ -17,10 +17,10 @@ public class PlayerRegistrationForm {
     private Integer height;
 
 
-    @NotNull(message = "Years of experience of the player must be specified. ")
+    @NotNull(message = "Skill of the player must be specified (0-10 scale). ")
     @Min(0)
-    @Max(100)
-    private Integer yearsOfExperience;
+    @Max(10)
+    private Integer skill;
 
     @NotNull(message = "Discipline for which player registers must be specified. ")
     private String disciplineId;

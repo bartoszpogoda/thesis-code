@@ -12,7 +12,7 @@ export interface Player {
 
 export interface PlayerRegistrationForm {
   height: number;
-  yearsOfExperience: number;
+  skill: number;
   disciplineId: string;
   regionId: string;
 }

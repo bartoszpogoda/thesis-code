@@ -42,7 +42,7 @@ import {SentInvitationComponent} from './components/sent-invitation.component';
 import {PlayerCardComponent} from './components/player-card.component';
 import {PointPickerComponent} from './components/point-picker.component';
 import {TeamManagerHomePageComponent} from './containers/team-manager-home-page.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NguiMapModule} from '@ngui/map';
 import {TeamJoinRedirectGuard} from './guard/team-join-redirect-guard';
 import {IsManagerGuard} from './guard/is-manager.guard';
@@ -58,6 +58,13 @@ import {ChallengesSearchPageComponent} from './containers/challenges-search-page
 import {ChallengesSearchResultPageComponent} from './containers/challenges-search-result-page.component';
 import {SearchEffects} from './effects/search.effects';
 import {SearchService} from './service/search.service';
+import {PrototypeNotificationComponent} from './components/prototype-notification.component';
+import {SearchResultEntryComponent} from './components/search-result-entry.component';
+import {ComparisonPageComponent} from './containers/comparison-page.component';
+import {TeamComparisonEntryComponent} from './containers/team-comparison-entry.component';
+import {ChartsModule} from 'ng2-charts';
+import {MapTwoTeamsFacilitiesComponent} from './components/map-two-teams-facilities.component';
+import {MapTeamsFacilitiesComponent} from './components/map-teams-facilities.component';
 
 export const COMPONENTS = [
   AppComponent,
@@ -83,12 +90,13 @@ export const COMPONENTS = [
   ChallengesSearchResultPageComponent,
   MyTeamPageComponent, TeamJoinPageComponent, ReceivedInvitationComponent, TeamDisplayComponent,
   TeamManagerPageComponent, TeamRecruitmentPageComponent, SentInvitationComponent, PlayerCardComponent,
-  PointPickerComponent, TeamManagerHomePageComponent,
+  PointPickerComponent, TeamManagerHomePageComponent, PrototypeNotificationComponent, SearchResultEntryComponent,
+  ComparisonPageComponent, TeamComparisonEntryComponent, MapTwoTeamsFacilitiesComponent, MapTeamsFacilitiesComponent
 ];
 
 @NgModule({
   imports: [CommonModule, RouterModule, NgZorroAntdModule, AuthModule, CoreRoutingModule,
-    NguiMapModule, ReactiveFormsModule,
+    NguiMapModule, ReactiveFormsModule, FormsModule, ChartsModule,
     NgProgressModule.forRoot(),
     EffectsModule.forFeature([MyTeamEffects, ManagerEffects, PlayerEffects, CoreEffects, SearchEffects])],
   declarations: COMPONENTS,

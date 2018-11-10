@@ -7,7 +7,7 @@ public class PreferencesDto {
 
     private double weightAgeDiff;
     private double weightDistance;
-    private double weightExperienceDiff;
+    private double weightSkillDiff;
 
     private boolean friendly;
     // TODO friendly etc.

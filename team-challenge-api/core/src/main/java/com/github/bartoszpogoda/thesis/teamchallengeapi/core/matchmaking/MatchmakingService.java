@@ -94,7 +94,7 @@ public class MatchmakingService {
 
         // pref to Configuration
         WeightConfiguration configuration = new WeightConfiguration(pref.getWeightAgeDiff(),
-                pref.getWeightDistance(), pref.getWeightExperienceDiff(), pref.isFriendly());
+                pref.getWeightDistance(), pref.getWeightSkillDiff(), pref.isFriendly());
 
         List<ScoredTeam> result = new ArrayList<>();
 
@@ -121,7 +121,7 @@ public class MatchmakingService {
         this.numericCriterionNormalizerMap = new HashMap<>();
         this.numericCriterionNormalizerMap.put(CriterionType.AGE, new AgeNormalizer());
         this.numericCriterionNormalizerMap.put(CriterionType.DISTANCE, new LinearDecayNormalizer(1, 8));
-        this.numericCriterionNormalizerMap.put(CriterionType.EXPERIENCE, new LinearDecayNormalizer(3, 10));
+        this.numericCriterionNormalizerMap.put(CriterionType.SKILL, new LinearDecayNormalizer(3, 10));
 
         this.booleanCriterionNormalizer = new BooleanCriterionNormalizer();
     }

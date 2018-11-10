@@ -72,7 +72,7 @@ CREATE TABLE Players (
   DisciplineID VARCHAR(64) NOT NULL,
   RegionID VARCHAR(64) NOT NULL,
   Height INTEGER,
-  YearsOfExperience INTEGER,
+  Skill INTEGER,
 
   FOREIGN KEY (UserID) REFERENCES Users(UserID),
   FOREIGN KEY (DisciplineID) REFERENCES Disciplines(DisciplineID),

@@ -1,13 +1,18 @@
 import {SearchForm} from '../models/search-form';
 import {MyTeamActionsUnion, MyTeamActionTypes} from '../actions/my-team.actions';
-import {SearchResult} from '../models/search-result';
+import {ScoredTeam, SearchResult} from '../models/search-result';
 import {SearchActionsUnion, SearchActionTypes} from '../actions/search.actions';
+import {Player} from '../models/player';
+import {Position} from '../models/position';
 
 
 export interface State {
   builder: SearchForm;
   result: SearchResult;
   searching: boolean;
+  selected: ScoredTeam[];
+  players: Player[][];
+  homePoints: Position[];
 }
 
 const initialState: State = {
@@ -16,12 +21,15 @@ const initialState: State = {
     preferences: {
       friendly: false,
       weightAgeDiff: 0.34,
-      weightExperienceDiff: 0.33,
+      weightSkillDiff: 0.33,
       weightDistance: 0.33
     }
   },
   result: null,
-  searching: false
+  searching: false,
+  selected: [],
+  players: [],
+  homePoints: []
 };
 
 export function reducer(
@@ -44,7 +52,8 @@ export function reducer(
         ...state,
         builder: action.payload,
         result: null,
-        searching: true
+        searching: true,
+        selected: []
       };
 
     case SearchActionTypes.SearchSuccess:
@@ -60,6 +69,48 @@ export function reducer(
         searching: false
       };
 
+    case SearchActionTypes.Check:
+      return {
+        ...state,
+        selected: state.selected.length < 3 ? [...state.selected, action.payload] : state.selected
+      };
+
+    case SearchActionTypes.Uncheck:
+      return {
+        ...state,
+        selected: state.selected.filter(sel => sel !== action.payload)
+      };
+
+    case SearchActionTypes.UncheckAll:
+      return {
+        ...state,
+        selected: []
+      };
+
+    case SearchActionTypes.CompareLoadHomePoints:
+      return {
+        ...state,
+        homePoints: []
+      };
+
+    case SearchActionTypes.CompareLoadHomePointsSuccess:
+      return {
+        ...state,
+        homePoints: action.payload
+      };
+
+    case SearchActionTypes.CompareLoadPlayers:
+      return {
+        ...state,
+        players: []
+      };
+
+    case SearchActionTypes.CompareLoadPlayersSuccess:
+      return {
+        ...state,
+        players: action.payload
+      };
+
     default:
       return state;
   }
@@ -68,3 +119,6 @@ export function reducer(
 export const getBuilder = (state: State) => state.builder;
 export const getSearching = (state: State) => state.searching;
 export const getResult = (state: State) => state.result;
+export const getSelected = (state: State) => state.selected;
+export const getPlayers = (state: State) => state.players;
+export const getHomePoints = (state: State) => state.homePoints;
