@@ -4,6 +4,8 @@ import {SearchForm} from '../models/search-form';
 import {ScoredTeam, SearchResult} from '../models/search-result';
 import {Player} from '../models/player';
 import {Position} from '../models/position';
+import {Team} from '../models/team';
+import {PlaceTimeOffer} from '../models/challenge';
 
 export enum SearchActionTypes {
   Search = '[Search] Search',
@@ -21,6 +23,12 @@ export enum SearchActionTypes {
   CompareLoadHomePoints = '[Search Comparison] Load Home Points',
   CompareLoadHomePointsSuccess = '[Search Comparison] Load Home Points Success',
   CompareLoadHomePointsFailure = '[Search Comparison] Load Home Points Failure',
+
+  SelectTeamForChallenge = '[Search] Select Team For Challenge',
+  LoadPickedTeamHomeSuccess = '[Search] Load Picked Team Home Success',
+  LoadPickedTeamHomeFailure = '[Search] Load Picked Team Home Failure',
+
+  AddEntryPlaceTimeOffer = '[Search] Add Entry Time Offer'
 }
 
 export class Search implements Action {
@@ -93,9 +101,36 @@ export class CompareLoadHomePointsFailure implements Action {
   constructor(public payload: ApiError) {}
 }
 
+export class SelectTeamForChallenge implements Action {
+  readonly type = SearchActionTypes.SelectTeamForChallenge;
+
+  constructor(public payload: Team) {}
+}
+
+export class LoadPickedTeamHomeSuccess implements Action {
+  readonly type = SearchActionTypes.LoadPickedTeamHomeSuccess;
+
+  constructor(public payload: Position) {}
+}
+
+export class LoadPickedTeamHomeFailure implements Action {
+  readonly type = SearchActionTypes.LoadPickedTeamHomeFailure;
+
+  constructor(public payload: ApiError) {}
+}
+
+
+export class AddEntryPlaceTimeOffer implements Action {
+  readonly type = SearchActionTypes.AddEntryPlaceTimeOffer;
+
+  constructor(public payload: PlaceTimeOffer) {}
+}
+
 
 export type SearchActionsUnion = Search | SearchSuccess | SearchFailure | Check | Uncheck | UncheckAll
   | CompareSelected
   | CompareLoadPlayers | CompareLoadPlayersSuccess | CompareLoadPlayersFailure
-  | CompareLoadHomePoints | CompareLoadHomePointsSuccess | CompareLoadHomePointsFailure;
+  | CompareLoadHomePoints | CompareLoadHomePointsSuccess | CompareLoadHomePointsFailure
+  | SelectTeamForChallenge | LoadPickedTeamHomeSuccess | LoadPickedTeamHomeFailure
+  | AddEntryPlaceTimeOffer;
 

@@ -11,15 +11,15 @@ import {Player} from '../models/player';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
 
-    <nz-affix [nzOffsetTop]="115" (nzChange)="onAffixChange($event)" [class.affix-fixed]="affixFixed">
+    <nz-affix [nzOffsetTop]="166" (nzChange)="onAffixChange($event)" [class.affix-fixed]="affixFixed">
       <div style="text-align: center; background-color: #fff; padding-bottom: 10px">
         <h2>{{comparedTeamScore.team.name}}
           <div class="color-marker"
                [style.border-color]="color.borderColor"
                [style.background-color]="color.backgroundColor"></div>
         </h2>
-        <button class="challenge-button" nz-button nzType="primary">
-          Rzuć wyzwanie
+        <button class="challenge-button" (click)="onChallenged()" nz-button nzType="primary" [nzSize]="affixFixed ? 'small' : 'default'">
+          <i class="anticon anticon-play-circle-o"></i> <span *ngIf="!affixFixed">Rzuć wyzwanie</span>
         </button>
       </div>
     </nz-affix>
@@ -43,13 +43,22 @@ import {Player} from '../models/player';
     <div class="section">
       <h3>Zawodnicy</h3>
 
-      <div nz-row>
+      <!--<div nz-row>-->
+        <!--<ng-container *ngFor="let player of getRegularPlayers(); let i = index">-->
+          <!--<div nz-col [nzSm]="i == 0 || i == 2 ? 3 : 1"></div>-->
+          <!--<div nz-col nzSm="8">-->
+            <!--<app-player-card [player]="player"></app-player-card>-->
+          <!--</div>-->
+          <!--<div nz-col [nzSm]="i == 1 || i == 3 ? 3 : 1"></div>-->
+        <!--</ng-container>-->
+      <!--</div>-->
+    <!--</div>-->
+      <div nz-row nzGutter="16">
+        <div nz-col nzSm="2"></div>
         <ng-container *ngFor="let player of getRegularPlayers(); let i = index">
-          <div nz-col [nzSm]="i == 0 || i == 2 ? 3 : 1"></div>
-          <div nz-col nzSm="8">
+          <div nz-col nzSm="5">
             <app-player-card [player]="player"></app-player-card>
           </div>
-          <div nz-col [nzSm]="i == 1 || i == 3 ? 3 : 1"></div>
         </ng-container>
       </div>
     </div>
@@ -74,6 +83,7 @@ import {Player} from '../models/player';
 
     .affix-fixed h2 {
       display: inline-block;
+      font-size: 1em;
     }
 
     .color-marker {
@@ -101,7 +111,7 @@ export class TeamComparisonEntryComponent {
   theirPlayers: Player[];
 
   @Output()
-  challenge = new EventEmitter();
+  challenge = new EventEmitter<Team>();
 
   affixFixed = false;
 
@@ -123,5 +133,9 @@ export class TeamComparisonEntryComponent {
 
   onAffixChange(status: boolean) {
     this.affixFixed = status;
+  }
+
+  onChallenged() {
+    this.challenge.emit(this.comparedTeamScore.team);
   }
 }

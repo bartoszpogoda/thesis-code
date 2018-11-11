@@ -65,6 +65,12 @@ import {TeamComparisonEntryComponent} from './containers/team-comparison-entry.c
 import {ChartsModule} from 'ng2-charts';
 import {MapTwoTeamsFacilitiesComponent} from './components/map-two-teams-facilities.component';
 import {MapTeamsFacilitiesComponent} from './components/map-teams-facilities.component';
+import {ChallengeCreatorStepsComponent} from './components/challenge-creator-steps.component';
+import {ChallengesEntryDateTimePageComponent} from './containers/challenges-entry-date-time-page.component';
+import {ChallengeService} from './service/challenge.service';
+import {PlacetimeofferPoolComponent} from './components/placetimeoffer-pool.component';
+import {NewPlacetimeofferModalComponent} from './containers/new-placetimeoffer-modal.component';
+import {ChallengesSummaryPageComponent} from './containers/challenges-summary-page.component';
 
 export const COMPONENTS = [
   AppComponent,
@@ -91,7 +97,8 @@ export const COMPONENTS = [
   MyTeamPageComponent, TeamJoinPageComponent, ReceivedInvitationComponent, TeamDisplayComponent,
   TeamManagerPageComponent, TeamRecruitmentPageComponent, SentInvitationComponent, PlayerCardComponent,
   PointPickerComponent, TeamManagerHomePageComponent, PrototypeNotificationComponent, SearchResultEntryComponent,
-  ComparisonPageComponent, TeamComparisonEntryComponent, MapTwoTeamsFacilitiesComponent, MapTeamsFacilitiesComponent
+  ComparisonPageComponent, TeamComparisonEntryComponent, MapTwoTeamsFacilitiesComponent, MapTeamsFacilitiesComponent, ChallengeCreatorStepsComponent,
+  ChallengesEntryDateTimePageComponent, PlacetimeofferPoolComponent, NewPlacetimeofferModalComponent, ChallengesSummaryPageComponent
 ];
 
 @NgModule({
@@ -106,7 +113,7 @@ export const COMPONENTS = [
     useClass: ErrorInterceptor,
     multi: true,
   }, { provide: NZ_MESSAGE_CONFIG, useValue: { nzDuration: 5000 }},
-    TeamService, PlayerService, RegionService, SearchService, PlayerCreatorGuard, TeamJoinRedirectGuard, IsManagerGuard, TeamInvitationService, FacilityService]
+    TeamService, PlayerService, RegionService, SearchService, PlayerCreatorGuard, TeamJoinRedirectGuard, IsManagerGuard, TeamInvitationService, FacilityService, ChallengeService]
 })
 export class CoreModule {
   static forRoot() {

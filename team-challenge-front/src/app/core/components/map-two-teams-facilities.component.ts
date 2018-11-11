@@ -24,7 +24,7 @@ import LatLng = google.maps.LatLng;
             <!--<h3>{{selectedFacility?.name}}</h3>-->
             <!--<p>Adres: {{selectedFacility?.address}}<br />-->
               <!--Miejsc do gry: {{selectedFacility?.playingSpots}}</p>-->
-            <!--<a (click)="onFacilityShowDetails(selectedFacility)">Pokaż szczegóły</a>-->
+            <!--&lt;!&ndash;<a (click)="onFacilityShowDetails(selectedFacility)">Pokaż szczegóły</a>&ndash;&gt;-->
           <!--</info-window>-->
         </ng-container>
       </ngui-map>
@@ -60,6 +60,9 @@ export class MapTwoTeamsFacilitiesComponent {
   @Input()
   height = 200;
 
+  @Output()
+  selected = new EventEmitter<Facility>();
+
   @Input()
   set center(center: Position) {
     this.mapOptions = {
@@ -92,8 +95,9 @@ export class MapTwoTeamsFacilitiesComponent {
   }
 
   onMarkerClicked({target: marker}, facility) {
-    this.selectedFacility = facility;
-    marker.nguiMapComponent.openInfoWindow('iw', marker);
+    this.selected.emit(facility);
+    // this.selectedFacility = facility;
+    // marker.nguiMapComponent.openInfoWindow('iw', marker);
   }
 
   getBasketIcon() {

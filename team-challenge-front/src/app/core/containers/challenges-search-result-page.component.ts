@@ -10,8 +10,9 @@ import {
 } from '../selectors/search.selectors';
 import {Observable} from 'rxjs';
 import {ScoredTeam, SearchResult} from '../models/search-result';
-import {Check, Uncheck, UncheckAll} from '../actions/search.actions';
+import {Check, SelectTeamForChallenge, Uncheck, UncheckAll} from '../actions/search.actions';
 import {Router} from '@angular/router';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-challenges-search-result-page',
@@ -20,12 +21,20 @@ import {Router} from '@angular/router';
       <app-breadcrumb [items]="items"></app-breadcrumb>
       <div class="content-container">
         <!--<h1>Wyniki wyszukiwania</h1>-->
+        <div class="small-steps-container">
+          <nz-steps [nzCurrent]="1" nzSize="small">
+            <nz-step nzTitle="Określ preferencje"></nz-step>
+            <nz-step nzTitle="Wybierz rywali"></nz-step>
+            <nz-step nzTitle="Zaoferuj termin i miejsce"></nz-step>
+            <nz-step nzTitle="Podsumowanie"></nz-step>
+          </nz-steps>
+        </div>
 
         <div *ngIf="searching$ | async" style="text-align: center">
           Wyszukiwanie Waszych idealnych przeciwników trwa...
         </div>
 
-        <div *ngIf="!(searching$ | async)" nz-row>
+        <div *ngIf="!(searching$ | async)" nz-row style="margin-top: 20px;">
           <div nz-col nzXs="0" nzSm="10">
             Nazwa drużyny
           </div>
@@ -67,8 +76,11 @@ import {Router} from '@angular/router';
         </div>
 
         <div *ngIf="(result$ | async) !== null">
-        <button nz-button [disabled]="!(oneSelected$ | async)" nzType="primary">
-          Rzuć wyzwanie
+        <button nz-button (click)="onChangePreferences()">
+          Zmień preferencje
+        </button>
+        <button nz-button (click)="onTeamSelected()" [disabled]="!(oneSelected$ | async)" nzType="primary">
+          <i class="anticon anticon-play-circle-o"></i> Rzuć wyzwanie
         </button>
         <button nz-button (click)="onCompareClicked()" [disabled]="!(moreThanOneSelected$ | async)" nzType="primary">
           Porównaj zaznaczone drużyny
@@ -110,7 +122,7 @@ import {Router} from '@angular/router';
 })
 export class ChallengesSearchResultPageComponent implements OnInit {
   items = [
-    {title: 'Wyzwania', link: '/challenges'}, {title: 'Szukaj rywali', link: '/challenges/search'}, {title: 'Wyniki'}
+    {title: 'Wyzwania', link: '/challenges'}, {title: 'Tworzenie wyzwania'}
   ];
 
   searching$: Observable<boolean>;
@@ -139,10 +151,22 @@ export class ChallengesSearchResultPageComponent implements OnInit {
   }
 
   onCompareClicked() {
-    this.router.navigate(['challenges/search/result/comparison']);
+    this.router.navigate(['challenges/new/comparison']);
   }
 
   ngOnInit(): void {
     // this.store.dispatch(new UncheckAll());
+  }
+
+  onChangePreferences() {
+    this.router.navigate(['challenges/new']);
+  }
+
+  onTeamSelected() {
+    this.selected$.pipe(take(1)).subscribe(selected => {
+      if (selected.length === 1) {
+        this.store.dispatch(new SelectTeamForChallenge(selected[0].team));
+      }
+    });
   }
 }

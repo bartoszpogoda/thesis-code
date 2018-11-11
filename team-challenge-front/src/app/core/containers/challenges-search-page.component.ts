@@ -17,7 +17,15 @@ import {Search} from '../actions/search.actions';
     <div class="spaces-sides">
       <app-breadcrumb [items]="items"></app-breadcrumb>
       <div class="content-container">
-        <h1>Szukaj rywali</h1>
+        <div class="small-steps-container">
+          <nz-steps [nzCurrent]="0" nzSize="small">
+            <nz-step nzTitle="Określ preferencje"></nz-step>
+            <nz-step nzTitle="Wybierz rywali"></nz-step>
+            <nz-step nzTitle="Zaoferuj termin i miejsce"></nz-step>
+            <nz-step nzTitle="Podsumowanie"></nz-step>
+        </nz-steps>
+        </div>
+        <!--<h1>Szukaj rywali</h1>-->
         <div nz-row nzGutter="16">
           <div nz-col nzXs="0" nzSm="1"></div>
           <div nz-col nzXs="24" nzSm="22">
@@ -30,7 +38,7 @@ import {Search} from '../actions/search.actions';
 })
 export class ChallengesSearchPageComponent {
   items = [
-    {title: 'Wyzwania', link: '/challenges'}, {title: 'Szukaj rywali'}
+    {title: 'Wyzwania', link: '/challenges'}, {title: 'Tworzenie wyzwania'}
   ];
 
   builder$: Observable<SearchForm>;

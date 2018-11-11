@@ -13,6 +13,8 @@ import {ChallengesPageComponent} from './containers/challenges-page.component';
 import {ChallengesSearchPageComponent} from './containers/challenges-search-page.component';
 import {ChallengesSearchResultPageComponent} from './containers/challenges-search-result-page.component';
 import {ComparisonPageComponent} from './containers/comparison-page.component';
+import {ChallengesEntryDateTimePageComponent} from './containers/challenges-entry-date-time-page.component';
+import {ChallengesSummaryPageComponent} from './containers/challenges-summary-page.component';
 
 const routes: Routes = [
   {
@@ -58,16 +60,24 @@ const routes: Routes = [
     component: ChallengesPageComponent
   },
   {
-    path: 'challenges/search',
+    path: 'challenges/new',
     component: ChallengesSearchPageComponent
   },
   {
-    path: 'challenges/search/result',
+    path: 'challenges/new/pick',
     component: ChallengesSearchResultPageComponent
   },
   {
-    path: 'challenges/search/result/comparison',
+    path: 'challenges/new/comparison',
     component: ComparisonPageComponent
+  },
+  {
+    path: 'challenges/new/offer',
+    component: ChallengesEntryDateTimePageComponent
+  },
+  {
+    path: 'challenges/new/summary',
+    component: ChallengesSummaryPageComponent
   }
 ];
 

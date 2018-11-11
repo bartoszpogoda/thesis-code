@@ -51,5 +51,22 @@ export const selectSelectedPlayers = createSelector(
   fromSearch.getPlayers
 );
 
+export const selectPickedTeam = createSelector(
+  selectSearchState,
+  fromSearch.getPickedTeam
+);
+
+export const selectEntryPlaceTimeOffers = createSelector(
+  selectSearchState,
+  fromSearch.getEntryPlaceTimeOffers
+);
+
+export const selectPickedTeamHome = createSelector(
+  selectSearchState,
+  fromSearch.getPickedTeamHome
+);
+
+
+
 
 

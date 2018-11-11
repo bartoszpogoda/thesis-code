@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../reducers/index';
-import {CompareLoadHomePoints, CompareLoadPlayers} from '../actions/search.actions';
+import {CompareLoadHomePoints, CompareLoadPlayers, SelectTeamForChallenge} from '../actions/search.actions';
 import {Observable, Subject} from 'rxjs';
 import {Team} from '../models/team';
 import {selectMyTeam, selectMyTeamHome} from '../selectors/my-team.selectors';
@@ -14,6 +14,7 @@ import {Region} from '../models/region';
 import {selectFacilities, selectSelectedRegionOrDefault} from '../../community/reducers';
 import {LoadFacilities} from '../../community/actions/community-facilities.actions';
 import {Player} from '../models/player';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-comparison-page',
@@ -22,6 +23,19 @@ import {Player} from '../models/player';
     <div class="spaces-sides">
       <app-breadcrumb [items]="items"></app-breadcrumb>
       <div class="content-container">
+        <nz-affix [nzOffsetTop]="117" >
+          <div class="small-steps-container" style="background-color: #fff;">
+          <nz-steps class="steps-with-link-in-desc" [nzCurrent]="1" nzSize="small" style="margin-bottom: 20px;">
+            <nz-step nzTitle="Określ preferencje"></nz-step>
+            <nz-step style="cursor:pointer;" (click)="onBackToResults()"
+                     nzTitle="Wybierz rywali (porównanie)" nzDescription="Powrót do wyników"></nz-step>
+            <nz-step nzTitle="Zaoferuj termin i miejsce"></nz-step>
+            <nz-step nzTitle="Podsumowanie"></nz-step>
+          </nz-steps>
+          </div>
+        </nz-affix>
+        <!--<button  nz-button nzType="default" nzBlock style="width: 100%; margin: 20px 0;">Powrót do wyników</button>-->
+
         <div nz-row>
           <div nz-col nzSm="1"></div>
           <div nz-col nzXs="0" nzSm="12">
@@ -51,7 +65,8 @@ import {Player} from '../models/player';
                                         (selectedPlayers$ | async).length >= 1"
                                        [team]="myTeam$ | async " [comparedTeamScore]="(selected$ | async)[0]"
                                        [color]="radarChartColors[0]"
-                                       [theirPlayers]="(selectedPlayers$ | async)[0]">
+                                       [theirPlayers]="(selectedPlayers$ | async)[0]"
+                                       (challenge)="onChallenged($event)">
             </app-team-comparison-entry>
           </div>
           <div nz-col nzXs="24" [nzSm]="getColSize()" >
@@ -59,7 +74,8 @@ import {Player} from '../models/player';
                                         (selectedPlayers$ | async).length >= 2"
                                        [team]="myTeam$ | async " [comparedTeamScore]="(selected$ | async)[1]"
                                        [color]="radarChartColors[1]"
-                                       [theirPlayers]="(selectedPlayers$ | async)[1]">
+                                       [theirPlayers]="(selectedPlayers$ | async)[1]"
+                                       (challenge)="onChallenged($event)">
             </app-team-comparison-entry>
           </div>
           <div nz-col nzXs="24" [nzSm]="getColSize()" style="border-left: #eeeeee 1px solid;">
@@ -67,7 +83,8 @@ import {Player} from '../models/player';
                                         (selectedPlayers$ | async).length >= 3"
                                        [team]="myTeam$ | async " [comparedTeamScore]="(selected$ | async)[2]"
                                        [color]="radarChartColors[2]"
-                                       [theirPlayers]="(selectedPlayers$ | async)[2]">
+                                       [theirPlayers]="(selectedPlayers$ | async)[2]"
+                                       (challenge)="onChallenged($event)">
             </app-team-comparison-entry>
           </div>
         </div>
@@ -75,13 +92,12 @@ import {Player} from '../models/player';
     </div>
   `,
   styles: [ `
+
   ` ]
 })
 export class ComparisonPageComponent implements OnInit, OnDestroy {
   items = [
-    {title: 'Wyzwania', link: '/challenges'}, {title: 'Szukaj rywali', link: '/challenges/search'},
-    {title: 'Wyniki', link: '/challenges/search/result'},
-    {title: 'Porównanie'}
+    {title: 'Wyzwania', link: '/challenges'}, {title: 'Tworzenie wyzwania'}
   ];
 
   radarChartColors = [
@@ -126,7 +142,7 @@ export class ComparisonPageComponent implements OnInit, OnDestroy {
 
   selectedSize: number;
 
-  constructor(private store: Store<fromRoot.State>) {
+  constructor(private store: Store<fromRoot.State>, private router: Router) {
     this.myTeam$ = this.store.pipe(select(selectMyTeam));
     this.selected$ = this.store.pipe(select(selectSelected));
     this.region$ = this.store.pipe(select(selectSelectedRegionOrDefault));
@@ -170,8 +186,15 @@ export class ComparisonPageComponent implements OnInit, OnDestroy {
     }
   }
 
+  onChallenged(team: Team) {
+    this.store.dispatch(new SelectTeamForChallenge(team));
+  }
 
   getColSize() {
     return this.selectedSize === 3 ? 8 : 12;
+  }
+
+  onBackToResults() {
+    this.router.navigate(['challenges/new/pick']);
   }
 }

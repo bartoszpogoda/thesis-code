@@ -13,7 +13,7 @@ import {selectPlayerProfile} from '../selectors/my-player.selectors';
       <div class="content-container">
         <h1>Wyzwania</h1>
         <div nz-row nzGutter="16">
-          <h2 class="tempStyling" routerLink="search">Znajdź przeciwników</h2>
+          <h2 class="tempStyling" routerLink="new">Znajdź przeciwników</h2>
         </div>
       </div>
     </div>

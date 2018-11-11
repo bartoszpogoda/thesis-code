@@ -25,11 +25,11 @@ import {selectMyTeam} from '../selectors/my-team.selectors';
 import {
   CompareLoadHomePoints, CompareLoadHomePointsFailure, CompareLoadHomePointsSuccess,
   CompareLoadPlayers, CompareLoadPlayersFailure,
-  CompareLoadPlayersSuccess,
+  CompareLoadPlayersSuccess, LoadPickedTeamHomeFailure, LoadPickedTeamHomeSuccess,
   Search,
   SearchActionTypes,
   SearchFailure,
-  SearchSuccess
+  SearchSuccess, SelectTeamForChallenge
 } from '../actions/search.actions';
 import {selectCurrentTeam} from '../../community/reducers';
 import {SearchService} from '../service/search.service';
@@ -55,7 +55,15 @@ export class SearchEffects {
   $redirectToResults = this.actions$.pipe(
     ofType<Search>(SearchActionTypes.Search),
     tap(() => {
-      this.router.navigate(['/challenges/search/result']);
+      this.router.navigate(['/challenges/new/pick']);
+    })
+  );
+
+  @Effect({dispatch: false})
+  $redirectToEntryOffers = this.actions$.pipe(
+    ofType<SelectTeamForChallenge>(SearchActionTypes.SelectTeamForChallenge),
+    tap(() => {
+      this.router.navigate(['/challenges/new/offer']);
     })
   );
 
@@ -90,6 +98,16 @@ export class SearchEffects {
         catchError(err => of(new CompareLoadHomePointsFailure(err)))
       );
     })
+  );
+
+  @Effect()
+  $loadPickedTeamHome = this.actions$.pipe(
+    ofType<SelectTeamForChallenge>(SearchActionTypes.SelectTeamForChallenge),
+    map(toPayload),
+    switchMap(team => this.teamService.getHome(team.id).pipe(
+      map(home => new LoadPickedTeamHomeSuccess(home)),
+      catchError(err => of(new LoadPickedTeamHomeFailure(err)))
+    ))
   );
 
   constructor(

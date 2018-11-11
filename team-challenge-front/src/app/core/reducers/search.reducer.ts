@@ -4,6 +4,9 @@ import {ScoredTeam, SearchResult} from '../models/search-result';
 import {SearchActionsUnion, SearchActionTypes} from '../actions/search.actions';
 import {Player} from '../models/player';
 import {Position} from '../models/position';
+import {Team} from '../models/team';
+import {PlaceTimeOffer} from '../models/challenge';
+import {a} from '@angular/core/src/render3';
 
 
 export interface State {
@@ -13,6 +16,9 @@ export interface State {
   selected: ScoredTeam[];
   players: Player[][];
   homePoints: Position[];
+  pickedTeam: Team;
+  pickedTeamHome: Position;
+  entryPlaceTimeOffers: PlaceTimeOffer[];
 }
 
 const initialState: State = {
@@ -29,7 +35,10 @@ const initialState: State = {
   searching: false,
   selected: [],
   players: [],
-  homePoints: []
+  homePoints: [],
+  pickedTeam: null,
+  pickedTeamHome: null,
+  entryPlaceTimeOffers: []
 };
 
 export function reducer(
@@ -111,6 +120,26 @@ export function reducer(
         players: action.payload
       };
 
+    case SearchActionTypes.SelectTeamForChallenge:
+      return {
+        ...state,
+        pickedTeam: action.payload
+      };
+
+    case SearchActionTypes.LoadPickedTeamHomeSuccess:
+      return {
+        ...state,
+        pickedTeamHome: action.payload
+      };
+
+    case SearchActionTypes.AddEntryPlaceTimeOffer:
+      return {
+        ...state,
+        entryPlaceTimeOffers: [...state.entryPlaceTimeOffers, action.payload]
+      };
+
+
+
     default:
       return state;
   }
@@ -122,3 +151,6 @@ export const getResult = (state: State) => state.result;
 export const getSelected = (state: State) => state.selected;
 export const getPlayers = (state: State) => state.players;
 export const getHomePoints = (state: State) => state.homePoints;
+export const getPickedTeam = (state: State) => state.pickedTeam;
+export const getEntryPlaceTimeOffers = (state: State) => state.entryPlaceTimeOffers;
+export const getPickedTeamHome = (state: State) => state.pickedTeamHome;

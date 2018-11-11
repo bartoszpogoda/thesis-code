@@ -6,7 +6,7 @@ export interface Player {
   height: number;
   teamId: string | null;
   teamName: string;
-  yearsOfExperience: number;
+  skill: number;
   hasImage: boolean;
 }
 

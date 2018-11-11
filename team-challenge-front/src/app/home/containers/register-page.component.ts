@@ -18,7 +18,6 @@ import {ApiError} from '../../core/models/error';
       [details]="registerSuccessDetails"></app-success-alert>
       <app-api-error-alert [error]="registerError$ | async"></app-api-error-alert>
       <app-api-error-alert [error]="loginError$ | async" [extraText]="loginErrorExtraText"></app-api-error-alert>
-      <app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
       <h1>Dołącz do nas już dzisiaj!</h1>
       <p>Jesteś gotowy podjąć wyzwanie? Zarejestruj się korzystając z poniższego formularza.</p>
       <app-register-form (submitted)="onRegister($event)"></app-register-form>
@@ -36,10 +35,6 @@ export class RegisterPageComponent {
   registerSuccessMessage = 'Rejestracja zakończona powodzeniem!';
   registerSuccessDetails = 'Możesz teraz zalogować się na swoje konto.';
   loginErrorExtraText = 'Jeśli nie posiadasz konta zarejestruj się korzystając z poniższego formularza.';
-  breadcrumbItems: BreadcrumbItem[] = [
-    {link: '/home', title: 'Strona główna'},
-    {title: 'Rejestracja'}
-  ];
   loginError$: Observable<ApiError>;
   registerPending$: Observable<boolean>;
   justRegistered$: Observable<boolean>;
