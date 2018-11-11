@@ -77,7 +77,7 @@ public class ChallengeService {
         return Optional.ofNullable(challengeRepository.save(challenge));
     }
 
-    private Optional<Challenge> getOngoingChallengeBetweenTeams(Team teamA, Team teamB) {
+    public Optional<Challenge> getOngoingChallengeBetweenTeams(Team teamA, Team teamB) {
 
         List<Challenge> challengesBetweenTeams = this.challengeRepository.findAllByChallengingTeamAndChallengedTeam(teamA, teamB);
         challengesBetweenTeams.addAll(this.challengeRepository.findAllByChallengingTeamAndChallengedTeam(teamB, teamA));

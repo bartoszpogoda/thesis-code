@@ -6,6 +6,7 @@ import {Position} from '../../core/models/position';
 import {Player} from '../../core/models/player';
 import {Team} from '../../core/models/team';
 import {MyTeamActionsUnion, MyTeamActionTypes} from '../../core/actions/my-team.actions';
+import {AuthActionsUnion, AuthActionTypes} from '../../auth/actions/auth.actions';
 
 
 export interface State {
@@ -46,9 +47,14 @@ const initialState: State = {
 
 export function reducer(
   state: State = initialState,
-  action: MyTeamActionsUnion | ChallengeCreatorActionsUnion
+  action: MyTeamActionsUnion | ChallengeCreatorActionsUnion | AuthActionsUnion
 ): State {
   switch (action.type) {
+
+    case AuthActionTypes.Logout:
+      return {
+        ...initialState
+      };
 
     case MyTeamActionTypes.LoadCurrentSuccess:
       return {

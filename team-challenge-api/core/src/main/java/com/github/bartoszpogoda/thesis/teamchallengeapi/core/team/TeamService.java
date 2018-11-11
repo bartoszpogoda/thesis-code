@@ -9,6 +9,7 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.PlayerServic
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.position.Position;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.position.PositionService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.position.model.PositionDto;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.region.Region;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.region.RegionService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.model.TeamCreationForm;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.user.User;
@@ -50,7 +51,7 @@ public class TeamService {
             throws UnknownDisciplineException, UnknownRegionException, PlayerNotFoundException, PlayerAlreadyInTeamException {
 
         disciplineService.checkDisciplineExists(teamCreationForm.getDisciplineId());
-        regionService.checkRegionExists(teamCreationForm.getRegionId());
+        Region region = regionService.getById(teamCreationForm.getRegionId()).orElseThrow(UnknownRegionException::new);
 
 
         Optional<Player> currentPlayerOpt = playerService.getCurrentPlayer(teamCreationForm.getDisciplineId());
@@ -69,6 +70,12 @@ public class TeamService {
 
         Team newTeam = createNewTeam(teamCreationForm.getDisciplineId(), teamCreationForm.getRegionId(), teamCreationForm.getName(), currentPlayer);
         currentPlayer.setTeam(newTeam);
+
+        Position regionCenter = region.getCenter();
+        Position home = Position.builder().lat(regionCenter.getLat()).lng(regionCenter.getLng()).build();
+
+        Position savedHome = positionService.save(home);
+        newTeam.setHome(savedHome);
 
         return Optional.of(teamRepository.save(newTeam));
     }

@@ -9,8 +9,9 @@ import {LocalDateTime} from 'js-joda';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
       <nz-card style="width:200px;" [nzActions]="[actionCancel]">
-        <nz-card-meta [nzTitle]="_offer.offeredFacility.name" [nzDescription]="_offer.offeredFacility.address" ></nz-card-meta>
-        <p>
+        <nz-card-meta [nzTitle]="_offer.offeredFacility.name"></nz-card-meta>
+        <p style="margin-top: 5px;">
+          <strong>Adres: </strong>{{_offer.offeredFacility.address}}<br />
           <strong>Data: </strong>{{getDate()}}<br />
           <strong>Czas: </strong>{{getTime()}}
         </p>

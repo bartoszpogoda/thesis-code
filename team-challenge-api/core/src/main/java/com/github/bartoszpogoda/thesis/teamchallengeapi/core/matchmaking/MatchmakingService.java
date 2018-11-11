@@ -2,10 +2,7 @@ package com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking;
 
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.ApiException;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.TeamNotFoundException;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.algorithm.CriteriaGeneratorService;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.algorithm.ScoredTeam;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.algorithm.WeightConfiguration;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.algorithm.WeighteningService;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.algorithm.*;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.algorithm.aggregation.WeightedCriteriaAggregator;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.algorithm.criterion.BooleanCriterion;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.matchmaking.algorithm.criterion.CriterionType;
@@ -38,6 +35,7 @@ public class MatchmakingService {
     private final CriteriaGeneratorService criteriaGenerator;
     private final WeighteningService weighteningService;
     private final WeightedCriteriaAggregator weightedCriteriaAggregator;
+    private final TeamFilteringService teamFilteringService;
 
     private HashMap<CriterionType, Normalizer<NumericCriterion>> numericCriterionNormalizerMap;
     private Normalizer<BooleanCriterion> booleanCriterionNormalizer;
@@ -90,7 +88,8 @@ public class MatchmakingService {
 
         Team hostTeam = teamService.findById(hostTeamId).orElseThrow(TeamNotFoundException::new);
         List<Team> teams = teamService.getTeamsReadyForMatchmaking(hostTeam.getDisciplineId(), hostTeam.getRegionId());
-        teams.remove(hostTeam);
+
+        teams = teamFilteringService.filter(hostTeam, teams);
 
         // pref to Configuration
         WeightConfiguration configuration = new WeightConfiguration(pref.getWeightAgeDiff(),
@@ -126,11 +125,12 @@ public class MatchmakingService {
         this.booleanCriterionNormalizer = new BooleanCriterionNormalizer();
     }
 
-    public MatchmakingService(TeamService teamService, CriteriaGeneratorService criteriaGenerator, WeighteningService weighteningService, WeightedCriteriaAggregator weightedCriteriaAggregator) {
+    public MatchmakingService(TeamService teamService, CriteriaGeneratorService criteriaGenerator, WeighteningService weighteningService, WeightedCriteriaAggregator weightedCriteriaAggregator, TeamFilteringService teamFilteringService) {
         this.teamService = teamService;
         this.criteriaGenerator = criteriaGenerator;
         this.weighteningService = weighteningService;
         this.weightedCriteriaAggregator = weightedCriteriaAggregator;
+        this.teamFilteringService = teamFilteringService;
 
         initializeNormalizers();
     }

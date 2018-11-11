@@ -4,6 +4,7 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.Unkn
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RegionService {
@@ -14,6 +15,10 @@ public class RegionService {
         if(!regionRepository.findById(regionId).isPresent()) {
             throw new UnknownRegionException();
         }
+    }
+
+    public Optional<Region> getById(String regionId) {
+        return this.regionRepository.findById(regionId);
     }
 
     public List<Region> getAll() {

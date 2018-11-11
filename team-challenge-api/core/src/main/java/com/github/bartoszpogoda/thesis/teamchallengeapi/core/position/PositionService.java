@@ -12,6 +12,10 @@ public class PositionService {
 
     public Position save(PositionDto positionDto) {
         Position position = Position.builder().lat(positionDto.getLat()).lng(positionDto.getLng()).build();
+        return save(position);
+    }
+
+    public Position save(Position position) {
         return this.positionRepository.save(position);
     }
 

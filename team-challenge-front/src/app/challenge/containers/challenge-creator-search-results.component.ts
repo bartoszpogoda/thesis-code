@@ -58,6 +58,9 @@ import {take} from 'rxjs/operators';
             <nz-divider></nz-divider>
           </ng-container>
 
+          <div *ngIf="(result$ | async).results.length === 0" style="text-align: center">
+            <h2 style="margin-top: 20px;">Brak wyników</h2>
+          </div>
 
             <!--<nz-spin *ngIf="loading && hasMore" class="demo-loading"></nz-spin>-->
         </div>
