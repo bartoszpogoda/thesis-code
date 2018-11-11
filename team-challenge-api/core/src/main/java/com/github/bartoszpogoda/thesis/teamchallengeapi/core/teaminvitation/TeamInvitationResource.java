@@ -1,9 +1,9 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.teaminvitation;
 
 
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.ApiException;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.*;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.mapping.DtoMappingService;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.model.TeamDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.teaminvitation.model.TeamInvitationDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.util.CustomPage;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.util.PaginationUtil;
@@ -14,9 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.github.bartoszpogoda.thesis.teamchallengeapi.core.util.ResponseUtil.createLocationByAddingIdToCurentRequest;
 
@@ -30,8 +28,7 @@ public class TeamInvitationResource {
 
     @PostMapping
     public ResponseEntity<TeamInvitationDto> invite(@RequestBody @Valid TeamInvitationDto teamInvitationForm)
-            throws UnknownDisciplineException, PlayerNotFoundException, AccessForbiddenException,
-            PlayerAlreadyInTeamException, TeamNotFoundException, InternalServerException, AlreadyInvitedException {
+            throws ApiException {
 
         return teamInvitationService.invite(teamInvitationForm.getTeamId(), teamInvitationForm.getPlayerId())
                 .map(mappingService::mapToDto)
@@ -43,7 +40,7 @@ public class TeamInvitationResource {
     public ResponseEntity<CustomPage<TeamInvitationDto>> query(Pageable pageable,
                                                                @RequestParam Optional<String> playerId,
                                                                @RequestParam Optional<String> teamId)
-            throws TeamNotFoundException, AccessForbiddenException, PlayerNotFoundException {
+            throws ApiException {
 
         Page<TeamInvitationDto> teamInvitations = teamInvitationService.query(pageable, playerId, teamId).map(mappingService::mapToDto);
         return ResponseEntity.ok(PaginationUtil.toCustomPage(teamInvitations));
@@ -51,17 +48,14 @@ public class TeamInvitationResource {
     }
 
     @PostMapping("/{id}/acceptance")
-    public ResponseEntity<?> accept(@PathVariable String id)
-            throws UnknownDisciplineException, PlayerNotFoundException, TeamInvitationNotFoundException,
-            AccessForbiddenException, PlayerAlreadyInTeamException {
+    public ResponseEntity<?> accept(@PathVariable String id) throws ApiException {
 
         teamInvitationService.accept(id);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> cancel(@PathVariable String id) throws UnknownDisciplineException,
-            TeamInvitationNotFoundException, AccessForbiddenException, PlayerNotFoundException {
+    public ResponseEntity<?> cancel(@PathVariable String id) throws ApiException {
 
         teamInvitationService.cancel(id);
         return new ResponseEntity<TeamInvitation>(HttpStatus.NO_CONTENT);

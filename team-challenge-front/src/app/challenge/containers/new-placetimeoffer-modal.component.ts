@@ -27,7 +27,7 @@ import {LocalDate, LocalDateTime, nativeJs, ZonedDateTime, ZoneId, ZoneOffset} f
               Data:
             </div>
             <div nz-col [nzSm]="18" class="value">
-              <nz-date-picker style="width: 150px;" [(ngModel)]="date"></nz-date-picker>
+              <nz-date-picker [nzDisabledDate]="disabledDate" style="width: 150px;" [(ngModel)]="date"></nz-date-picker>
             </div>
           </div>
 
@@ -36,7 +36,8 @@ import {LocalDate, LocalDateTime, nativeJs, ZonedDateTime, ZoneId, ZoneOffset} f
               Czas:
             </div>
             <div nz-col [nzSm]="18" class="value">
-              <nz-time-picker style="width: 150px;" [nzMinuteStep]="15" [(ngModel)]="time" nzFormat="HH:mm"></nz-time-picker>
+              <nz-time-picker [nzDisabledHours]="disabledHours" [nzDisabledMinutes]="disabledMinutes"
+                              style="width: 150px;" [nzMinuteStep]="5" [(ngModel)]="time" nzFormat="HH:mm"></nz-time-picker>
             </div>
           </div>
 
@@ -158,6 +159,30 @@ export class NewPlacetimeofferModalComponent {
 
   onFacilitiySelected(facility: Facility) {
     this.selectedFacility = facility;
+  }
+
+  disabledDate = (current: Date) => {
+    const nowPlusThree = LocalDateTime.now().plusHours(3);
+
+    return LocalDateTime.from(nativeJs(current)).isBefore(nowPlusThree);
+  }
+
+  // disabledTime = (current: Date) => {
+  //   return {
+  //     nzDisabledHours: 0,
+  //     nzDisabledMinutes: 0,
+  //     nzDisabledSeconds: 0
+  //   };
+  // }
+
+  disabledHours() {
+    // TODO implement
+    return [];
+  }
+
+  disabledMinutes(selectedHour) {
+    // TODO implement
+    return [];
   }
 }
 

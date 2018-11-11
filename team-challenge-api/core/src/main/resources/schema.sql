@@ -23,7 +23,9 @@ CREATE TABLE GrantedAuthorities (
 
 /* DISCIPLINES */
 CREATE TABLE Disciplines (
-  DisciplineID VARCHAR(10) PRIMARY KEY
+  DisciplineID VARCHAR(10) PRIMARY KEY,
+  MinTeamSize INTEGER NOT NULL,
+  MaxTeamSize INTEGER NOT NULL
 );
 
 /* POSITIONS */

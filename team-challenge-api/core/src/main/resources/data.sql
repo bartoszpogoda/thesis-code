@@ -53,7 +53,7 @@ INSERT Into GrantedAuthorities VALUES('2', 'ROLE_MOD');
 INSERT Into GrantedAuthorities VALUES('2', 'ROLE_ADMIN');
 
 -- Disciplines
-INSERT INTO Disciplines VALUES('3x3basket');
+INSERT INTO Disciplines VALUES('3x3basket', 3, 5);
 
 -- Positions
 INSERT INTO Positions VALUES('1', 51.110736, 17.033733); -- Wro center

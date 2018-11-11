@@ -18,4 +18,12 @@ public class Discipline {
     @NonNull
     private String id;
 
+    @Column(name = "MinTeamSize")
+    @NonNull
+    private int minTeamSize;
+
+    @Column(name = "MaxTeamSize")
+    @NonNull
+    private int maxTeamSize;
+
 }

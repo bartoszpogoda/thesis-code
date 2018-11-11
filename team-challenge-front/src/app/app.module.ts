@@ -20,6 +20,10 @@ import {NguiMapModule} from '@ngui/map';
 import {CommunityModule} from './community/community.module';
 import {ChallengeModule} from './challenge/challenge.module';
 
+import { registerLocaleData } from '@angular/common';
+import pl from '@angular/common/locales/pl';
+registerLocaleData(pl);
+
 @NgModule({
   imports: [
     CommonModule,
