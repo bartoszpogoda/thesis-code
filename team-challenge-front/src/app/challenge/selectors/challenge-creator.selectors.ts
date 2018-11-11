@@ -2,15 +2,24 @@ import * as fromChallengeCreator from '../reducers/challenge-creator.reducer';
 import {createSelector} from '@ngrx/store';
 import {selectChallengeCreatorState} from '../reducers';
 
-
-export const selectBuilder = createSelector(
+export const selectStep = createSelector(
   selectChallengeCreatorState,
-  fromChallengeCreator.getBuilder
+  fromChallengeCreator.getStep
+);
+
+export const selectSearchForm = createSelector(
+  selectChallengeCreatorState,
+  fromChallengeCreator.getSearchForm
 );
 
 export const selectSearching = createSelector(
   selectChallengeCreatorState,
   fromChallengeCreator.getSearching
+);
+
+export const selectComparing = createSelector(
+  selectChallengeCreatorState,
+  fromChallengeCreator.getComparing
 );
 
 export const selectResult = createSelector(

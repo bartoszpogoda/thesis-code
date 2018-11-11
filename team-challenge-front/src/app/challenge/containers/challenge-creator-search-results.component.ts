@@ -10,26 +10,13 @@ import {
 } from '../selectors/challenge-creator.selectors';
 import {Observable} from 'rxjs';
 import {ScoredTeam, SearchResult} from '../models/search-result';
-import {Check, SelectTeamForChallenge, Uncheck, UncheckAll} from '../actions/challenge-creator.actions';
+import {BackToSearchForm, Check, CompareSelected, SelectTeamForChallenge, Uncheck, UncheckAll} from '../actions/challenge-creator.actions';
 import {Router} from '@angular/router';
 import {take} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-challenges-search-result-page',
+  selector: 'app-challenge-creator-search-results',
   template: `
-    <div class="spaces-sides">
-      <app-breadcrumb [items]="items"></app-breadcrumb>
-      <div class="content-container">
-        <!--<h1>Wyniki wyszukiwania</h1>-->
-        <div class="small-steps-container">
-          <nz-steps [nzCurrent]="1" nzSize="small">
-            <nz-step nzTitle="Określ preferencje"></nz-step>
-            <nz-step nzTitle="Wybierz rywali"></nz-step>
-            <nz-step nzTitle="Zaoferuj termin i miejsce"></nz-step>
-            <nz-step nzTitle="Podsumowanie"></nz-step>
-          </nz-steps>
-        </div>
-
         <div *ngIf="searching$ | async" style="text-align: center">
           Wyszukiwanie Waszych idealnych przeciwników trwa...
         </div>
@@ -80,15 +67,12 @@ import {take} from 'rxjs/operators';
           Zmień preferencje
         </button>
         <button nz-button (click)="onTeamSelected()" [disabled]="!(oneSelected$ | async)" nzType="primary">
-          <i class="anticon anticon-play-circle-o"></i> Rzuć wyzwanie
+          <i class="anticon anticon-play-circle-o"></i> Wybierz
         </button>
         <button nz-button (click)="onCompareClicked()" [disabled]="!(moreThanOneSelected$ | async)" nzType="primary">
           Porównaj zaznaczone drużyny
         </button>
         </div>
-
-      </div>
-    </div>
   `,
   styles: [ `
   :host ::ng-deep .demo-infinite-container {
@@ -120,10 +104,7 @@ import {take} from 'rxjs/operators';
     }
   ` ]
 })
-export class ChallengesSearchResultPageComponent implements OnInit {
-  items = [
-    {title: 'Wyzwania', link: '/challenges'}, {title: 'Tworzenie wyzwania'}
-  ];
+export class ChallengeCreatorSearchResultsComponent {
 
   searching$: Observable<boolean>;
   result$: Observable<SearchResult>;
@@ -151,15 +132,13 @@ export class ChallengesSearchResultPageComponent implements OnInit {
   }
 
   onCompareClicked() {
-    this.router.navigate(['challenges/new/comparison']);
-  }
+    // this.router.navigate(['challenges/new/comparison']);
 
-  ngOnInit(): void {
-    // this.store.dispatch(new UncheckAll());
+    this.store.dispatch(new CompareSelected());
   }
 
   onChangePreferences() {
-    this.router.navigate(['challenges/new']);
+    this.store.dispatch(new BackToSearchForm());
   }
 
   onTeamSelected() {

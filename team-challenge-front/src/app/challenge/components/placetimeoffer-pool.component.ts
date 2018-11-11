@@ -10,25 +10,57 @@ import {Position} from '../../core/models/position';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="offer-pool-container">
-      <h2>Negocjacje</h2>
-      <div class="map-container">
-        <ngui-map [options]="mapOptions" (mapClick)="onMapClick($event)" [center]="" [style.height.px]="200">
-          <!--<ng-container *ngIf="facilities">-->
-            <!--<marker *ngFor="let facility of facilities" [position]="facility.position"-->
-                    <!--(click)="onMarkerClicked($event, facility)" [icon]="getBasketIcon()">-->
-            <!--</marker>-->
-            <!--<marker *ngIf="myHome" [position]="getLatLngPosition(myHome)"-->
-                    <!--[icon]="myHomeIcon" title="Punkt macierzysty Twojej drużyny">-->
-            <!--</marker>-->
-            <!--<marker *ngIf="theirHome" [position]="getLatLngPosition(theirHome)"-->
-                    <!--[icon]="theirHomeIcon" title="Punkt macierzysty drugiej drużyny">-->
-            <!--</marker>-->
-          <!--</ng-container>-->
-        </ngui-map>
+      <div nz-row nzGutter="16">
+        <div nz-col nzSm="8">
+          <div class="map-container">
+            <ngui-map [options]="mapOptions" [center]="" [style.height.px]="300">
+              <marker *ngFor="let offer of placeTimeOffers" [position]="offer.offeredFacility.position"
+                      (click)="onOfferClicked($event, offer)" [icon]="getBasketIcon()">
+              </marker>
+              <marker *ngIf="_myHome" [position]="getLatLngPosition(_myHome)"
+                      [icon]="myHomeIcon" title="Punkt macierzysty Twojej drużyny">
+              </marker>
+              <marker *ngIf="theirHome" [position]="getLatLngPosition(theirHome)"
+                      [icon]="theirHomeIcon" title="Punkt macierzysty drugiej drużyny">
+              </marker>
+            </ngui-map>
+          </div>
+        </div>
+        <div nz-col nzSm="16">
+          <div class="pool-container">
+            <div class="place-time-offer" *ngFor="let offer of placeTimeOffers">
+              <app-placetimeoffer [offer]="offer" (canceled)="onCanceled(offer)"></app-placetimeoffer>
+            </div>
+            <div class="place-time-offer">
+              <ng-content></ng-content>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>
   `, styles: [`
+
+    .place-time-offer {
+      display: inline-block;
+      margin: 0 5px;
+      float: none;
+      height: 90%;
+      display: inline-block;
+      zoom: 1;
+    }
+
+    .pool-container {
+      padding: 10px;
+      border: #eeeeee 1px solid;
+      height: 300px;
+
+      white-space: nowrap;
+      position: relative;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
 
   `]
 })
@@ -37,14 +69,26 @@ export class PlacetimeofferPoolComponent {
   @Input()
   placeTimeOffers: PlaceTimeOffer[];
 
+  _myHome: Position;
+
   @Input()
-  myHome: Position;
+  set myHome(myHome: Position) {
+    this._myHome = myHome;
+
+    this.mapOptions = {
+      ...this.mapOptions,
+      center: new LatLng(myHome.lat, myHome.lng)
+    };
+  }
 
   @Input()
   theirHome: Position;
 
   @Output()
   selected = new EventEmitter<Facility>();
+
+  @Output()
+  canceled = new EventEmitter<PlaceTimeOffer>();
 
   @Input()
   set center(center: Position) {
@@ -53,7 +97,6 @@ export class PlacetimeofferPoolComponent {
       center: new LatLng(center.lat, center.lng)
     };
 
-    this.currentPosition = new LatLng(center.lat, center.lng);
   }
 
   myHomeIcon = {
@@ -70,8 +113,6 @@ export class PlacetimeofferPoolComponent {
     scaledSize: [27, 43]
   };
 
-  currentPosition: LatLng = new LatLng(0.5, 0.5);
-
   mapOptions: MapOptions = {
     center: new LatLng(0.5, 0.5),
     streetViewControl: false,
@@ -81,18 +122,16 @@ export class PlacetimeofferPoolComponent {
     zoom: 11
   };
 
-  onMapClick(ev) {
-    this.currentPosition = ev.latLng;
+  onCanceled(offer: PlaceTimeOffer) {
+    this.canceled.emit(offer);
   }
 
   getLatLngPosition(position: Position): LatLng {
     return new LatLng(position.lat, position.lng);
   }
 
-  onMarkerClicked({target: marker}, facility) {
-    this.selected.emit(facility);
-    // this.selectedFacility = facility;
-    // marker.nguiMapComponent.openInfoWindow('iw', marker);
+  onOfferClicked({target: marker}, offer: PlaceTimeOffer) {
+    // somehow mark picked offer
   }
 
   getBasketIcon() {

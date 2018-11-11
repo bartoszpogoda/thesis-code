@@ -1,4 +1,5 @@
 import {Facility} from '../../core/models/facility';
+import {LocalDateTime} from 'js-joda';
 
 export interface Challenge {
   id?: string;

@@ -17,7 +17,7 @@ import {Player} from '../../core/models/player';
                [style.background-color]="color.backgroundColor"></div>
         </h2>
         <button class="challenge-button" (click)="onChallenged()" nz-button nzType="primary" [nzSize]="affixFixed ? 'small' : 'default'">
-          <i class="anticon anticon-play-circle-o"></i> <span *ngIf="!affixFixed">Rzuć wyzwanie</span>
+          <i class="anticon anticon-play-circle-o"></i> <span *ngIf="!affixFixed">Wybierz</span>
         </button>
       </div>
     </nz-affix>

@@ -1,8 +1,7 @@
 import {SearchForm} from '../models/search-form';
 import {ScoredTeam, SearchResult} from '../models/search-result';
-import {SearchActionsUnion, ChalengeCreatorActionTypes} from '../actions/challenge-creator.actions';
+import {ChallengeCreatorActionsUnion, ChallengeCreatorActionTypes} from '../actions/challenge-creator.actions';
 import {PlaceTimeOffer} from '../models/challenge';
-import {a} from '@angular/core/src/render3';
 import {Position} from '../../core/models/position';
 import {Player} from '../../core/models/player';
 import {Team} from '../../core/models/team';
@@ -10,9 +9,11 @@ import {MyTeamActionsUnion, MyTeamActionTypes} from '../../core/actions/my-team.
 
 
 export interface State {
-  builder: SearchForm;
+  step: number;
+  searchForm: SearchForm;
   result: SearchResult;
   searching: boolean;
+  comparing: boolean;
   selected: ScoredTeam[];
   players: Player[][];
   homePoints: Position[];
@@ -22,7 +23,8 @@ export interface State {
 }
 
 const initialState: State = {
-  builder: {
+  step: 0,
+  searchForm: {
     searchingTeamId: null,
     preferences: {
       friendly: false,
@@ -33,6 +35,7 @@ const initialState: State = {
   },
   result: null,
   searching: false,
+  comparing: false,
   selected: [],
   players: [],
   homePoints: [],
@@ -43,110 +46,147 @@ const initialState: State = {
 
 export function reducer(
   state: State = initialState,
-  action: MyTeamActionsUnion | SearchActionsUnion
+  action: MyTeamActionsUnion | ChallengeCreatorActionsUnion
 ): State {
   switch (action.type) {
 
     case MyTeamActionTypes.LoadCurrentSuccess:
       return {
         ...state,
-        builder: {
-          ...state.builder,
+        searchForm: {
+          ...state.searchForm,
           searchingTeamId: action.payload.id
         }
       };
 
-    case ChalengeCreatorActionTypes.Search:
+    case ChallengeCreatorActionTypes.Search:
       return {
         ...state,
-        builder: action.payload,
+        searchForm: action.payload,
         result: null,
         searching: true,
-        selected: []
+        selected: [],
+        step: 1
       };
 
-    case ChalengeCreatorActionTypes.SearchSuccess:
+    case ChallengeCreatorActionTypes.SearchSuccess:
       return {
         ...state,
         result: action.payload,
         searching: false
       };
 
-    case ChalengeCreatorActionTypes.SearchFailure:
+    case ChallengeCreatorActionTypes.SearchFailure:
       return {
         ...state,
         searching: false
       };
 
-    case ChalengeCreatorActionTypes.Check:
+    case ChallengeCreatorActionTypes.Check:
       return {
         ...state,
         selected: state.selected.length < 3 ? [...state.selected, action.payload] : state.selected
       };
 
-    case ChalengeCreatorActionTypes.Uncheck:
+    case ChallengeCreatorActionTypes.Uncheck:
       return {
         ...state,
         selected: state.selected.filter(sel => sel !== action.payload)
       };
 
-    case ChalengeCreatorActionTypes.UncheckAll:
+    case ChallengeCreatorActionTypes.UncheckAll:
       return {
         ...state,
         selected: []
       };
 
-    case ChalengeCreatorActionTypes.CompareLoadHomePoints:
+    case ChallengeCreatorActionTypes.CompareLoadHomePoints:
       return {
         ...state,
         homePoints: []
       };
 
-    case ChalengeCreatorActionTypes.CompareLoadHomePointsSuccess:
+    case ChallengeCreatorActionTypes.CompareLoadHomePointsSuccess:
       return {
         ...state,
         homePoints: action.payload
       };
 
-    case ChalengeCreatorActionTypes.CompareLoadPlayers:
+    case ChallengeCreatorActionTypes.CompareLoadPlayers:
       return {
         ...state,
         players: []
       };
 
-    case ChalengeCreatorActionTypes.CompareLoadPlayersSuccess:
+    case ChallengeCreatorActionTypes.CompareLoadPlayersSuccess:
       return {
         ...state,
         players: action.payload
       };
 
-    case ChalengeCreatorActionTypes.SelectTeamForChallenge:
+    case ChallengeCreatorActionTypes.SelectTeamForChallenge:
       return {
         ...state,
-        pickedTeam: action.payload
+        pickedTeam: action.payload,
+        comparing: false,
+        step: 2
       };
 
-    case ChalengeCreatorActionTypes.LoadPickedTeamHomeSuccess:
+    case ChallengeCreatorActionTypes.LoadPickedTeamHomeSuccess:
       return {
         ...state,
         pickedTeamHome: action.payload
       };
 
-    case ChalengeCreatorActionTypes.AddEntryPlaceTimeOffer:
+    case ChallengeCreatorActionTypes.AddEntryPlaceTimeOffer:
       return {
         ...state,
         entryPlaceTimeOffers: [...state.entryPlaceTimeOffers, action.payload]
       };
 
+    case ChallengeCreatorActionTypes.CancelEntryPlaceTimeOffer:
+      return {
+        ...state,
+        entryPlaceTimeOffers: state.entryPlaceTimeOffers.filter(offer => offer !== action.payload)
+      };
 
+    case ChallengeCreatorActionTypes.CompareSelected:
+      return {
+        ...state,
+        comparing: true
+      };
+
+    case ChallengeCreatorActionTypes.BackToResults:
+      return {
+        ...state,
+        comparing: false,
+        step: 1
+      };
+
+    case ChallengeCreatorActionTypes.BackToSearchForm:
+      return {
+        ...state,
+        comparing: false,
+        step: 0
+      };
+
+    case ChallengeCreatorActionTypes.AddEntryTimeOffersSuccess:
+      return {
+        ...initialState,
+        searchForm: {
+          ...state.searchForm
+        }
+      };
 
     default:
       return state;
   }
 }
 
-export const getBuilder = (state: State) => state.builder;
+export const getStep = (state: State) => state.step;
+export const getSearchForm = (state: State) => state.searchForm;
 export const getSearching = (state: State) => state.searching;
+export const getComparing = (state: State) => state.comparing;
 export const getResult = (state: State) => state.result;
 export const getSelected = (state: State) => state.selected;
 export const getPlayers = (state: State) => state.players;
