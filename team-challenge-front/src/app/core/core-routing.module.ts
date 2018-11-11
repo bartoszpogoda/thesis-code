@@ -9,12 +9,6 @@ import {TeamManagerPageComponent} from './containers/team-manager-page.component
 import {IsManagerGuard} from './guard/is-manager.guard';
 import {TeamRecruitmentPageComponent} from './containers/team-recruitment-page.component';
 import {TeamManagerHomePageComponent} from './containers/team-manager-home-page.component';
-import {ChallengesPageComponent} from './containers/challenges-page.component';
-import {ChallengesSearchPageComponent} from './containers/challenges-search-page.component';
-import {ChallengesSearchResultPageComponent} from './containers/challenges-search-result-page.component';
-import {ComparisonPageComponent} from './containers/comparison-page.component';
-import {ChallengesEntryDateTimePageComponent} from './containers/challenges-entry-date-time-page.component';
-import {ChallengesSummaryPageComponent} from './containers/challenges-summary-page.component';
 
 const routes: Routes = [
   {
@@ -54,30 +48,6 @@ const routes: Routes = [
     path: 'team/manager/home',
     component: TeamManagerHomePageComponent,
     canActivate: [IsManagerGuard]
-  },
-  {
-    path: 'challenges',
-    component: ChallengesPageComponent
-  },
-  {
-    path: 'challenges/new',
-    component: ChallengesSearchPageComponent
-  },
-  {
-    path: 'challenges/new/pick',
-    component: ChallengesSearchResultPageComponent
-  },
-  {
-    path: 'challenges/new/comparison',
-    component: ComparisonPageComponent
-  },
-  {
-    path: 'challenges/new/offer',
-    component: ChallengesEntryDateTimePageComponent
-  },
-  {
-    path: 'challenges/new/summary',
-    component: ChallengesSummaryPageComponent
   }
 ];
 

@@ -7,10 +7,10 @@ import {
   selectResult,
   selectSearching, selectSelected,
   selectThreeSelected
-} from '../selectors/search.selectors';
+} from '../selectors/challenge-creator.selectors';
 import {Observable} from 'rxjs';
 import {ScoredTeam, SearchResult} from '../models/search-result';
-import {Check, SelectTeamForChallenge, Uncheck, UncheckAll} from '../actions/search.actions';
+import {Check, SelectTeamForChallenge, Uncheck, UncheckAll} from '../actions/challenge-creator.actions';
 import {Router} from '@angular/router';
 import {take} from 'rxjs/operators';
 

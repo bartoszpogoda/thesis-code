@@ -2,14 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../reducers/index';
 import {Observable} from 'rxjs';
-import {Player} from '../models/player';
-import {selectPlayerProfile} from '../selectors/my-player.selectors';
-import {selectRegions} from '../selectors/core.selectors';
-import {selectSelectedRegionOrDefault} from '../../community/reducers';
-import {selectBuilder} from '../selectors/search.selectors';
-import {FacilityCreationForm} from '../models/facility';
+import {selectBuilder} from '../selectors/challenge-creator.selectors';
 import {SearchForm} from '../models/search-form';
-import {Search} from '../actions/search.actions';
+import {Search} from '../actions/challenge-creator.actions';
 
 @Component({
   selector: 'app-challenges-search-page',

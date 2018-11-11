@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';;
-import {Region} from '../models/region';
+import {Region} from '../../core/models/region';
 import {SearchForm} from '../models/search-form';
 import {SearchResult} from '../models/search-result';
 

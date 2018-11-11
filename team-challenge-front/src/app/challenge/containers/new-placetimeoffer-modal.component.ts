@@ -1,8 +1,7 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
-import {Player} from '../models/player';
 import {PlaceTimeOffer} from '../models/challenge';
-import {Position} from '../models/position';
-import {Facility} from '../models/facility';
+import {Position} from '../../core/models/position';
+import {Facility} from '../../core/models/facility';
 
 @Component({
   selector: 'app-new-placetimeoffer-modal',

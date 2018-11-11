@@ -2,25 +2,22 @@ import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../reducers/index';
 import {Observable} from 'rxjs';
-import {Player} from '../models/player';
-import {selectPlayerProfile} from '../selectors/my-player.selectors';
 import {
   selectPickedTeam,
   selectPickedTeamHome,
   selectSelected,
   selectSelectedHomes,
   selectSelectedPlayers
-} from '../selectors/search.selectors';
-import {Team} from '../models/team';
-import {ScoredTeam} from '../models/search-result';
-import {Facility} from '../models/facility';
-import {Position} from '../models/position';
-import {Region} from '../models/region';
+} from '../selectors/challenge-creator.selectors';
 import {Router} from '@angular/router';
-import {selectMyTeam, selectMyTeamHome} from '../selectors/my-team.selectors';
 import {selectFacilities, selectSelectedRegionOrDefault} from '../../community/reducers';
-import {CompareLoadHomePoints, CompareLoadPlayers} from '../actions/search.actions';
+import {CompareLoadHomePoints, CompareLoadPlayers} from '../actions/challenge-creator.actions';
 import {LoadFacilities} from '../../community/actions/community-facilities.actions';
+import {selectMyTeam, selectMyTeamHome} from '../../core/selectors/my-team.selectors';
+import {Position} from '../../core/models/position';
+import {Region} from '../../core/models/region';
+import {Facility} from '../../core/models/facility';
+import {Team} from '../../core/models/team';
 
 @Component({
   selector: 'app-challenges-entry-date-time-page',

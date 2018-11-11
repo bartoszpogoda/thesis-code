@@ -1,29 +1,26 @@
+import * as fromChallengeCreator from '../reducers/challenge-creator.reducer';
+import {createSelector} from '@ngrx/store';
+import {selectChallengeCreatorState} from '../reducers';
 
-import * as fromSearch from '../reducers/search.reducer';
-import {createFeatureSelector, createSelector} from '@ngrx/store';
-import {State} from '../reducers';
-
-
-export const selectSearchState = createFeatureSelector<State, fromSearch.State>('search');
 
 export const selectBuilder = createSelector(
-  selectSearchState,
-  fromSearch.getBuilder
+  selectChallengeCreatorState,
+  fromChallengeCreator.getBuilder
 );
 
 export const selectSearching = createSelector(
-  selectSearchState,
-  fromSearch.getSearching
+  selectChallengeCreatorState,
+  fromChallengeCreator.getSearching
 );
 
 export const selectResult = createSelector(
-  selectSearchState,
-  fromSearch.getResult
+  selectChallengeCreatorState,
+  fromChallengeCreator.getResult
 );
 
 export const selectSelected = createSelector(
-  selectSearchState,
-  fromSearch.getSelected
+  selectChallengeCreatorState,
+  fromChallengeCreator.getSelected
 );
 
 export const selectThreeSelected = createSelector(
@@ -42,28 +39,28 @@ export const selectMoreThanOneSelected = createSelector(
 );
 
 export const selectSelectedHomes = createSelector(
-  selectSearchState,
-  fromSearch.getHomePoints
+  selectChallengeCreatorState,
+  fromChallengeCreator.getHomePoints
 );
 
 export const selectSelectedPlayers = createSelector(
-  selectSearchState,
-  fromSearch.getPlayers
+  selectChallengeCreatorState,
+  fromChallengeCreator.getPlayers
 );
 
 export const selectPickedTeam = createSelector(
-  selectSearchState,
-  fromSearch.getPickedTeam
+  selectChallengeCreatorState,
+  fromChallengeCreator.getPickedTeam
 );
 
 export const selectEntryPlaceTimeOffers = createSelector(
-  selectSearchState,
-  fromSearch.getEntryPlaceTimeOffers
+  selectChallengeCreatorState,
+  fromChallengeCreator.getEntryPlaceTimeOffers
 );
 
 export const selectPickedTeamHome = createSelector(
-  selectSearchState,
-  fromSearch.getPickedTeamHome
+  selectChallengeCreatorState,
+  fromChallengeCreator.getPickedTeamHome
 );
 
 

@@ -2,8 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../reducers/index';
 import {Observable} from 'rxjs';
-import {Player} from '../models/player';
-import {selectPlayerProfile} from '../selectors/my-player.selectors';
 
 @Component({
   selector: 'app-challenges-page',

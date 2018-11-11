@@ -1,47 +1,32 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {catchError, exhaustMap, filter, map, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
-import {forkJoin, of, timer} from 'rxjs';
+import {forkJoin, of} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {State} from '../reducers/index';
-import {TeamService} from '../service/team.service';
-import {
-  LoadCurrent,
-  LoadCurrentFailure,
-  LoadCurrentSuccess, LoadHome, LoadHomeFailure, LoadHomeSuccess,
-  MyTeamActionTypes, UpdateIsManager
-} from '../actions/my-team.actions';
-import {
-  AcceptTeamInvitationSuccess,
-  LoadCurrentSuccess as LoadCurrentPlayerSuccess, LoadTeamInvitations, LoadTeamInvitationsFailure, LoadTeamInvitationsSuccess,
-  PlayerActionTypes,
-} from '../actions/player.actions';
 import {Router} from '@angular/router';
 import {NzMessageService} from 'ng-zorro-antd';
-import {selectPlayerProfile} from '../selectors/my-player.selectors';
-import {NoAction} from '../actions/core.actions';
-import {toPayload} from '../util/functions';
-import {selectMyTeam} from '../selectors/my-team.selectors';
 import {
   CompareLoadHomePoints, CompareLoadHomePointsFailure, CompareLoadHomePointsSuccess,
   CompareLoadPlayers, CompareLoadPlayersFailure,
   CompareLoadPlayersSuccess, LoadPickedTeamHomeFailure, LoadPickedTeamHomeSuccess,
   Search,
-  SearchActionTypes,
+  ChalengeCreatorActionTypes,
   SearchFailure,
   SearchSuccess, SelectTeamForChallenge
-} from '../actions/search.actions';
-import {selectCurrentTeam} from '../../community/reducers';
+} from '../actions/challenge-creator.actions';
 import {SearchService} from '../service/search.service';
-import {selectResult, selectSelected} from '../selectors/search.selectors';
-import {Position} from '../models/position';
+import {selectSelected} from '../selectors/challenge-creator.selectors';
+import {toPayload} from '../../core/util/functions';
+import {TeamService} from '../../core/service/team.service';
+import {Position} from '../../core/models/position';
 
 @Injectable()
 export class SearchEffects {
 
   @Effect()
   $search = this.actions$.pipe(
-    ofType<Search>(SearchActionTypes.Search),
+    ofType<Search>(ChalengeCreatorActionTypes.Search),
     map(toPayload),
     exhaustMap((searchForm) =>
       this.searchService.search(searchForm).pipe(
@@ -53,7 +38,7 @@ export class SearchEffects {
 
   @Effect({dispatch: false})
   $redirectToResults = this.actions$.pipe(
-    ofType<Search>(SearchActionTypes.Search),
+    ofType<Search>(ChalengeCreatorActionTypes.Search),
     tap(() => {
       this.router.navigate(['/challenges/new/pick']);
     })
@@ -61,7 +46,7 @@ export class SearchEffects {
 
   @Effect({dispatch: false})
   $redirectToEntryOffers = this.actions$.pipe(
-    ofType<SelectTeamForChallenge>(SearchActionTypes.SelectTeamForChallenge),
+    ofType<SelectTeamForChallenge>(ChalengeCreatorActionTypes.SelectTeamForChallenge),
     tap(() => {
       this.router.navigate(['/challenges/new/offer']);
     })
@@ -69,7 +54,7 @@ export class SearchEffects {
 
   @Effect()
   $loadPlayers = this.actions$.pipe(
-    ofType<CompareLoadPlayers>(SearchActionTypes.CompareLoadPlayers),
+    ofType<CompareLoadPlayers>(ChalengeCreatorActionTypes.CompareLoadPlayers),
     withLatestFrom(this.store.pipe(select(selectSelected))),
     filter(([, selected]) => selected.length > 0),
     exhaustMap(([, selected]) => {
@@ -86,7 +71,7 @@ export class SearchEffects {
 
   @Effect()
   $loadHomePoints = this.actions$.pipe(
-    ofType<CompareLoadHomePoints>(SearchActionTypes.CompareLoadHomePoints),
+    ofType<CompareLoadHomePoints>(ChalengeCreatorActionTypes.CompareLoadHomePoints),
     withLatestFrom(this.store.pipe(select(selectSelected))),
     filter(([, selected]) => selected.length > 0),
     exhaustMap(([, selected]) => {
@@ -102,7 +87,7 @@ export class SearchEffects {
 
   @Effect()
   $loadPickedTeamHome = this.actions$.pipe(
-    ofType<SelectTeamForChallenge>(SearchActionTypes.SelectTeamForChallenge),
+    ofType<SelectTeamForChallenge>(ChalengeCreatorActionTypes.SelectTeamForChallenge),
     map(toPayload),
     switchMap(team => this.teamService.getHome(team.id).pipe(
       map(home => new LoadPickedTeamHomeSuccess(home)),

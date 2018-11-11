@@ -1,4 +1,4 @@
-import {Team} from './team';
+import {Team} from '../../core/models/team';
 
 export interface SearchResult {
   results: ScoredTeam[];

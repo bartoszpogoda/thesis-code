@@ -1,20 +1,20 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../reducers/index';
-import {CompareLoadHomePoints, CompareLoadPlayers, SelectTeamForChallenge} from '../actions/search.actions';
+import {CompareLoadHomePoints, CompareLoadPlayers, SelectTeamForChallenge} from '../actions/challenge-creator.actions';
 import {Observable, Subject} from 'rxjs';
-import {Team} from '../models/team';
-import {selectMyTeam, selectMyTeamHome} from '../selectors/my-team.selectors';
-import {selectSelected, selectSelectedHomes, selectSelectedPlayers} from '../selectors/search.selectors';
+import {selectSelected, selectSelectedHomes, selectSelectedPlayers} from '../selectors/challenge-creator.selectors';
 import {NumericCriteria, NumericCriteriaType, ScoredTeam} from '../models/search-result';
 import {takeUntil} from 'rxjs/operators';
-import {Position} from '../models/position';
-import {Facility} from '../models/facility';
-import {Region} from '../models/region';
 import {selectFacilities, selectSelectedRegionOrDefault} from '../../community/reducers';
 import {LoadFacilities} from '../../community/actions/community-facilities.actions';
-import {Player} from '../models/player';
 import {Router} from '@angular/router';
+import {Position} from '../../core/models/position';
+import {Facility} from '../../core/models/facility';
+import {Player} from '../../core/models/player';
+import {Team} from '../../core/models/team';
+import {Region} from '../../core/models/region';
+import {selectMyTeam, selectMyTeamHome} from '../../core/selectors/my-team.selectors';
 
 @Component({
   selector: 'app-comparison-page',

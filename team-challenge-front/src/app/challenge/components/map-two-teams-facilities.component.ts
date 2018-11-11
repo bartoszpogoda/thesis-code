@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
-import {Position} from '../models/position';
-import {Facility} from '../models/facility';
 import MapOptions = google.maps.MapOptions;
 import LatLng = google.maps.LatLng;
+import {Position} from '../../core/models/position';
+import {Facility} from '../../core/models/facility';
 
 @Component({
   selector: 'app-map-two-teams-facilities',

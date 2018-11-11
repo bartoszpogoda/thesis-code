@@ -1,12 +1,12 @@
 import {SearchForm} from '../models/search-form';
-import {MyTeamActionsUnion, MyTeamActionTypes} from '../actions/my-team.actions';
 import {ScoredTeam, SearchResult} from '../models/search-result';
-import {SearchActionsUnion, SearchActionTypes} from '../actions/search.actions';
-import {Player} from '../models/player';
-import {Position} from '../models/position';
-import {Team} from '../models/team';
+import {SearchActionsUnion, ChalengeCreatorActionTypes} from '../actions/challenge-creator.actions';
 import {PlaceTimeOffer} from '../models/challenge';
 import {a} from '@angular/core/src/render3';
+import {Position} from '../../core/models/position';
+import {Player} from '../../core/models/player';
+import {Team} from '../../core/models/team';
+import {MyTeamActionsUnion, MyTeamActionTypes} from '../../core/actions/my-team.actions';
 
 
 export interface State {
@@ -56,7 +56,7 @@ export function reducer(
         }
       };
 
-    case SearchActionTypes.Search:
+    case ChalengeCreatorActionTypes.Search:
       return {
         ...state,
         builder: action.payload,
@@ -65,74 +65,74 @@ export function reducer(
         selected: []
       };
 
-    case SearchActionTypes.SearchSuccess:
+    case ChalengeCreatorActionTypes.SearchSuccess:
       return {
         ...state,
         result: action.payload,
         searching: false
       };
 
-    case SearchActionTypes.SearchFailure:
+    case ChalengeCreatorActionTypes.SearchFailure:
       return {
         ...state,
         searching: false
       };
 
-    case SearchActionTypes.Check:
+    case ChalengeCreatorActionTypes.Check:
       return {
         ...state,
         selected: state.selected.length < 3 ? [...state.selected, action.payload] : state.selected
       };
 
-    case SearchActionTypes.Uncheck:
+    case ChalengeCreatorActionTypes.Uncheck:
       return {
         ...state,
         selected: state.selected.filter(sel => sel !== action.payload)
       };
 
-    case SearchActionTypes.UncheckAll:
+    case ChalengeCreatorActionTypes.UncheckAll:
       return {
         ...state,
         selected: []
       };
 
-    case SearchActionTypes.CompareLoadHomePoints:
+    case ChalengeCreatorActionTypes.CompareLoadHomePoints:
       return {
         ...state,
         homePoints: []
       };
 
-    case SearchActionTypes.CompareLoadHomePointsSuccess:
+    case ChalengeCreatorActionTypes.CompareLoadHomePointsSuccess:
       return {
         ...state,
         homePoints: action.payload
       };
 
-    case SearchActionTypes.CompareLoadPlayers:
+    case ChalengeCreatorActionTypes.CompareLoadPlayers:
       return {
         ...state,
         players: []
       };
 
-    case SearchActionTypes.CompareLoadPlayersSuccess:
+    case ChalengeCreatorActionTypes.CompareLoadPlayersSuccess:
       return {
         ...state,
         players: action.payload
       };
 
-    case SearchActionTypes.SelectTeamForChallenge:
+    case ChalengeCreatorActionTypes.SelectTeamForChallenge:
       return {
         ...state,
         pickedTeam: action.payload
       };
 
-    case SearchActionTypes.LoadPickedTeamHomeSuccess:
+    case ChalengeCreatorActionTypes.LoadPickedTeamHomeSuccess:
       return {
         ...state,
         pickedTeamHome: action.payload
       };
 
-    case SearchActionTypes.AddEntryPlaceTimeOffer:
+    case ChalengeCreatorActionTypes.AddEntryPlaceTimeOffer:
       return {
         ...state,
         entryPlaceTimeOffers: [...state.entryPlaceTimeOffers, action.payload]

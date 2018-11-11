@@ -2,24 +2,18 @@ import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../reducers/index';
 import {Observable} from 'rxjs';
-import {Player} from '../models/player';
-import {selectPlayerProfile} from '../selectors/my-player.selectors';
 import {
   selectPickedTeam,
   selectPickedTeamHome,
   selectSelected,
   selectSelectedHomes,
   selectSelectedPlayers
-} from '../selectors/search.selectors';
-import {Team} from '../models/team';
+} from '../selectors/challenge-creator.selectors';
 import {ScoredTeam} from '../models/search-result';
-import {Facility} from '../models/facility';
-import {Position} from '../models/position';
-import {Region} from '../models/region';
 import {Router} from '@angular/router';
-import {selectMyTeam, selectMyTeamHome} from '../selectors/my-team.selectors';
 import {selectFacilities, selectSelectedRegionOrDefault} from '../../community/reducers';
 import {LoadFacilities} from '../../community/actions/community-facilities.actions';
+import {Team} from '../../core/models/team';
 
 @Component({
   selector: 'app-challenges-summary-page',

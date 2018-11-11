@@ -24,8 +24,6 @@ import {MyTeamEffects} from './effects/my-team.effects';
 import {ManagerEffects} from './effects/manager.effects';
 import {ImageLoaderComponent} from './components/image-loader.component';
 import {TeamCardComponent} from './components/team-card.component';
-import {TeamCreatorEffects} from '../team-creator/store/team-creator.effects';
-import {PlayerCreatorEffects} from '../player-creator/store/player-creator.effects';
 import {PlayerEffects} from './effects/player.effects';
 import {CoreRoutingModule} from './core-routing.module';
 import {PlayerService} from './service/player.service';
@@ -49,28 +47,10 @@ import {IsManagerGuard} from './guard/is-manager.guard';
 import {RegionService} from './service/region.service';
 import {CoreEffects} from './effects/core.effects';
 import {TeamInvitationService} from './service/team-invitation.service';
-import {RegionFacilityPickerComponent} from './components/region-facility-picker.component';
 import {FacilityService} from './service/facility.service';
 import {TeamRecruitmentComponent} from './containers/team-recruitment.component';
-import {ChallengesPageComponent} from './containers/challenges-page.component';
-import {ChallengeSearchFormComponent} from './components/challenge-search-form.component';
-import {ChallengesSearchPageComponent} from './containers/challenges-search-page.component';
-import {ChallengesSearchResultPageComponent} from './containers/challenges-search-result-page.component';
-import {SearchEffects} from './effects/search.effects';
-import {SearchService} from './service/search.service';
 import {PrototypeNotificationComponent} from './components/prototype-notification.component';
-import {SearchResultEntryComponent} from './components/search-result-entry.component';
-import {ComparisonPageComponent} from './containers/comparison-page.component';
-import {TeamComparisonEntryComponent} from './containers/team-comparison-entry.component';
-import {ChartsModule} from 'ng2-charts';
-import {MapTwoTeamsFacilitiesComponent} from './components/map-two-teams-facilities.component';
-import {MapTeamsFacilitiesComponent} from './components/map-teams-facilities.component';
-import {ChallengeCreatorStepsComponent} from './components/challenge-creator-steps.component';
-import {ChallengesEntryDateTimePageComponent} from './containers/challenges-entry-date-time-page.component';
-import {ChallengeService} from './service/challenge.service';
-import {PlacetimeofferPoolComponent} from './components/placetimeoffer-pool.component';
-import {NewPlacetimeofferModalComponent} from './containers/new-placetimeoffer-modal.component';
-import {ChallengesSummaryPageComponent} from './containers/challenges-summary-page.component';
+import {RegionFacilityPickerComponent} from './components/region-facility-picker.component';
 
 export const COMPONENTS = [
   AppComponent,
@@ -88,24 +68,17 @@ export const COMPONENTS = [
   TeamCardComponent,
   MyPlayerPageComponent,
   PlayerProfileComponent,
-  RegionFacilityPickerComponent,
   TeamRecruitmentComponent,
-  ChallengesPageComponent,
-  ChallengeSearchFormComponent,
-  ChallengesSearchPageComponent,
-  ChallengesSearchResultPageComponent,
   MyTeamPageComponent, TeamJoinPageComponent, ReceivedInvitationComponent, TeamDisplayComponent,
   TeamManagerPageComponent, TeamRecruitmentPageComponent, SentInvitationComponent, PlayerCardComponent,
-  PointPickerComponent, TeamManagerHomePageComponent, PrototypeNotificationComponent, SearchResultEntryComponent,
-  ComparisonPageComponent, TeamComparisonEntryComponent, MapTwoTeamsFacilitiesComponent, MapTeamsFacilitiesComponent, ChallengeCreatorStepsComponent,
-  ChallengesEntryDateTimePageComponent, PlacetimeofferPoolComponent, NewPlacetimeofferModalComponent, ChallengesSummaryPageComponent
+  PointPickerComponent, TeamManagerHomePageComponent, PrototypeNotificationComponent, RegionFacilityPickerComponent
 ];
 
 @NgModule({
   imports: [CommonModule, RouterModule, NgZorroAntdModule, AuthModule, CoreRoutingModule,
-    NguiMapModule, ReactiveFormsModule, FormsModule, ChartsModule,
+    NguiMapModule, ReactiveFormsModule, FormsModule,
     NgProgressModule.forRoot(),
-    EffectsModule.forFeature([MyTeamEffects, ManagerEffects, PlayerEffects, CoreEffects, SearchEffects])],
+    EffectsModule.forFeature([MyTeamEffects, ManagerEffects, PlayerEffects, CoreEffects])],
   declarations: COMPONENTS,
   exports: COMPONENTS,
   providers: [{ provide: NZ_I18N, useValue: en_US }, {
@@ -113,7 +86,8 @@ export const COMPONENTS = [
     useClass: ErrorInterceptor,
     multi: true,
   }, { provide: NZ_MESSAGE_CONFIG, useValue: { nzDuration: 5000 }},
-    TeamService, PlayerService, RegionService, SearchService, PlayerCreatorGuard, TeamJoinRedirectGuard, IsManagerGuard, TeamInvitationService, FacilityService, ChallengeService]
+    TeamService, PlayerService, RegionService, PlayerCreatorGuard, TeamJoinRedirectGuard,
+    IsManagerGuard, TeamInvitationService, FacilityService]
 })
 export class CoreModule {
   static forRoot() {

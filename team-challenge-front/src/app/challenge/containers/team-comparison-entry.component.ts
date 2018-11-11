@@ -1,9 +1,7 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {NumericCriteria, NumericCriteriaType, ScoredTeam} from '../models/search-result';
-import {Team} from '../models/team';
-import {Facility} from '../models/facility';
-import {Position} from '../models/position';
-import {Player} from '../models/player';
+import {Team} from '../../core/models/team';
+import {Player} from '../../core/models/player';
 
 
 @Component({
@@ -71,11 +69,11 @@ import {Player} from '../models/player';
       text-align: center;
       margin-bottom: 15px;
     }
-    
+
     .challenge-button {
       transition: none;
     }
-    
+
     .affix-fixed .challenge-button {
       display: inline-block;
       margin-left: 15px;

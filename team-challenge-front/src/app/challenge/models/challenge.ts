@@ -1,4 +1,4 @@
-import {Facility} from './facility';
+import {Facility} from '../../core/models/facility';
 
 export interface Challenge {
   id?: string;

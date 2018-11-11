@@ -1,13 +1,14 @@
 import {Action} from '@ngrx/store';
-import {ApiError} from '../models/error';
 import {SearchForm} from '../models/search-form';
 import {ScoredTeam, SearchResult} from '../models/search-result';
-import {Player} from '../models/player';
-import {Position} from '../models/position';
-import {Team} from '../models/team';
 import {PlaceTimeOffer} from '../models/challenge';
+import {ApiError} from '../../core/models/error';
+import {Player} from '../../core/models/player';
+import {Position} from '../../core/models/position';
+import {Team} from '../../core/models/team';
 
-export enum SearchActionTypes {
+export enum ChalengeCreatorActionTypes {
+
   Search = '[Search] Search',
   SearchSuccess = '[Search] Search Success',
   SearchFailure = '[Search] Search Failure',
@@ -32,96 +33,96 @@ export enum SearchActionTypes {
 }
 
 export class Search implements Action {
-  readonly type = SearchActionTypes.Search;
+  readonly type = ChalengeCreatorActionTypes.Search;
 
   constructor(public payload: SearchForm) {}
 }
 
 export class SearchSuccess implements Action {
-  readonly type = SearchActionTypes.SearchSuccess;
+  readonly type = ChalengeCreatorActionTypes.SearchSuccess;
 
   constructor(public payload: SearchResult) {}
 }
 
 export class SearchFailure implements Action {
-  readonly type = SearchActionTypes.SearchFailure;
+  readonly type = ChalengeCreatorActionTypes.SearchFailure;
 
   constructor(public payload: ApiError) {}
 }
 
 export class Check implements Action {
-  readonly type = SearchActionTypes.Check;
+  readonly type = ChalengeCreatorActionTypes.Check;
 
   constructor(public payload: ScoredTeam) {}
 }
 
 export class Uncheck implements Action {
-  readonly type = SearchActionTypes.Uncheck;
+  readonly type = ChalengeCreatorActionTypes.Uncheck;
 
   constructor(public payload: ScoredTeam) {}
 }
 
 export class UncheckAll implements Action {
-  readonly type = SearchActionTypes.UncheckAll;
+  readonly type = ChalengeCreatorActionTypes.UncheckAll;
 }
 
 export class CompareSelected implements Action {
-  readonly type = SearchActionTypes.CompareSelected;
+  readonly type = ChalengeCreatorActionTypes.CompareSelected;
 }
 
 export class CompareLoadPlayers implements Action {
-  readonly type = SearchActionTypes.CompareLoadPlayers;
+  readonly type = ChalengeCreatorActionTypes.CompareLoadPlayers;
 }
 
 export class CompareLoadPlayersSuccess implements Action {
-  readonly type = SearchActionTypes.CompareLoadPlayersSuccess;
+  readonly type = ChalengeCreatorActionTypes.CompareLoadPlayersSuccess;
 
   constructor(public payload: Player[][]) {}
 }
 
 export class CompareLoadPlayersFailure implements Action {
-  readonly type = SearchActionTypes.CompareLoadPlayersFailure;
+  readonly type = ChalengeCreatorActionTypes.CompareLoadPlayersFailure;
 
   constructor(public payload: ApiError) {}
 }
 
 export class CompareLoadHomePoints implements Action {
-  readonly type = SearchActionTypes.CompareLoadHomePoints;
+  readonly type = ChalengeCreatorActionTypes.CompareLoadHomePoints;
 }
 
 export class CompareLoadHomePointsSuccess implements Action {
-  readonly type = SearchActionTypes.CompareLoadHomePointsSuccess;
+  readonly type = ChalengeCreatorActionTypes.CompareLoadHomePointsSuccess;
 
   constructor(public payload: Position[]) {}
 }
 
 export class CompareLoadHomePointsFailure implements Action {
-  readonly type = SearchActionTypes.CompareLoadHomePointsFailure;
+  readonly type = ChalengeCreatorActionTypes.CompareLoadHomePointsFailure;
 
   constructor(public payload: ApiError) {}
 }
 
 export class SelectTeamForChallenge implements Action {
-  readonly type = SearchActionTypes.SelectTeamForChallenge;
+  readonly type = ChalengeCreatorActionTypes.SelectTeamForChallenge;
 
   constructor(public payload: Team) {}
 }
 
 export class LoadPickedTeamHomeSuccess implements Action {
-  readonly type = SearchActionTypes.LoadPickedTeamHomeSuccess;
+  readonly type = ChalengeCreatorActionTypes.LoadPickedTeamHomeSuccess;
 
   constructor(public payload: Position) {}
 }
 
 export class LoadPickedTeamHomeFailure implements Action {
-  readonly type = SearchActionTypes.LoadPickedTeamHomeFailure;
+  readonly type = ChalengeCreatorActionTypes.LoadPickedTeamHomeFailure;
 
   constructor(public payload: ApiError) {}
 }
 
 
 export class AddEntryPlaceTimeOffer implements Action {
-  readonly type = SearchActionTypes.AddEntryPlaceTimeOffer;
+  readonly type = ChalengeCreatorActionTypes.AddEntryPlaceTimeOffer;
 
   constructor(public payload: PlaceTimeOffer) {}
 }

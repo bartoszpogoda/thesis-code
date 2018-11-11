@@ -5,12 +5,12 @@ import {NumericCriteriaType, ScoredTeam} from '../models/search-result';
 @Component({
   selector: 'app-search-result-entry',
   template: `
-    <div nz-row style="padding-top: 12px; padding-bottom: 12px;" 
-         [class.unselectable]="!selectable && !checked" 
+    <div nz-row style="padding-top: 12px; padding-bottom: 12px;"
+         [class.unselectable]="!selectable && !checked"
          [class.selected]="checked"
          (click)="onRowClicked()">
       <div nz-col nzXs="0" nzSm="1" class="centered-col container-vert-center">
-        <label style="pointer-events: none;" nz-checkbox style="margin: 0 auto;" [nzDisabled]="!selectable && !checked" 
+        <label style="pointer-events: none;" nz-checkbox style="margin: 0 auto;" [nzDisabled]="!selectable && !checked"
                [(ngModel)]="checked" (click)="onClicked()"></label>
       </div>
       <div nz-col nzXs="0" nzSm="9" class="container-vert-center">
@@ -42,7 +42,7 @@ import {NumericCriteriaType, ScoredTeam} from '../models/search-result';
     [nz-row] {
       cursor: pointer;
     }
-    
+
     [nz-row].unselectable {
       background-color: #fcfcfc;
       cursor: initial;
@@ -55,7 +55,7 @@ import {NumericCriteriaType, ScoredTeam} from '../models/search-result';
     label[nz-checkbox] {
       pointer-events: none;
     }
-    
+
     .container-vert-center {
       display: flex;
       /*justify-content: center; !* align horizontal *!*/
@@ -63,7 +63,7 @@ import {NumericCriteriaType, ScoredTeam} from '../models/search-result';
       height: 70px;
     }
 
-    
+
     div.result-entry-container {
       max-height: 100px;
       display: flex;
