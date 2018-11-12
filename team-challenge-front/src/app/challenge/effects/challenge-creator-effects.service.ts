@@ -92,7 +92,6 @@ export class ChallengeCreatorEffects {
     ))
   );
 
-
   @Effect()
   $createChallenge = this.actions$.pipe(
     ofType<CreateChallenge>(ChallengeCreatorActionTypes.CreateChallenge),
@@ -101,9 +100,16 @@ export class ChallengeCreatorEffects {
       this.store.pipe(select(selectPickedTeam))
     ),
     exhaustMap(([, myTeam, team]) => this.challengeService.createChallenge(myTeam, team).pipe(
-        switchMap(challenge => [new AddEntryTimeOffers(challenge), new CreateChallengeSuccess(challenge)]),
+        map(challenge => new CreateChallengeSuccess(challenge)),
         catchError(err => of(new CreateChallengeFailure(err)))
     ))
+  );
+
+  @Effect()
+  $addEntryTimeOffersAfterChallengeCreated = this.actions$.pipe(
+    ofType<CreateChallengeSuccess>(ChallengeCreatorActionTypes.CreateChallengeSuccess),
+    map(toPayload),
+    map((challenge) => new AddEntryTimeOffers(challenge))
   );
 
   @Effect()

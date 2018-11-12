@@ -1,14 +1,11 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.model;
 
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.ChallengeStatus;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.placetimeoffer.PlaceTimeOffer;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.placetimeoffer.model.PlaceTimeOfferDto;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.model.TeamDto;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.List;
 
 @Data
 public class ChallengeDto {
@@ -20,8 +17,12 @@ public class ChallengeDto {
 
     private String challengingTeamId;
 
+    private TeamDto challengingTeam;
+
     @NotEmpty(message = "Challenged team must be specified. ")
     private String challengedTeamId;
+
+    private TeamDto challengedTeam;
 
     private int status;
 

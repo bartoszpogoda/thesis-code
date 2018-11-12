@@ -1,13 +1,10 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.placetimeoffer.model;
 
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.ChallengeStatus;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.placetimeoffer.PlaceTimeOfferStatus;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.facility.model.FacilityDto;
 import lombok.Data;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 @Data
 public class PlaceTimeOfferDto {
@@ -24,6 +21,7 @@ public class PlaceTimeOfferDto {
     @NotEmpty(message = "Offered facility id can not be empty.")
     private String offeredFacilityId;
 
+    private FacilityDto offeredFacility;
 
     private int status;
 

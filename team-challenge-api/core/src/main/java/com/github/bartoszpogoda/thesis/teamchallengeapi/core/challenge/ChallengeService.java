@@ -105,12 +105,12 @@ public class ChallengeService {
         return Optional.of(challenge);
     }
 
-    public Page<Challenge> query(Pageable pageable, String teamId) throws AccessForbiddenException, TeamNotFoundException {
+    public Page<Challenge> query(Pageable pageable, String teamId, boolean active, boolean past) throws AccessForbiddenException, TeamNotFoundException {
         User currentUser = userService.getCurrentUser().orElseThrow(AccessForbiddenException::new);
         boolean admin = currentUser.getAuthorities().contains(Authority.ADMIN);
 
         if(admin) {
-            return challengeRepository.findAll(challengeQuery(teamId), pageable);
+            return challengeRepository.findAll(challengeQuery(teamId, active, past), pageable);
         } else {
 
             if(teamId != null) {
@@ -120,7 +120,7 @@ public class ChallengeService {
                     throw new AccessForbiddenException();
                 }
 
-                return challengeRepository.findAll(challengeQuery(teamId), pageable);
+                return challengeRepository.findAll(challengeQuery(teamId, active, past), pageable);
 
             } else {
                 throw new AccessForbiddenException();
@@ -129,7 +129,7 @@ public class ChallengeService {
         }
     }
 
-    private Specification<Challenge> challengeQuery(String teamId) {
+    private Specification<Challenge> challengeQuery(String teamId, boolean active, boolean past) {
         return (Specification<Challenge>) (root, query, builder) -> {
 
             List<Optional<Predicate>> potentialPredicates = new ArrayList<>();
@@ -140,6 +140,19 @@ public class ChallengeService {
 
                 return builder.or(challengingTeam, challengedTeam);
             }));
+
+            if(active) {
+                Predicate pending = builder.equal(root.<ChallengeStatus>get("status"), ChallengeStatus.Pending);
+                Predicate accepted = builder.equal(root.<ChallengeStatus>get("status"), ChallengeStatus.Accepted);
+
+                potentialPredicates.add(Optional.of(builder.or(pending, accepted)));
+            } else if(past) {
+                Predicate rejected = builder.equal(root.<ChallengeStatus>get("status"), ChallengeStatus.Rejected);
+                Predicate canceled = builder.equal(root.<ChallengeStatus>get("status"), ChallengeStatus.Canceled);
+                Predicate finished = builder.equal(root.<ChallengeStatus>get("status"), ChallengeStatus.Finished);
+
+                potentialPredicates.add(Optional.of(builder.or(rejected, canceled, finished)));
+            }
 
             List<Predicate> effectivePredicates = potentialPredicates.stream()
                     .filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());

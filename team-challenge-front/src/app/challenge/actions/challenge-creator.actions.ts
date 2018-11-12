@@ -40,7 +40,7 @@ export enum ChallengeCreatorActionTypes {
   CreateChallengeFailure = '[Challenge Creator] Create Challenge Failure',
 
   AddEntryTimeOffers = '[Challenge Creator] Add Entry Time Offers',
-  AddEntryTimeOffersSuccess = '[Challenge Creator] Add Entry Time Offers',
+  AddEntryTimeOffersSuccess = '[Challenge Creator] Add Entry Time Offers Success',
   AddEntryTimeOffersFailure = '[Challenge Creator] Add Entry Time Offers Failure',
 }
 

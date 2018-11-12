@@ -12,7 +12,7 @@ import {ChallengeRoutingModule} from './challenge-routing.module';
 import {ChallengeSearchFormComponent} from './components/challenge-search-form.component';
 import {MapTeamsFacilitiesComponent} from './components/map-teams-facilities.component';
 import {MapTwoTeamsFacilitiesComponent} from './components/map-two-teams-facilities.component';
-import {PlacetimeofferPoolComponent} from './components/placetimeoffer-pool.component';
+import {EntryPlacetimeofferPoolComponent} from './components/entry-placetimeoffer-pool.component';
 import {SearchResultEntryComponent} from './components/search-result-entry.component';
 import {ChallengeCreatorOffersComponent} from './containers/challenge-creator-offers.component';
 import {ChallengesPageComponent} from './containers/challenges-page.component';
@@ -25,17 +25,24 @@ import {ChallengeCreatorSearchResultsComponent} from './containers/challenge-cre
 import {SearchService} from './service/search.service';
 import {ChallengeCreatorPageComponent} from './containers/challenge-creator-page.component';
 import {FacilityComponent} from './components/facility.component';
-import {PlacetimeofferComponent} from './components/placetimeoffer.component';
+import {MyPlaceTimeOfferComponent} from './components/my-place-time-offer.component';
+import {MyChallengesEffects} from './effects/my-challenges.effects';
+import {MyChallengePageComponent} from './containers/my-challenge-page.component';
+import {ChallengeOnListComponent} from './components/challenge-on-list.component';
+import {FacilitiesEffects} from './effects/facilities.effects';
+import {PlacetimeofferPoolComponent} from './components/placetimeoffer-pool.component';
+import {TheirPlaceTimeOfferComponent} from './components/their-place-time-offer.component';
 
 export const COMPONENTS = [
   ChallengeSearchFormComponent, MapTeamsFacilitiesComponent, MapTwoTeamsFacilitiesComponent,
-  PlacetimeofferPoolComponent, SearchResultEntryComponent, ChallengeCreatorOffersComponent,
-  ChallengesPageComponent, ChallengeCreatorComparisonComponent, PlacetimeofferComponent,
-  NewPlacetimeofferModalComponent, TeamComparisonEntryComponent, ChallengeCreatorSearchResultsComponent, FacilityComponent
+  EntryPlacetimeofferPoolComponent, SearchResultEntryComponent, ChallengeCreatorOffersComponent,
+  ChallengesPageComponent, ChallengeCreatorComparisonComponent, MyPlaceTimeOfferComponent,
+  NewPlacetimeofferModalComponent, TeamComparisonEntryComponent, ChallengeCreatorSearchResultsComponent, FacilityComponent,
+  ChallengeOnListComponent, PlacetimeofferPoolComponent, TheirPlaceTimeOfferComponent
 ];
 
 export const PAGES = [
-  ChallengeCreatorPageComponent
+  ChallengeCreatorPageComponent, MyChallengePageComponent
 ];
 
 @NgModule({
@@ -48,7 +55,7 @@ export const PAGES = [
     ReactiveFormsModule,
     NguiMapModule, ChartsModule,
     StoreModule.forFeature('challenge', reducers),
-    EffectsModule.forFeature([ChallengeCreatorEffects]),
+    EffectsModule.forFeature([ChallengeCreatorEffects, MyChallengesEffects, FacilitiesEffects]),
   ],
   declarations: [COMPONENTS, PAGES],
   exports: [COMPONENTS, PAGES],

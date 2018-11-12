@@ -12,7 +12,9 @@ import {TokenService} from '../../auth/service/token.service';
 import {map, skipUntil} from 'rxjs/operators';
 import {selectPlayerAvatarUrl, selectPlayerProfileNotExisting} from '../selectors/my-player.selectors';
 import {selectMyPlayerNotificationsAny} from '../selectors/notification.selectors';
-import {selectHasTeam} from '../selectors/my-team.selectors';
+import {selectHasTeam, selectIsMyTeamActive, selectIsMyTeamReadyForChallenge} from '../selectors/my-team.selectors';
+import {Router} from '@angular/router';
+import {selectStep} from '../../challenge/selectors/challenge-creator.selectors';
 
 @Component({
   selector: 'app-app',
@@ -34,7 +36,7 @@ import {selectHasTeam} from '../selectors/my-team.selectors';
             <li *ngIf="loggedIn$ | async" nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="community">
               <app-nav-item title="Społeczność" icon="home"></app-nav-item>
             </li>
-            <li *ngIf="loggedIn$ | async" [class.disabled]="!(hasTeam$ | async)"
+            <li *ngIf="loggedIn$ | async" [class.disabled]="!(hasTeam$ | async) && !(isMyTeamReadyForChallenge$ | async)"
                 nz-menu-item routerLinkActive="ant-menu-item-selected" routerLink="challenges">
               <app-nav-item title="Wyzwania" icon="play-circle-o"></app-nav-item>
             </li>
@@ -46,6 +48,17 @@ import {selectHasTeam} from '../selectors/my-team.selectors';
               <app-nav-item title="Mój profil" [notify]="myPlayerHasNotifications$ | async" icon="user"></app-nav-item>
             </li>
           </ul>
+        </div>
+        <div *ngIf="isMyTeamReadyForChallenge$ | async">
+          <button class="ghost-button" [disabled]="isOnNewChallengePage()" (click)="onEnterChallengeCreator()"
+                  nz-button nzType="primary" nzGhost>
+            <ng-container *ngIf="(challengeCreatorStep$ | async) > 0">
+              Powrót do tworzonego wyzwania
+            </ng-container>
+            <ng-container *ngIf="(challengeCreatorStep$ | async) === 0">
+              Rzuć wyzwanie
+            </ng-container>
+          </button>
         </div>
         <!--<app-login *ngIf="!(loggedIn$ | async)"></app-login>-->
         <app-navbar-login class="onlyDesktop" *ngIf="!(loggedIn$ | async)"></app-navbar-login>
@@ -83,11 +96,14 @@ export class AppComponent implements OnDestroy {
   myPlayerHasNotifications$: Observable<boolean>;
   myTeamHasNotifications$: Observable<boolean>;
   hasTeam$: Observable<boolean>;
+  isMyTeamReadyForChallenge$: Observable<boolean>;
+  challengeCreatorStep$: Observable<number>;
+
   periodicRenewalSub: Subscription;
 
   globalPending$: Observable<number>;
 
-  constructor(private store: Store<fromRoot.State>, private tokenService: TokenService) {
+  constructor(private store: Store<fromRoot.State>, private tokenService: TokenService, private router: Router) {
     this.notificationPanelVisible$ = this.store.pipe(select(fromRoot.getShowNotificationsPanel));
     this.loggedIn$ = this.store.pipe(select(fromAuth.selectLoggedIn));
     this.decodedToken$ = this.store.pipe(select(fromAuth.selectDecodedToken));
@@ -96,6 +112,8 @@ export class AppComponent implements OnDestroy {
     this.hasTeam$ = this.store.pipe(select(selectHasTeam));
     this.globalPending$ = this.store.pipe(select(fromRoot.selectPending));
     this.avatarUrl$ = this.store.pipe(select(selectPlayerAvatarUrl));
+    this.isMyTeamReadyForChallenge$ = this.store.pipe(select(selectIsMyTeamReadyForChallenge));
+    this.challengeCreatorStep$ = this.store.pipe(select(selectStep));
 
     this.myPlayerHasNotifications$ = this.store.pipe(
       select(selectMyPlayerNotificationsAny));
@@ -110,5 +128,13 @@ export class AppComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.periodicRenewalSub.unsubscribe();
+  }
+
+  onEnterChallengeCreator() {
+    this.router.navigate(['/challenges/new']);
+  }
+
+  isOnNewChallengePage() {
+    return this.router.isActive('/challenges/new', true);
   }
 }

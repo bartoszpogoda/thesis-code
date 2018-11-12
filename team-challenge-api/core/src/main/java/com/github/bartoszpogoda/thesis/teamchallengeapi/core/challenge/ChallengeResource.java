@@ -24,12 +24,13 @@ public class ChallengeResource {
 
     @GetMapping
     public ResponseEntity<CustomPage<ChallengeDto>> query(Pageable pageable,
-                                                               @RequestParam(required = false) String teamId)
+                                                          @RequestParam(required = false) String teamId,
+                                                          @RequestParam(required = false) boolean active,
+                                                          @RequestParam(required = false) boolean past)
             throws ApiException {
 
-        Page<ChallengeDto> challenges = challengeService.query(pageable, teamId).map(mappingService::mapToDto);
+        Page<ChallengeDto> challenges = challengeService.query(pageable, teamId, active, past).map(mappingService::mapToDto);
         return ResponseEntity.ok(PaginationUtil.toCustomPage(challenges));
-
     }
 
     @PostMapping

@@ -11,7 +11,6 @@ import {
   selectSelectedPlayers
 } from '../selectors/challenge-creator.selectors';
 import {Router} from '@angular/router';
-import {selectFacilities, selectSelectedRegionOrDefault} from '../../community/reducers';
 import {
   AddEntryPlaceTimeOffer,
   BackToResults, CancelEntryPlaceTimeOffer,
@@ -20,40 +19,41 @@ import {
   CreateChallenge
 } from '../actions/challenge-creator.actions';
 import {LoadFacilities} from '../../community/actions/community-facilities.actions';
-import {selectMyTeam, selectMyTeamHome} from '../../core/selectors/my-team.selectors';
+import {selectMyTeam, selectMyTeamHome, selectMyTeamRegion} from '../../core/selectors/my-team.selectors';
 import {Position} from '../../core/models/position';
 import {Region} from '../../core/models/region';
 import {Facility} from '../../core/models/facility';
 import {Team} from '../../core/models/team';
 import {PlaceTimeOffer} from '../models/challenge';
+import {selectFacilities} from '../reducers/index';
 
 @Component({
   selector: 'app-challenge-creator-offers',
   template: `
-      <h2>Rzucasz wyzwanie drużynie: {{(pickedTeam$ | async)?.name}}</h2>
+    <h2>Rzucasz wyzwanie drużynie: {{(pickedTeam$ | async)?.name}}</h2>
 
-      <p>Dodaj wstępne propozycje czasu oraz terminu spotkania.</p>
+    <p>Dodaj wstępne propozycje czasu oraz terminu spotkania. <strong>Wymagana</strong> jest co najmniej jedna oferta.</p>
 
-      <app-placetimeoffer-pool [placeTimeOffers]="entryPlaceTimeOffers$ | async"
-                               [myHome]="myHome$ | async" [theirHome]="pickedTeamHome$ | async"
-                               (canceled)="onCancelled($event)">
+    <app-entry-placetimeoffer-pool [placeTimeOffers]="entryPlaceTimeOffers$ | async"
+                                   [myHome]="myHome$ | async" [theirHome]="pickedTeamHome$ | async"
+                                   (canceled)="onCancelled($event)">
 
       <app-new-placetimeoffer-modal [center]="(region$ | async)?.center"
                                     [myHome]="myHome$ | async" [theirHome]="pickedTeamHome$ | async"
                                     [facilities]="facilities$ | async" (submitted)="newOfferSubmitted($event)">
       </app-new-placetimeoffer-modal>
 
-      </app-placetimeoffer-pool>
+    </app-entry-placetimeoffer-pool>
 
 
-      <div>
-        <button nz-button (click)="onChangeRivals()">
-          Zmień rywali
-        </button>
-        <button nz-button (click)="onChallenge()" nzType="primary">
-          <i class="anticon anticon-play-circle-o"></i> Rzuć wyzwanie
-        </button>
-      </div>
+    <div>
+      <button nz-button (click)="onChangeRivals()">
+        Zmień rywali
+      </button>
+      <button nz-button [disabled]="(entryPlaceTimeOffers$ | async).length < 1" (click)="onChallenge()" nzType="primary">
+        <i class="anticon anticon-play-circle-o"></i> Rzuć wyzwanie
+      </button>
+    </div>
   `, styles: [`
     button {
       margin-right: 8px;
@@ -75,7 +75,7 @@ export class ChallengeCreatorOffersComponent implements OnInit {
 
   constructor(private store: Store<fromRoot.State>, private router: Router) {
     this.myTeam$ = this.store.pipe(select(selectMyTeam));
-    this.region$ = this.store.pipe(select(selectSelectedRegionOrDefault));
+    this.region$ = this.store.pipe(select(selectMyTeamRegion));
     this.facilities$ = this.store.pipe(select(selectFacilities));
     this.myHome$ = this.store.pipe(select(selectMyTeamHome));
 

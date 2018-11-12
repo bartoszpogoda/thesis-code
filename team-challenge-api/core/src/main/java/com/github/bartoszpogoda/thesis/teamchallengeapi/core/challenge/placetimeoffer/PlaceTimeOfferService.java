@@ -15,6 +15,7 @@ import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +46,10 @@ public class PlaceTimeOfferService {
     public List<PlaceTimeOffer> getOffers(String challengeId) throws ApiException {
         Challenge challenge = this.challengeService.getById(challengeId).orElseThrow(ChallengeNotFoundException::new);
 
-        return challenge.getPlaceTimeOffers();
+        List<PlaceTimeOffer> placeTimeOffers = challenge.getPlaceTimeOffers();
+        placeTimeOffers.sort(Comparator.comparing(PlaceTimeOffer::getId));
+        
+        return placeTimeOffers;
     }
 
     public Optional<PlaceTimeOffer> saveOffer(String challengeId, PlaceTimeOfferDto form) throws ApiException {
@@ -75,7 +79,7 @@ public class PlaceTimeOfferService {
             throw new PlaceTimeOfferNotFoundException();
         }
 
-        challenge.getPlaceTimeOffers().forEach(pto -> pto.setStatus(PlaceTimeOfferStatus.Rejected));
+        challenge.getPlaceTimeOffers().stream().filter(pto -> pto.getStatus().equals(PlaceTimeOfferStatus.Pending)).forEach(pto -> pto.setStatus(PlaceTimeOfferStatus.Rejected));
 
         placeTimeOffer.setStatus(PlaceTimeOfferStatus.Accepted);
         challenge.setStatus(ChallengeStatus.Accepted);

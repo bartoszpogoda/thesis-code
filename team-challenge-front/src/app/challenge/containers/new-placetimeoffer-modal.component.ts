@@ -10,8 +10,8 @@ import {LocalDate, LocalDateTime, nativeJs, ZonedDateTime, ZoneId, ZoneOffset} f
   selector: 'app-new-placetimeoffer-modal',
   template: `
 
-    <div style="text-align: center; margin-top: 20px;">
-      <button nz-button nzType="dashed" style="height: 200px; width: 200px;"
+    <div style="text-align: center">
+      <button nz-button nzType="dashed" style="height: 182px; width: 200px;"
               nzSize="large" nzBlock (click)="showModal()"><i class="anticon anticon-plus"></i>
         Nowa oferta
       </button>
@@ -133,7 +133,7 @@ export class NewPlacetimeofferModalComponent {
 
     if ( this.selectedFacility !== null) {
       const placeTimeOffer: PlaceTimeOffer = {
-        offeredDate: this.getDate().toString(),
+        offeredDate: this.getDate().toString() + '+01:00',
         offeredFacility: this.selectedFacility,
         offeredFacilityId: this.selectedFacility.id,
         offeringTeamId: this.myTeamId,

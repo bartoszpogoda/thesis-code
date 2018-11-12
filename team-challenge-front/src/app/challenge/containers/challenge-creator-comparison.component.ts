@@ -6,7 +6,6 @@ import {Observable, Subject} from 'rxjs';
 import {selectSelected, selectSelectedHomes, selectSelectedPlayers} from '../selectors/challenge-creator.selectors';
 import {NumericCriteria, NumericCriteriaType, ScoredTeam} from '../models/search-result';
 import {takeUntil} from 'rxjs/operators';
-import {selectFacilities, selectSelectedRegionOrDefault} from '../../community/reducers';
 import {LoadFacilities} from '../../community/actions/community-facilities.actions';
 import {Router} from '@angular/router';
 import {Position} from '../../core/models/position';
@@ -14,7 +13,8 @@ import {Facility} from '../../core/models/facility';
 import {Player} from '../../core/models/player';
 import {Team} from '../../core/models/team';
 import {Region} from '../../core/models/region';
-import {selectMyTeam, selectMyTeamHome} from '../../core/selectors/my-team.selectors';
+import {selectMyTeam, selectMyTeamHome, selectMyTeamRegion} from '../../core/selectors/my-team.selectors';
+import {selectFacilities} from '../reducers/index';
 
 @Component({
   selector: 'app-challenge-creator-comparison',
@@ -124,7 +124,7 @@ export class ChallengeCreatorComparisonComponent implements OnInit, OnDestroy {
   constructor(private store: Store<fromRoot.State>, private router: Router) {
     this.myTeam$ = this.store.pipe(select(selectMyTeam));
     this.selected$ = this.store.pipe(select(selectSelected));
-    this.region$ = this.store.pipe(select(selectSelectedRegionOrDefault));
+    this.region$ = this.store.pipe(select(selectMyTeamRegion));
     this.facilities$ = this.store.pipe(select(selectFacilities));
     this.myHome$ = this.store.pipe(select(selectMyTeamHome));
     this.selectedHomes$ = this.store.pipe(select(selectSelectedHomes));

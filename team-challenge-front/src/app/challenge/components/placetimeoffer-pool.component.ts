@@ -10,66 +10,74 @@ import {Position} from '../../core/models/position';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="offer-pool-container">
-      <div nz-row nzGutter="16">
-        <div nz-col nzSm="8">
-          <div class="map-container">
-            <ngui-map [options]="mapOptions" [center]="" [style.height.px]="300">
-              <marker *ngFor="let offer of placeTimeOffers" [position]="offer.offeredFacility.position"
-                      (click)="onOfferClicked($event, offer)" [icon]="getBasketIcon()">
-              </marker>
-              <marker *ngIf="_myHome" [position]="getLatLngPosition(_myHome)"
-                      [icon]="myHomeIcon" title="Punkt macierzysty Twojej drużyny">
-              </marker>
-              <marker *ngIf="theirHome" [position]="getLatLngPosition(theirHome)"
-                      [icon]="theirHomeIcon" title="Punkt macierzysty drugiej drużyny">
-              </marker>
-            </ngui-map>
-          </div>
-        </div>
-        <div nz-col nzSm="16">
-          <div class="pool-container">
-            <div class="place-time-offer" *ngFor="let offer of placeTimeOffers">
-              <app-placetimeoffer [offer]="offer" (canceled)="onCanceled(offer)"></app-placetimeoffer>
-            </div>
-            <div class="place-time-offer">
-              <ng-content></ng-content>
+
+      <div class="block">
+        <div nz-row nzGutter="16">
+          <div nz-col nzSm="24">
+            <div class="map-container">
+              <ngui-map [options]="mapOptions" [center]="" [style.height.px]="200" (mapClick)="onMapClick()">
+                <marker *ngFor="let offer of getOngoingOffers()" [position]="offer.offeredFacility.position"
+                        (click)="onOfferClicked($event, offer)" [icon]="getBasketIcon()">
+                </marker>
+                <marker *ngIf="_myHome" [position]="getLatLngPosition(_myHome)"
+                        [icon]="myHomeIcon" title="Punkt macierzysty Twojej drużyny">
+                </marker>
+                <marker *ngIf="theirHome" [position]="getLatLngPosition(theirHome)"
+                        [icon]="theirHomeIcon" title="Punkt macierzysty drugiej drużyny">
+                </marker>
+              </ngui-map>
             </div>
           </div>
         </div>
       </div>
 
+      <div class="block">
+        <h2>Wasze oferty</h2>
+        <div nz-row nzGutter="16">
+          <div nz-col nzSm="24">
+            <div class="pool-container">
+              <div class="place-time-offer" *ngFor="let offer of myTeamOffers">
+                <app-my-placetimeoffer [offer]="offer" (canceled)="onCanceled(offer)" [highlightedFacility]="selectedFacility">
+                </app-my-placetimeoffer>
+              </div>
+              <div class="place-time-offer">
+                <ng-content></ng-content>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h2>Oferty rywali</h2>
+        <div nz-row nzGutter="16">
+          <div nz-col nzSm="24">
+            <div class="pool-container">
+              <div class="place-time-offer" *ngFor="let offer of theirTeamOffers">
+                <app-their-placetimeoffer [offer]="offer" (accepted)="onAccepted(offer)" (rejected)="onRejected(offer)"
+                                          [highlightedFacility]="selectedFacility">
+                </app-their-placetimeoffer>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
     </div>
-  `, styles: [`
-
-    .place-time-offer {
-      display: inline-block;
-      margin: 0 5px;
-      float: none;
-      height: 90%;
-      display: inline-block;
-      zoom: 1;
-    }
-
-    .pool-container {
-      padding: 10px;
-      border: #eeeeee 1px solid;
-      height: 300px;
-
-      white-space: nowrap;
-      position: relative;
-      overflow-x: scroll;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
-    }
-
-  `]
+  `
 })
 export class PlacetimeofferPoolComponent {
 
   @Input()
-  placeTimeOffers: PlaceTimeOffer[];
+  myTeamOffers: PlaceTimeOffer[];
+
+  @Input()
+  theirTeamOffers: PlaceTimeOffer[];
 
   _myHome: Position;
+
+  selectedFacility: Facility;
 
   @Input()
   set myHome(myHome: Position) {
@@ -89,6 +97,12 @@ export class PlacetimeofferPoolComponent {
 
   @Output()
   canceled = new EventEmitter<PlaceTimeOffer>();
+
+  @Output()
+  rejected = new EventEmitter<PlaceTimeOffer>();
+
+  @Output()
+  accepted = new EventEmitter<PlaceTimeOffer>();
 
   @Input()
   set center(center: Position) {
@@ -126,13 +140,31 @@ export class PlacetimeofferPoolComponent {
     this.canceled.emit(offer);
   }
 
+  onAccepted(offer: PlaceTimeOffer) {
+    this.accepted.emit(offer);
+  }
+
+  onRejected(offer: PlaceTimeOffer) {
+    this.rejected.emit(offer);
+  }
+
   getLatLngPosition(position: Position): LatLng {
     return new LatLng(position.lat, position.lng);
   }
 
   onOfferClicked({target: marker}, offer: PlaceTimeOffer) {
-    // somehow mark picked offer
+    this.selectedFacility = offer.offeredFacility;
   }
+
+  onMapClick() {
+    this.selectedFacility = null;
+  }
+
+  getOngoingOffers() {
+    return this.myTeamOffers.filter(this.filterActive).concat(this.theirTeamOffers.filter(this.filterActive));
+  }
+
+  filterActive = (offer: PlaceTimeOffer) => offer.status === 0 || offer.status === 1;
 
   getBasketIcon() {
     return {

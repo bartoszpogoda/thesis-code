@@ -101,12 +101,23 @@ public class DtoMappingService {
         PlaceTimeOfferDto placeTimeOfferDto = modelMapper.map(placeTimeOffer, PlaceTimeOfferDto.class);
 
         placeTimeOfferDto.setOfferingTeamId(placeTimeOffer.getOfferingTeam().getId());
+        placeTimeOfferDto.setOfferedFacility(mapToDto(placeTimeOffer.getOfferedFacility()));
 
         return placeTimeOfferDto;
     }
 
     public ChallengeDto mapToDto(Challenge challenge) {
-        return modelMapper.map(challenge, ChallengeDto.class);
+        ChallengeDto challengeDto = new ChallengeDto();
+
+        challengeDto.setChallengedTeamId(challenge.getChallengedTeam().getId());
+        challengeDto.setChallengedTeam(mapToDto(challenge.getChallengedTeam()));
+        challengeDto.setChallengingTeamId(challenge.getChallengingTeam().getId());
+        challengeDto.setChallengingTeam(mapToDto(challenge.getChallengingTeam()));
+        challengeDto.setDisciplineId(challenge.getDisciplineId());
+        challengeDto.setId(challenge.getId());
+        challengeDto.setStatus(challenge.getStatus());
+
+        return challengeDto;
     }
 
     public ResultDto mapToDto(Result result) {
