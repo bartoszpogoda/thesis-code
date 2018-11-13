@@ -1,5 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {NgProgress} from '@ngx-progressbar/core';
+import {Stats, StatsService} from '../service/stats.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -15,9 +17,17 @@ import {NgProgress} from '@ngx-progressbar/core';
       </div>
     </app-parallax-image-vh>
     <app-introduction-header></app-introduction-header>
+    <app-stats [stats]="stats$ | async"></app-stats>
       <app-introduction></app-introduction>
     <app-parallax-image [height]="200" imageUrl="/assets/images/home/basketball-background.jpg"></app-parallax-image>`
 })
 export class HomePageComponent  {
+
+  stats$: Observable<Stats>;
+
+  constructor(private statsService: StatsService) {
+    this.stats$ = this.statsService.get();
+  }
+
 
 }

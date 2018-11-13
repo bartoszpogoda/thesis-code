@@ -13,9 +13,11 @@ import {LoginFailedAlertComponent} from './components/login-failed-alert.compone
 import {IntroductionComponent} from './components/introduction.component';
 import {ParallaxImageVhComponent} from './components/parallax-image-vh.component';
 import {IntroductionHeaderComponent} from './components/introduction-header.component';
+import {StatsComponent} from './components/stats.component';
+import {StatsService} from './service/stats.service';
 
 export const COMPONENTS = [HomePageComponent, ParallaxImageComponent, ParallaxContentComponent, RegisterPageComponent,
-LoginFailedAlertComponent, IntroductionComponent, ParallaxImageVhComponent, IntroductionHeaderComponent];
+LoginFailedAlertComponent, IntroductionComponent, ParallaxImageVhComponent, IntroductionHeaderComponent, StatsComponent];
 
 @NgModule({
   imports: [CommonModule, HomeRoutingModule, NgZorroAntdModule, CoreModule, AuthModule,
@@ -25,5 +27,6 @@ LoginFailedAlertComponent, IntroductionComponent, ParallaxImageVhComponent, Intr
     })],
   declarations: COMPONENTS,
   exports: COMPONENTS,
+  providers: [StatsService]
 })
 export class HomeModule { }
