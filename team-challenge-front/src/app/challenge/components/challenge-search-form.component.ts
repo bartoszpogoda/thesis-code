@@ -2,6 +2,8 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {FacilityCreationForm} from '../../core/models/facility';
 import {SearchForm} from '../models/search-form';
+import {AbstractControl} from '@angular/forms/src/model';
+import {s} from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-challenge-search-form',
@@ -14,14 +16,22 @@ import {SearchForm} from '../models/search-form';
           <p>Dostosuj wartościowanie poszczególnych kryteriów z uwzględnieniem preferencji Twojej drużyny.</p>
 
           <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Różnica wieku</nz-form-label>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Różnica wieku </nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24">
               <div nz-row [nzGutter]="8">
-                <div nz-col [nzSm]="23">
-                  <nz-slider [nzTipFormatter]="formatter" [nzMin]="0" [nzMax]="100" formControlName="weightAgeDiff"></nz-slider>
+                <div nz-col [nzSm]="1" style="cursor:pointer;" (click)="onLockClicked(validateForm.controls.weightAgeDiff)">
+                  <i *ngIf="lockedSlider === validateForm.controls.weightAgeDiff || validateForm.controls.weightAgeDiff.value === 0"
+                     class="anticon anticon-lock"></i>
+                  <i *ngIf="!(lockedSlider === validateForm.controls.weightAgeDiff || validateForm.controls.weightAgeDiff.value === 0)"
+                     class="anticon anticon-unlock"></i>
+                </div>
+                <div nz-col [nzSm]="22">
+                  <nz-slider [nzDisabled]="lockedSlider === validateForm.controls.weightAgeDiff"
+                             [nzTipFormatter]="formatter" [nzStep]="10" [nzMin]="0" [nzMax]="1000" formControlName="weightAgeDiff">
+                  </nz-slider>
                 </div>
                 <div nz-col [nzSm]="1">
-                  {{validateForm.get('weightAgeDiff').value}}%
+                  {{ Math.round(validateForm.get('weightAgeDiff').value / 10) }}%
                 </div>
               </div>
               <nz-form-extra>Jeśli zależy Ci na grze z rówieśnikami</nz-form-extra>
@@ -32,11 +42,18 @@ import {SearchForm} from '../models/search-form';
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Różnica poziomu umiejętności</nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24">
               <div nz-row [nzGutter]="8">
-                <div nz-col [nzSm]="23">
-                  <nz-slider [nzTipFormatter]="formatter" [nzMin]="0" [nzMax]="100" formControlName="weightSkillDiff"></nz-slider>
+                <div nz-col [nzSm]="1" style="cursor:pointer;" (click)="onLockClicked(validateForm.controls.weightSkillDiff)">
+                  <i *ngIf="lockedSlider === validateForm.controls.weightSkillDiff || validateForm.controls.weightSkillDiff.value === 0"
+                     class="anticon anticon-lock"></i>
+                  <i *ngIf="!(lockedSlider === validateForm.controls.weightSkillDiff || validateForm.controls.weightSkillDiff.value === 0)"
+                     class="anticon anticon-unlock"></i>
+                </div>
+                <div nz-col [nzSm]="22">
+                  <nz-slider [nzDisabled]="lockedSlider === validateForm.controls.weightSkillDiff"  [nzTipFormatter]="formatter"
+                             [nzStep]="10" [nzMin]="0" [nzMax]="1000" formControlName="weightSkillDiff"></nz-slider>
                 </div>
                 <div nz-col [nzSm]="1">
-                  {{validateForm.get('weightSkillDiff').value}}%
+                  {{ Math.round(validateForm.get('weightSkillDiff').value / 10) }}%
                 </div>
               </div>
               <nz-form-extra>Jeśli zależy Ci na grze z osobami o podobnym doświadczeniu</nz-form-extra>
@@ -47,11 +64,18 @@ import {SearchForm} from '../models/search-form';
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Odległość</nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24">
               <div nz-row [nzGutter]="8">
-                <div nz-col [nzSm]="23">
-                  <nz-slider [nzTipFormatter]="formatter" [nzMin]="0" [nzMax]="100" formControlName="weightDistance"></nz-slider>
+                <div nz-col [nzSm]="1" style="cursor:pointer;" (click)="onLockClicked(validateForm.controls.weightDistance)">
+                  <i *ngIf="lockedSlider === validateForm.controls.weightDistance || validateForm.controls.weightDistance.value === 0"
+                     class="anticon anticon-lock"></i>
+                  <i *ngIf="!(lockedSlider === validateForm.controls.weightDistance || validateForm.controls.weightDistance.value === 0)"
+                     class="anticon anticon-unlock"></i>
+                </div>
+                <div nz-col [nzSm]="22">
+                  <nz-slider [nzDisabled]="lockedSlider === validateForm.controls.weightDistance" [nzTipFormatter]="formatter"
+                             [nzStep]="10" [nzMin]="0" [nzMax]="1000" formControlName="weightDistance"></nz-slider>
                 </div>
                 <div nz-col [nzSm]="1">
-                  {{validateForm.get('weightDistance').value}}%
+                  {{ Math.round(validateForm.get('weightDistance').value / 10) }}%
                 </div>
               </div>
               <nz-form-extra>Jeśli szukasz przeciwników w swojej okolicy</nz-form-extra>
@@ -114,8 +138,12 @@ export class ChallengeSearchFormComponent implements OnInit {
   @Input()
   builder: SearchForm;
 
+  Math = Math;
+
+  lockedSlider: AbstractControl;
+
   formatter(value) {
-    return `${value}%`;
+    return Math.round(value / 10) + `%`;
   }
 
   submitForm(): void {
@@ -129,9 +157,9 @@ export class ChallengeSearchFormComponent implements OnInit {
         ...this.builder,
         preferences: {
           ...this.builder.preferences,
-          weightAgeDiff: this.validateForm.controls.weightAgeDiff.value / 100,
-          weightSkillDiff: this.validateForm.controls.weightSkillDiff.value / 100,
-          weightDistance: this.validateForm.controls.weightDistance.value / 100,
+          weightAgeDiff: this.validateForm.controls.weightAgeDiff.value / 1000,
+          weightSkillDiff: this.validateForm.controls.weightSkillDiff.value / 1000,
+          weightDistance: this.validateForm.controls.weightDistance.value / 1000,
           friendly: this.validateForm.controls.friendly.value
         }
       };
@@ -145,9 +173,9 @@ export class ChallengeSearchFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      weightAgeDiff: [this.builder.preferences.weightAgeDiff * 100],
-      weightDistance: [this.builder.preferences.weightDistance * 100],
-      weightSkillDiff: [this.builder.preferences.weightSkillDiff * 100],
+      weightAgeDiff: [this.builder.preferences.weightAgeDiff * 1000],
+      weightDistance: [this.builder.preferences.weightDistance * 1000],
+      weightSkillDiff: [this.builder.preferences.weightSkillDiff * 1000],
       friendly: [this.builder.preferences.friendly],
       playAgain: [false]
     });
@@ -161,82 +189,59 @@ export class ChallengeSearchFormComponent implements OnInit {
     this.validateForm.get('weightDistance').valueChanges.subscribe(this.provideSliderOnChangeCallback(slider3, slider1, slider2));
   }
 
+  onLockClicked(slider: AbstractControl) {
+    this.lockedSlider = this.lockedSlider === slider ? null : slider;
+  }
+
   provideSliderOnChangeCallback(currentSlider, sliderA, sliderB) {
     let signal = false;
 
     return val => {
       signal = !signal;
 
-      const prev = 100 - sliderA.value - sliderB.value;
-      let leftToSpread = val - prev; // diff
-
-      if (Math.abs(leftToSpread) % 2 === 1) {
-        const unit = leftToSpread > 0 ? 1 : -1;
+      if (sliderA.value === 0  && this.lockedSlider !== sliderB || this.lockedSlider === sliderA) {
+        sliderB.setValue(1000 - val - sliderA.value, {emitEvent: false});
+      } else if (sliderA.value === 0 && this.lockedSlider === sliderB) {
+        if (1000 - val - sliderB.value < 0) {
+          currentSlider.setValue(1000 - sliderA.value - sliderB.value, {emitEvent: false});
+        } else {
+          sliderA.setValue(1000 - val - sliderB.value, {emitEvent: false});
+        }
+      } else if (sliderB.value === 0 && this.lockedSlider !== sliderA || this.lockedSlider === sliderB) {
+        sliderA.setValue(1000 - val - sliderB.value, {emitEvent: false});
+      } else if (sliderB.value === 0 && this.lockedSlider === sliderA) {
+        if (1000 - val - sliderA.value < 0) {
+          currentSlider.setValue(1000 - sliderA.value - sliderB.value, {emitEvent: false});
+        } else {
+          sliderB.setValue(1000 - val - sliderA.value, {emitEvent: false});
+        }
+      } else {
+        const proportion = sliderA.value / sliderB.value;
+        const left = 1000 - val;
 
         if (signal) {
-          // favor changing slider a
-          if (leftToSpread > 0 && sliderA.value > 0 || leftToSpread < 0 && sliderA.value < 100) {
-            sliderA.setValue(sliderA.value - unit, {emitEvent: false});
-          } else {
-            sliderB.setValue(sliderB.value - unit, {emitEvent: false});
-          }
+          let a = (proportion * left) / ( 1 + proportion);
+          a = Math.round(a);
+
+          sliderA.setValue(a, {emitEvent: false});
+          sliderB.setValue(left - a, {emitEvent: false});
         } else {
-          // favor changing slider b
-          if (leftToSpread > 0 && sliderB.value > 0 || leftToSpread < 0 && sliderB.value < 100) {
-            sliderB.setValue(sliderB.value - unit, {emitEvent: false});
-          } else {
-            sliderA.setValue(sliderA.value - unit, {emitEvent: false});
-          }
-        }
+          let b = (left) / ( 1 + proportion);
+          b = Math.round(b);
 
-        leftToSpread = leftToSpread - unit;
+          sliderB.setValue(b, {emitEvent: false});
+          sliderA.setValue(left - b, {emitEvent: false});
+        }
       }
 
-      // diff is positive when values need to go lower
-
-      if (leftToSpread % 2 === 0) {
-        const spreadEach = leftToSpread / 2;
-
-        if (spreadEach > 0) {
-          // other sliders go towards 0
-
-          if (spreadEach > sliderA.value) {
-            // a will be 0 case
-            leftToSpread = leftToSpread - sliderA.value;
-            sliderA.setValue(0, {emitEvent: false});
-            sliderB.setValue(sliderB.value - leftToSpread, {emitEvent: false});
-          } else if (spreadEach > sliderB.value) {
-            // b will be 0 case
-            leftToSpread = leftToSpread - sliderB.value;
-            sliderB.setValue(0, {emitEvent: false});
-            sliderA.setValue(sliderA.value - leftToSpread, {emitEvent: false});
-          } else {
-            // default case
-            sliderA.setValue(sliderA.value - spreadEach, {emitEvent: false});
-            sliderB.setValue(sliderB.value - spreadEach, {emitEvent: false});
-          }
-        } else if (spreadEach < 0) {
-          // other sliders go towards 100
-
-          if (sliderA.value - 100 > spreadEach) {
-            // a will be 100 case
-            leftToSpread = leftToSpread + (100 - sliderA.value);
-            sliderA.setValue(100, {emitEvent: false});
-            sliderB.setValue(sliderB.value - leftToSpread, {emitEvent: false});
-          } else if (sliderB.value - 100 > spreadEach) {
-            // b will be 100 case
-            leftToSpread = leftToSpread + (100 - sliderB.value);
-            sliderB.setValue(100, {emitEvent: false});
-            sliderA.setValue(sliderA.value - leftToSpread, {emitEvent: false});
-          } else {
-            // default case
-            sliderA.setValue(sliderA.value - spreadEach, {emitEvent: false});
-            sliderB.setValue(sliderB.value - spreadEach, {emitEvent: false});
-
-          }
-        }
-
+      if (sliderA.value < 0) {
+        currentSlider.setValue(val + sliderA.value, {emitEvent: false});
+        sliderA.setValue(0, {emitEvent: false});
+      } else if (sliderB.value < 0) {
+        currentSlider.setValue(val + sliderB.value, {emitEvent: false});
+        sliderB.setValue(0, {emitEvent: false});
       }
+
     };
   }
 

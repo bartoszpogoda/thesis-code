@@ -23,7 +23,7 @@ import {Router} from '@angular/router';
         <h2>Obecne wyzwania</h2>
 
         <div style="margin-bottom: 20px;">
-          <div nz-row class="headers">
+          <div nz-row *ngIf="(myActiveChallenges$ | async).length > 0" class="headers">
             <div nz-col nzXs="0" nzSm="2" class="container-vert-center"></div>
             <div nz-col nzXs="0" nzSm="4" class="container-vert-center">Nazwa drużyny</div>
             <div nz-col nzXs="0" nzSm="4" class="container-vert-center">Menedżer</div>
@@ -38,6 +38,9 @@ import {Router} from '@angular/router';
                                    [myTeam]="myTeam$ | async" (clicked)="onChallengeClicked(chall)"></app-challenge-on-list>
             <nz-divider></nz-divider>
           </ng-container>
+          <div *ngIf="(myActiveChallenges$ | async).length === 0">
+            <p>Brak aktywnych wyzwań</p>
+          </div>
         </div>
 
         <h2>Poprzednie wyzwania</h2>
@@ -50,9 +53,6 @@ import {Router} from '@angular/router';
       padding-left: 3px;
     }
     
-    .ant-divider-horizontal {
-      margin: 0;
-    }
   `]
 })
 export class ChallengesPageComponent implements OnInit {

@@ -136,7 +136,7 @@ export class MyChallengePageComponent implements OnInit, OnDestroy {
 
     this.myTeamOffers$ = this.store.pipe(select(selectMyTeamOffers));
     this.theirTeamOffers$ = this.store.pipe(select(selectTheirTeamOffers));
-    this.challengeStatus$ = this.store.pipe(select(selectChallengeStatus)));
+    this.challengeStatus$ = this.store.pipe(select(selectChallengeStatus));
 
     combineLatest(this.challenge$, this.myTeam$).pipe(
       takeUntil(this.unsubscribe$),

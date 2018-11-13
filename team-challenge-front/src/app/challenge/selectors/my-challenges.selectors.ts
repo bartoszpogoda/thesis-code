@@ -66,8 +66,9 @@ export const selectIsMyTeamHost = createSelector(
 
 export const selectChallengeStatus = createSelector(
   selectChallenge,
-  (challenge) => challenge ? challenge.status : null;
+  (challenge) => challenge ? challenge.status : null
 );
+
 
 
 

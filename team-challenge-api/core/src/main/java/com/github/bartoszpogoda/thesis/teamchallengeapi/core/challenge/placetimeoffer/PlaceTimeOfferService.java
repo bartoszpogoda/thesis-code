@@ -48,7 +48,7 @@ public class PlaceTimeOfferService {
 
         List<PlaceTimeOffer> placeTimeOffers = challenge.getPlaceTimeOffers();
         placeTimeOffers.sort(Comparator.comparing(PlaceTimeOffer::getId));
-        
+
         return placeTimeOffers;
     }
 
