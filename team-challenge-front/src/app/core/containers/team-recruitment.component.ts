@@ -27,7 +27,7 @@ import {TeamInvitation} from '../models/team-invitation';
   template: `
       <div nz-row nzGutter="16">
         <div nz-col nzXs="0" nzSm="16">
-          <h2>Zaproś gracza</h2>
+          <h2>Rekrutacja</h2>
           <p>Tabela prezentuje zawodników z Twojego regionu, którzy nie są aktualnie w drużynie.</p>
           <nz-input-group nzPrefixIcon="anticon anticon-user" style="margin: 10px 0;">
             <input type="text" nz-input placeholder="Szukaj po nazwie" [formControl]="nameSearch">

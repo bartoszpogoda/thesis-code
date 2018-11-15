@@ -11,10 +11,9 @@ import {selectIsManager, selectMyTeam, selectMyTeamPlayers} from '../selectors/m
 @Component({
   selector: 'app-my-team-players',
   template: `
-      <h1>Zawodnicy</h1>
       <div nz-row>
-        <div nz-col nzSm="3"></div>
-        <div nz-col nzSm="8">
+        <div nz-col nzSm="4"></div>
+        <div nz-col nzSm="16">
           <app-player-horizontal-card *ngFor="let player of (myTeamPlayers$ | async)"
                                       [player]="player" [team]="myTeam$ | async"></app-player-horizontal-card>
         </div>

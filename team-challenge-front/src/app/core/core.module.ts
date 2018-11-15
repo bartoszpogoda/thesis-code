@@ -53,6 +53,12 @@ import {RegionFacilityPickerComponent} from './components/region-facility-picker
 import {FancyLoadingComponent} from './components/fancy-loading.component';
 import {PlayerHorizontalCardComponent} from './components/player-horizontal-card.component';
 import {MyTeamPlayersComponent} from './containers/my-team-players.component';
+import {MyTeamProfileComponent} from './containers/my-team-profile.component';
+import {MyTeamEditDataComponent} from './containers/my-team-edit-data.component';
+import {MyTeamManagerRemoveComponent} from './containers/my-team-manager-remove.component';
+import {TeamProfileComponent} from './components/team-profile.component';
+import {MyPlayerEditProfileComponent} from './containers/my-player-edit-profile.component';
+import {MyPlayerRemoveProfileComponent} from './containers/my-player-remove-profile.component';
 
 export const COMPONENTS = [
   AppComponent,
@@ -68,9 +74,9 @@ export const COMPONENTS = [
   ProgressComponent,
   ImageLoaderComponent,
   TeamCardComponent, MyTeamPlayersComponent,
-  MyPlayerPageComponent,
-  PlayerProfileComponent,
-  FancyLoadingComponent, PlayerHorizontalCardComponent, 
+  MyPlayerPageComponent, TeamProfileComponent, MyPlayerEditProfileComponent, MyPlayerRemoveProfileComponent,
+  PlayerProfileComponent, MyTeamProfileComponent, MyTeamEditDataComponent, MyTeamManagerRemoveComponent,
+  FancyLoadingComponent, PlayerHorizontalCardComponent,
   TeamRecruitmentComponent,
   MyTeamPageComponent, TeamJoinPageComponent, ReceivedInvitationComponent, TeamDisplayComponent,
   TeamRecruitmentPageComponent, SentInvitationComponent, PlayerCardComponent,

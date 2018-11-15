@@ -12,36 +12,38 @@ import {selectIsManager, selectMyTeam} from '../selectors/my-team.selectors';
   selector: 'app-team-page',
   template: `
     <div class="spaces-sides">
-      <app-breadcrumb [items]="items"></app-breadcrumb>
+      <app-breadcrumb [empty]="true"></app-breadcrumb>
       <div class="content-container">
-        <ul nz-menu [nzMode]="'horizontal'" style="margin-bottom: 25px;">
-          <li nz-menu-item [nzSelected]="true"><i class="anticon anticon-team"></i> Profil drużyny</li>
-          <li nz-menu-item><i class="anticon anticon-user"></i> Zawodnicy</li>
-          <li nz-submenu [nzDisabled]="!(isManager$ | async)">
-            <span title><i class="anticon anticon-setting"></i>Zarządzanie</span>
-            <ul>
-              <li routerLink="/team/manager/edit" nz-menu-item>Edycja danych</li>
-              <li routerLink="/team/manager/home" nz-menu-item>Edycja punktu macierzystego</li>
-              <li routerLink="/team/manager/recruitment" nz-menu-item>Rekrutacja</li>
-              <li routerLink="/team/manager/remove" nz-menu-item>Usunięcie drużyny</li>
-            </ul>
-          </li>
-        </ul>
-        
-        <h1>Moja drużyna</h1>
-        <div nz-row nzGutter="16">
-          <div nz-col nzXs="0" nzSm="2"></div>
-          <div nz-col nzXs="0" nzSm="10">
-            <app-team-display [team]="playersTeam$ | async"></app-team-display>
+        <nz-affix [nzOffsetTop]="100">
+          <ul nz-menu [nzMode]="'horizontal'" style="margin-bottom: 25px;">
+            <li (click)="currentTab = 0" nz-menu-item [nzSelected]="true"><i class="anticon anticon-team"></i> Profil drużyny</li>
+            <li (click)="currentTab = 1" nz-menu-item><i class="anticon anticon-user"></i> Zawodnicy</li>
+            <li nz-submenu [nzDisabled]="!(isManager$ | async)">
+              <span title><i class="anticon anticon-setting"></i>Zarządzanie</span>
+              <ul>
+                <li (click)="currentTab = 2" nz-menu-item>Edycja danych</li>
+                <li (click)="currentTab = 3" nz-menu-item>Punkt  macierzysty</li>
+                <li (click)="currentTab = 4" nz-menu-item>Rekrutacja</li>
+                <li (click)="currentTab = 5" nz-menu-item>Usunięcie drużyny</li>
+              </ul>
+            </li>
+          </ul>
+        </nz-affix>
+
+        <app-my-team-profile *ngIf="currentTab === 0"></app-my-team-profile>
+
+        <div nz-row>
+          <div nz-col nzSm="2"></div>
+          <div nz-col nzSm="20">
+            <app-my-team-players *ngIf="currentTab === 1"></app-my-team-players>
+            <app-my-team-edit-data *ngIf="currentTab === 2"></app-my-team-edit-data>
+            <app-my-team-manager-home *ngIf="currentTab === 3"></app-my-team-manager-home>
+            <app-team-recruitment *ngIf="currentTab === 4"></app-team-recruitment>
+            <app-my-team-manager-remove *ngIf="currentTab ===5"></app-my-team-manager-remove>
           </div>
-          <div nz-col  nzXs="0" nzSm="10">
-          </div>
-          <div nz-col nzXs="0" nzSm="2"></div>
+          <div nz-col nzSm="2"></div>
         </div>
         
-        
-        <app-my-team-players></app-my-team-players>
-
       </div>
     </div>
   `
@@ -50,6 +52,8 @@ export class MyTeamPageComponent {
   items = [
     {title: 'Moja drużyna'}
   ];
+
+  currentTab = 0;
 
   playersTeam$: Observable<Team>;
   isManager$: Observable<boolean>;

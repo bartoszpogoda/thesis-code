@@ -37,12 +37,14 @@ import {Player} from '../../core/models/player';
     <div class="spaces-sides">
       <app-breadcrumb [items]="items"></app-breadcrumb>
       <div class="content-container">
+        <nz-affix [nzOffsetTop]="117">
         <ul nz-menu [nzMode]="'horizontal'" style="margin-bottom: 25px;">
           <li nz-menu-item (click)="onGeneralTabClicked()" [nzSelected]="true"><i class="anticon anticon-trophy"></i> Ogólne informacje</li>
           <li nz-menu-item (click)="onPlayersTabClicked()"><i class="anticon anticon-team"></i> Zawodnicy</li>
           <li nz-menu-item  (click)="onChatTabClicked()"><i class="anticon anticon-message"></i> Czat</li>
            <li nz-menu-item (click)="onNegotiationsTabClicked()"><i class="anticon anticon-schedule"></i> Negocjacje <nz-tag *ngIf="(challengeStatus$ | async) == 0" [nzColor]="'orange'">W toku</nz-tag></li>
         </ul>
+        </nz-affix>
 
         <h1>&zwnj; {{(challenge$ | async)?.challengingTeam?.name}} - {{(challenge$ | async)?.challengedTeam?.name}}</h1>
 

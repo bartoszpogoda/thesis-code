@@ -14,9 +14,17 @@ import {Team} from '../models/team';
           <div class="place">
             <strong>{{player.fullName}} </strong> <nz-tag *ngIf="isManager()" [nzColor]="'cyan'" style="margin-left: 5px;">Manager</nz-tag>
           </div>
-          <p style="margin-top: 5px;">
-            {{player.age}} lat | {{getSkillDescription(player.skill)}} | {{getFrequencyDescription(player.skill)}}
-          </p>
+          
+          <div nz-row style="color: rgba(0, 0, 0, 0.5); margin-top: 5px;">
+            <div nz-col nzSm="5">Wiek</div>
+            <div nz-col nzSm="9">Umiejętności</div>
+            <div nz-col nzSm="10">Częstość gry</div>
+          </div>
+          <div nz-row>
+            <div nz-col nzSm="5">{{player.age}} lat</div>
+            <div nz-col nzSm="9">{{getSkillDescription(player.skill)}}</div>
+            <div nz-col nzSm="10">{{getFrequencyDescription(player.skill)}}</div>
+          </div>
         </div>
       </div>
 

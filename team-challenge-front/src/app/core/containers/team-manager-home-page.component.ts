@@ -12,33 +12,19 @@ import {SetHome} from '../actions/manager.actions';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-team-recruitment-page',
+  selector: 'app-my-team-manager-home',
   template: `
-    <div class="spaces-sides">
-      <app-breadcrumb [items]="items"></app-breadcrumb>
-      <div class="content-container">
-        <div nz-row nzGutter="16">
-          <div nz-col nzXs="0" nzSm="2"></div>
-        <div nz-col nzXs="24" nzSm="20">
-        <h2>Punkt macierzysty</h2>
-        <p>Dostosuj punkt macierzysty swojej drużyny</p>
-        <app-point-picker acceptButtonText="Zapisz"
-                          skipButtonText="Anuluj"
-                          (accepted)="onAccepted($event)"
-                          (skipped)="onSkipped()"
-                          [center]="(center$ | async)" [icon]="homeIcon">
-        </app-point-picker>
-      </div>
-    </div>
-      </div>
-    </div>
+      <h2>Punkt  macierzysty</h2>
+      <p>Dostosuj punkt macierzysty swojej drużyny</p>
+      <app-point-picker acceptButtonText="Zapisz"
+                        skipButtonText="Anuluj"
+                        (accepted)="onAccepted($event)"
+                        [center]="(center$ | async)" [icon]="homeIcon">
+      </app-point-picker>
   `
 })
 
 export class TeamManagerHomePageComponent {
-  items = [
-    {title: 'Moja drużyna', link: '/team'}, {title: 'Zarządzanie', link: '/team/manager'}, {title: 'Punkt macierzysty'}
-  ];
 
   center$: Observable<Position>;
 
@@ -55,10 +41,6 @@ export class TeamManagerHomePageComponent {
 
   onAccepted(position: Position) {
     this.store.dispatch(new SetHome(position));
-  }
-
-  onSkipped() {
-    this.router.navigate(['/team/manager']);
   }
 
 
