@@ -2,6 +2,7 @@ import {Action} from '@ngrx/store';
 import {ApiError} from '../models/error';
 import {Team} from '../models/team';
 import {Position} from '../models/position';
+import {Player} from '../models/player';
 
 export enum MyTeamActionTypes {
   LoadCurrent = '[My Team] Load Current',
@@ -10,7 +11,10 @@ export enum MyTeamActionTypes {
   LoadHome = '[My Team] Load Home',
   LoadHomeSuccess = '[My Team] Load Home Success',
   LoadHomeFailure = '[My Team] Load Home Failure',
-  UpdateIsManager = '[My Team] Update Is Manager'
+  UpdateIsManager = '[My Team] Update Is Manager',
+  LoadPlayers = '[My Team] Load Players',
+  LoadPlayersSuccess = '[My Team] Load Players Success',
+  LoadPlayersFailure = '[My Team] Load Players Failure',
 }
 
 export class LoadCurrent implements Action {
@@ -47,6 +51,23 @@ export class LoadHomeFailure implements Action {
   constructor(public payload: ApiError) {}
 }
 
+export class LoadPlayers implements Action {
+  readonly type = MyTeamActionTypes.LoadPlayers;
+}
+
+export class LoadPlayersSuccess implements Action {
+  readonly type = MyTeamActionTypes.LoadPlayersSuccess;
+
+  constructor(public payload: Player[]) {}
+}
+
+export class LoadPlayersFailure implements Action {
+  readonly type = MyTeamActionTypes.LoadPlayersFailure;
+
+  constructor(public payload: ApiError) {}
+}
+
+
 
 export class UpdateIsManager implements Action {
   readonly type = MyTeamActionTypes.UpdateIsManager;
@@ -55,5 +76,5 @@ export class UpdateIsManager implements Action {
 }
 
 export type MyTeamActionsUnion = LoadCurrent | LoadCurrentSuccess | LoadCurrentFailure | UpdateIsManager
-  | LoadHome | LoadHomeSuccess | LoadHomeFailure;
+  | LoadHome | LoadHomeSuccess | LoadHomeFailure | LoadPlayers | LoadPlayersSuccess | LoadPlayersFailure;
 

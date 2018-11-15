@@ -31,9 +31,9 @@ import {Player} from '../../core/models/player';
       <h3>Menedżer</h3>
 
       <div nz-row>
-        <div nz-col nzSm="8"></div>
-        <div nz-col nzSm="8">
-          <app-player-card [player]="getManager()"></app-player-card>
+        <div nz-col nzSm="4"></div>
+        <div nz-col nzSm="16">
+          <app-player-horizontal-card [player]="getManager()" [team]="team"></app-player-horizontal-card>
         </div>
       </div>
     </div>
@@ -51,13 +51,12 @@ import {Player} from '../../core/models/player';
         <!--</ng-container>-->
       <!--</div>-->
     <!--</div>-->
-      <div nz-row nzGutter="16">
-        <div nz-col nzSm="2"></div>
-        <ng-container *ngFor="let player of getRegularPlayers(); let i = index">
-          <div nz-col nzSm="5">
-            <app-player-card [player]="player"></app-player-card>
+      <div nz-row nzGutter="16" *ngFor="let player of getRegularPlayers(); let i = index">
+          <div nz-col nzSm="4"></div>
+          <div nz-col nzSm="16">
+            <app-player-horizontal-card [player]="player"></app-player-horizontal-card>
           </div>
-        </ng-container>
+          <div nz-col nzSm="4"></div>
       </div>
     </div>
 

@@ -4,12 +4,14 @@ import {AuthActionsUnion, AuthActionTypes} from '../../auth/actions/auth.actions
 import {Position} from '../models/position';
 import {ManagerActionsUnion, ManagerActionTypes} from '../actions/manager.actions';
 import {TeamCreatorActionsUnion, TeamCreatorActionTypes} from '../../team-creator/store/team-creator.actions';
+import {Player} from '../models/player';
 
 export interface State {
   hasTeam: boolean;
   current: Team | null;
   isManager: boolean;
   home: Position;
+  players: Player[];
 }
 
 const initialState: State = {
@@ -17,6 +19,7 @@ const initialState: State = {
   current: null,
   isManager: false,
   home: null,
+  players: []
 };
 
 export function reducer(
@@ -68,6 +71,12 @@ export function reducer(
         home: action.payload
       };
 
+    case MyTeamActionTypes.LoadPlayersSuccess:
+      return {
+        ...state,
+        players: action.payload
+      };
+
     default:
       return state;
   }
@@ -77,3 +86,4 @@ export const getHasTeam = (state: State) => state.hasTeam;
 export const getCurrent = (state: State) => state.current;
 export const getIsManager = (state: State) => state.isManager;
 export const getHome = (state: State) => state.home;
+export const getPlayers = (state: State) => state.players;

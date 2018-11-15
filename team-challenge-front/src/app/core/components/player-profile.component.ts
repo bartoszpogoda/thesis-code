@@ -12,7 +12,7 @@ import {Player} from '../models/player';
         <h1>{{player.fullName}}</h1>
         <p>Wiek: {{player.age}}</p>
         <p>Wzrost: {{player.height}}</p>
-        <p>Staż gry: {{player.yearsOfExperience}} years</p>
+        <p>Staż gry: {{player.skill}} years</p>
         <p>Drużyna: {{player.teamName}}</p>
       </div>
     </div>

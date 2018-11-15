@@ -2,9 +2,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../reducers/index';
 import {combineLatest, Observable, Subject, Subscription} from 'rxjs';
-import {Challenge, ChallengeStatus, PlaceTimeOffer} from '../models/challenge';
+import {Challenge, ChallengeStatus, PlaceTimeOffer, PlaceTimeOfferStatus} from '../models/challenge';
 import {
-  selectChallenge, selectChallengeStatus,
+  selectChallenge, selectChallengedTeamPlayers, selectChallengeStatus, selectChallengingTeamPlayers,
   selectMyActiveChallenges,
   selectMyTeamOffers,
   selectPlaceTimeOffers,
@@ -22,13 +22,14 @@ import {
   CancelPlaceTimeOffer,
   LoadChallenge,
   LoadPlaceTimeOffers,
-  LoadTheirHome, RejectPlaceTimeOffer
+  LoadTheirHome, LoadTheirPlayers, RejectPlaceTimeOffer
 } from '../actions/my-challenges.actions';
 import {Team} from '../../core/models/team';
 import {selectMyTeam, selectMyTeamHome, selectMyTeamRegion} from '../../core/selectors/my-team.selectors';
 import {Position} from '../../core/models/position';
 import {Region} from '../../core/models/region';
 import {selectFacilities} from '../reducers/index';
+import {Player} from '../../core/models/player';
 
 @Component({
   selector: 'app-my-challenge-page',
@@ -36,8 +37,17 @@ import {selectFacilities} from '../reducers/index';
     <div class="spaces-sides">
       <app-breadcrumb [items]="items"></app-breadcrumb>
       <div class="content-container">
+        <ul nz-menu [nzMode]="'horizontal'" style="margin-bottom: 25px;">
+          <li nz-menu-item (click)="onGeneralTabClicked()" [nzSelected]="true"><i class="anticon anticon-trophy"></i> Ogólne informacje</li>
+          <li nz-menu-item (click)="onPlayersTabClicked()"><i class="anticon anticon-team"></i> Zawodnicy</li>
+          <li nz-menu-item  (click)="onChatTabClicked()"><i class="anticon anticon-message"></i> Czat</li>
+           <li nz-menu-item (click)="onNegotiationsTabClicked()"><i class="anticon anticon-schedule"></i> Negocjacje <nz-tag *ngIf="(challengeStatus$ | async) == 0" [nzColor]="'orange'">W toku</nz-tag></li>
+        </ul>
+
         <h1>&zwnj; {{(challenge$ | async)?.challengingTeam?.name}} - {{(challenge$ | async)?.challengedTeam?.name}}</h1>
 
+
+        <ng-container *ngIf="currentTab === 0">
         <div class="block">
           <div nz-row style="text-align: center;">
             <div nz-col nzSm="5"></div>
@@ -49,7 +59,7 @@ import {selectFacilities} from '../reducers/index';
           <div nz-row style="text-align: center;">
             <div nz-col nzSm="5"></div>
             <div nz-col nzSm="6"><h2>&zwnj; {{(challenge$ | async)?.challengingTeam?.name}}</h2></div>
-            <div nz-col nzSm="2"> vs. </div>
+            <div nz-col nzSm="2"> vs.</div>
             <div nz-col nzSm="6"><h2>&zwnj; {{(challenge$ | async)?.challengedTeam?.name}}</h2></div>
             <div nz-col nzSm="5"></div>
           </div>
@@ -60,7 +70,7 @@ import {selectFacilities} from '../reducers/index';
             <div nz-col nzSm="1"><img src="/assets/images/home/avatar.png"></div>
             <div nz-col nzSm="1"><img src="/assets/images/home/avatar.png"></div>
             <div nz-col nzSm="2"><img src="/assets/images/home/avatar.png"></div>
-            <div nz-col nzSm="2"></div>
+            <div nz-col nzSm="2"><h1>0 : 0</h1></div>
             <div nz-col nzSm="2"><img src="/assets/images/home/avatar.png"></div>
             <div nz-col nzSm="1"><img src="/assets/images/home/avatar.png"></div>
             <div nz-col nzSm="1"><img src="/assets/images/home/avatar.png"></div>
@@ -70,10 +80,82 @@ import {selectFacilities} from '../reducers/index';
           </div>
         </div>
 
-        <nz-collapse>
-          <nz-collapse-panel [nzHeader]="placeTimeHeader" [nzActive]="(challengeStatus$ | async) == 0">
-            <h2>Negocjacje terminu oraz miejsca spotkania</h2>
+        <div class="block">
+          <div nz-row style="text-align: center;">
+            <div nz-col nzSm="9"></div>
+            <div nz-col nzSm="6"><h2>Data spotkania</h2></div>
+            <div nz-col nzSm="9"></div>
+          </div>
+          <div nz-row style="text-align: center;">
+            <div nz-col nzSm="9"></div>
+            <div nz-col nzSm="6"><p>Nie ustalono</p></div>
+            <div nz-col nzSm="9"></div>
+          </div>
+          <div nz-row style="text-align: center;">
+            <div nz-col nzSm="9"></div>
+            <div nz-col nzSm="6"><h2>Miejsce spotkania</h2></div>
+            <div nz-col nzSm="9"></div>
+          </div>
+          <div nz-row style="text-align: center;">
+            <div nz-col nzSm="9"></div>
+            <div nz-col nzSm="6"><p>Nie ustalono</p></div>
+            <div nz-col nzSm="9"></div>
+          </div>
+        </div>
+
+          <div style="text-align: center;">
+          <div style="display: inline-block; margin: 0 auto;">
+            <button nz-button>
+              Anuluj wyzwanie
+            </button>
+            <button nz-button>
+              Odrzuć wyzwanie
+            </button>
+            <button nz-button>
+              Wprowadź wynik
+            </button>
+            <button nz-button>
+              Potwierdź wynik
+            </button>
+            <button nz-button>
+              Odrzuć wynik
+            </button>
+          </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="currentTab === 1">
+          <div nz-row style="text-align: center;">
+            <div nz-col nzSm="5"></div>
+            <div nz-col nzSm="6"><p>Drużyna gospodarzy</p></div>
+            <div nz-col nzSm="2"></div>
+            <div nz-col nzSm="6"><p>Drużyna gości</p></div>
+            <div nz-col nzSm="5"></div>
+          </div>
+            <div nz-row>
+              <div nz-col nzSm="3"></div>
+              <div nz-col nzSm="8">
+                <app-player-horizontal-card *ngFor="let player of (challengingTeamPlayers$ | async)"
+                                            [player]="player" [alignRight]="true" [team]="(challenge$ | async)?.challengingTeam"></app-player-horizontal-card>
+              </div>
+              <div nz-col nzSm="2"></div>
+              <div nz-col nzSm="8">
+                <app-player-horizontal-card *ngFor="let player of (challengedTeamPlayers$ | async)"
+                                            [player]="player" [team]="(challenge$ | async)?.challengedTeam"></app-player-horizontal-card>
+              </div>
+            </div>
+        </ng-container>
+
+
+        <ng-container *ngIf="currentTab === 2">
+          <app-prototype-notification [inline]="true" [unavailable]="true"></app-prototype-notification>
+        </ng-container>
+        
+        <ng-container *ngIf="currentTab === 3">
             <ng-container *ngIf="(myHome$ | async)">
+              <p>
+                Negocjacje terminu oraz miejsca spotkania kończą się w momencie zaakceptowania przez jednego z menedżerów oferty drugiej strony.
+              </p>
               <app-placetimeoffer-pool [theirTeamOffers]="theirTeamOffers$ | async" [myTeamOffers]="myTeamOffers$ | async"
                                        [myHome]="myHome$ | async" [theirHome]="theirHome$ | async"
                                        (canceled)="onCancelled($event)" (accepted)="onAccepted($event)" (rejected)="onRejected($event)">
@@ -85,20 +167,22 @@ import {selectFacilities} from '../reducers/index';
 
               </app-placetimeoffer-pool>
             </ng-container>
-          </nz-collapse-panel>
-        </nz-collapse>
-        
-        <ng-template #placeTimeHeader>
-          Termin oraz miejsce spotkania
-          <nz-tag *ngIf="(challengeStatus$ | async) == 0" [nzColor]="'orange'">Negocjacje w toku</nz-tag>
-        </ng-template>
-
-        
+        </ng-container>
 
       </div>
     </div>
   `, styles: [`
-    
+
+    nz-collapse {
+      margin: 10px 0;
+    }
+
+    button {
+      margin-right: 8px;
+      margin-bottom: 12px;
+      margin-top: 12px;
+    }
+
     img {
       max-height: 100%;
       max-width: 100%;
@@ -110,6 +194,7 @@ export class MyChallengePageComponent implements OnInit, OnDestroy {
     {title: 'Wyzwania', link: '/challenges'}, {title: ' '}
   ];
 
+  currentTab = 0;
 
   challenge$: Observable<Challenge>;
   facilities$: Observable<Facility[]>;
@@ -119,6 +204,9 @@ export class MyChallengePageComponent implements OnInit, OnDestroy {
   region$: Observable<Region>;
   theirHome$: Observable<Position>;
   challengeStatus$: Observable<ChallengeStatus>;
+
+  challengingTeamPlayers$: Observable<Player[]>;
+  challengedTeamPlayers$: Observable<Player[]>;
 
   myTeamOffers$: Observable<PlaceTimeOffer[]>;
   theirTeamOffers$: Observable<PlaceTimeOffer[]>;
@@ -138,12 +226,16 @@ export class MyChallengePageComponent implements OnInit, OnDestroy {
     this.theirTeamOffers$ = this.store.pipe(select(selectTheirTeamOffers));
     this.challengeStatus$ = this.store.pipe(select(selectChallengeStatus));
 
+    this.challengingTeamPlayers$ = this.store.pipe(select(selectChallengingTeamPlayers));
+    this.challengedTeamPlayers$ = this.store.pipe(select(selectChallengedTeamPlayers));
+
     combineLatest(this.challenge$, this.myTeam$).pipe(
       takeUntil(this.unsubscribe$),
     ).subscribe(([challenge, myTeam]) => {
       if (challenge !== null && myTeam !== null) {
 
         this.store.dispatch(new LoadTheirHome(this.getOtherTeam(challenge, myTeam).id));
+        this.store.dispatch(new LoadTheirPlayers(this.getOtherTeam(challenge, myTeam).id));
 
         this.items = [{title: 'Wyzwania', link: '/challenges'}, {title: this.getOtherTeam(challenge, myTeam).name}];
       } else {
@@ -187,6 +279,22 @@ export class MyChallengePageComponent implements OnInit, OnDestroy {
 
   newOfferSubmitted(offer: PlaceTimeOffer) {
     this.store.dispatch(new AddPlaceTimeOffer(offer));
+  }
+
+  onGeneralTabClicked() {
+    this.currentTab = 0;
+  }
+
+  onChatTabClicked() {
+    this.currentTab = 2;
+  }
+
+  onPlayersTabClicked() {
+    this.currentTab = 1;
+  }
+
+  onNegotiationsTabClicked() {
+    this.currentTab = 3;
   }
 
 }

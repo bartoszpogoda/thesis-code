@@ -32,7 +32,8 @@ import {selectFacilities} from '../reducers/index';
   template: `
     <h2>Rzucasz wyzwanie drużynie: {{(pickedTeam$ | async)?.name}}</h2>
 
-    <p>Dodaj wstępne propozycje czasu oraz terminu spotkania. <strong>Wymagana</strong> jest co najmniej jedna oferta.</p>
+    <p>Dodaj wstępne propozycje czasu oraz terminu spotkania. <strong>Wymagana</strong> jest co najmniej jedna oferta. 
+      Mapa przedstawia punkty macierzyste Waszych drużyn oraz proponowane lokalizacje spotkania.</p>
 
     <app-entry-placetimeoffer-pool [placeTimeOffers]="entryPlaceTimeOffers$ | async"
                                    [myHome]="myHome$ | async" [theirHome]="pickedTeamHome$ | async"

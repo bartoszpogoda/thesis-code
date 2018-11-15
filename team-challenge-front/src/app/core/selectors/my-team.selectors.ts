@@ -55,5 +55,10 @@ export const selectMyTeamRegion = createSelector(
   }
 );
 
+export const selectMyTeamPlayers = createSelector(
+  selectTeamState,
+  fromMyTeam.getPlayers
+);
+
 
 

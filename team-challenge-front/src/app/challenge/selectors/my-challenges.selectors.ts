@@ -1,7 +1,7 @@
 import * as fromMyChallenges from '../reducers/my-challenges.reducer';
 import {createSelector} from '@ngrx/store';
 import {selectChallengeCreatorState, selectMyChallengesState} from '../reducers';
-import {selectMyTeam} from '../../core/selectors/my-team.selectors';
+import {selectMyTeam, selectMyTeamPlayers} from '../../core/selectors/my-team.selectors';
 
 export const selectMyActiveChallenges = createSelector(
   selectMyChallengesState,
@@ -26,6 +26,39 @@ export const selectPlaceTimeOffers = createSelector(
 export const selectTheirHome = createSelector(
   selectMyChallengesState,
   fromMyChallenges.getTheirHome
+);
+
+export const selectTheirPlayers = createSelector(
+  selectMyChallengesState,
+  fromMyChallenges.getTheirPlayers
+);
+
+export const selectChallengingTeamPlayers = createSelector(
+  selectChallenge,
+  selectMyTeam,
+  selectMyTeamPlayers,
+  selectTheirPlayers,
+  (challenge, myTeam, myTeamPlayers, theirPlayers) => {
+    if (!challenge || !myTeam || !myTeamPlayers || !theirPlayers) {
+      return null;
+    }
+
+    return challenge.challengingTeamId === myTeam.id ? myTeamPlayers : theirPlayers;
+  }
+);
+
+export const selectChallengedTeamPlayers = createSelector(
+  selectChallenge,
+  selectMyTeam,
+  selectMyTeamPlayers,
+  selectTheirPlayers,
+  (challenge, myTeam, myTeamPlayers, theirPlayers) => {
+    if (!challenge || !myTeam || !myTeamPlayers || !theirPlayers) {
+      return null;
+    }
+
+    return challenge.challengedTeamId === myTeam.id ? myTeamPlayers : theirPlayers;
+  }
 );
 
 export const selectMyTeamOffers = createSelector(

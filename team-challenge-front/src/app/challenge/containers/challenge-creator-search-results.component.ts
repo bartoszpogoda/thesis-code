@@ -18,7 +18,8 @@ import {take} from 'rxjs/operators';
   selector: 'app-challenge-creator-search-results',
   template: `
         <div *ngIf="searching$ | async" style="text-align: center">
-          Wyszukiwanie Waszych idealnych przeciwników trwa...
+          <app-fancy-loading></app-fancy-loading>
+          <h3>Poszukiwanie Waszych idealnych przeciwników trwa...</h3>
         </div>
 
         <div *ngIf="!(searching$ | async)" nz-row style="margin-top: 20px;">
@@ -135,8 +136,6 @@ export class ChallengeCreatorSearchResultsComponent {
   }
 
   onCompareClicked() {
-    // this.router.navigate(['challenges/new/comparison']);
-
     this.store.dispatch(new CompareSelected());
   }
 

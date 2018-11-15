@@ -38,7 +38,7 @@ import {
   AcceptPlaceTimeOfferFailure,
   AddPlaceTimeOffer,
   AddPlaceTimeOfferSuccess,
-  AddPlaceTimeOfferFailure
+  AddPlaceTimeOfferFailure, LoadTheirPlayers, LoadTheirPlayersSuccess, LoadTheirPlayersFailure
 } from '../actions/my-challenges.actions';
 import {LoadCurrent, LoadCurrentSuccess, MyTeamActionTypes} from '../../core/actions/my-team.actions';
 import {
@@ -127,6 +127,18 @@ export class MyChallengesEffects {
         // @ts-ignore
         map(home => new LoadTheirHomeSuccess(home)),
         catchError(err => of(new LoadTheirHomeFailure(err)))
+      )
+    )
+  );
+
+  @Effect()
+  $loadTheirPlayers = this.actions$.pipe(
+    ofType<LoadTheirPlayers>(MyChallengesActionTypes.LoadTheirPlayers),
+    map(toPayload),
+    exhaustMap((teamId) =>
+      this.teamService.getPlayers(teamId).pipe(
+        map(players => new LoadTheirPlayersSuccess(players)),
+        catchError(err => of(new LoadTheirPlayersFailure(err)))
       )
     )
   );

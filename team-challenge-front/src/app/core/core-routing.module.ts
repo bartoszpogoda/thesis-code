@@ -5,7 +5,6 @@ import {PlayerCreatorGuard} from './guard/player-creator-guard.service';
 import {MyTeamPageComponent} from './containers/my-team-page.component';
 import {TeamJoinRedirectGuard} from './guard/team-join-redirect-guard';
 import {TeamJoinPageComponent} from './containers/team-join-page.component';
-import {TeamManagerPageComponent} from './containers/team-manager-page.component';
 import {IsManagerGuard} from './guard/is-manager.guard';
 import {TeamRecruitmentPageComponent} from './containers/team-recruitment-page.component';
 import {TeamManagerHomePageComponent} from './containers/team-manager-home-page.component';
@@ -33,11 +32,6 @@ const routes: Routes = [
   {
     path: 'team/join',
     component: TeamJoinPageComponent
-  },
-  {
-    path: 'team/manager',
-    component: TeamManagerPageComponent,
-    canActivate: [IsManagerGuard]
   },
   {
     path: 'team/manager/recruitment',

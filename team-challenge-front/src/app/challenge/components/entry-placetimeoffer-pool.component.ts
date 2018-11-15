@@ -13,7 +13,7 @@ import {Position} from '../../core/models/position';
       <div nz-row nzGutter="16">
         <div nz-col nzSm="8">
           <div class="map-container">
-            <ngui-map [options]="mapOptions" [center]="" [style.height.px]="300">
+            <ngui-map [options]="mapOptions" [center]="" [style.height.px]="200" (mapClick)="onMapClick()">
               <marker *ngFor="let offer of placeTimeOffers" [position]="offer.offeredFacility.position"
                       (click)="onOfferClicked($event, offer)" [icon]="getBasketIcon()">
               </marker>
@@ -29,7 +29,8 @@ import {Position} from '../../core/models/position';
         <div nz-col nzSm="16">
           <div class="pool-container">
             <div class="place-time-offer" *ngFor="let offer of placeTimeOffers">
-              <app-my-placetimeoffer [offer]="offer" (canceled)="onCanceled(offer)"></app-my-placetimeoffer>
+              <app-my-placetimeoffer [offer]="offer" (canceled)="onCanceled(offer)" [highlightedFacility]="selectedFacility">
+              </app-my-placetimeoffer>
             </div>
             <div class="place-time-offer">
               <ng-content></ng-content>
@@ -45,6 +46,8 @@ export class EntryPlacetimeofferPoolComponent {
 
   @Input()
   placeTimeOffers: PlaceTimeOffer[];
+
+  selectedFacility: Facility;
 
   _myHome: Position;
 
@@ -108,7 +111,11 @@ export class EntryPlacetimeofferPoolComponent {
   }
 
   onOfferClicked({target: marker}, offer: PlaceTimeOffer) {
-    // somehow mark picked offer
+    this.selectedFacility = offer.offeredFacility;
+  }
+
+  onMapClick() {
+    this.selectedFacility = null;
   }
 
   getBasketIcon() {

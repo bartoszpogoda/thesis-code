@@ -83,10 +83,12 @@ export class PlacetimeofferPoolComponent {
   set myHome(myHome: Position) {
     this._myHome = myHome;
 
-    this.mapOptions = {
-      ...this.mapOptions,
-      center: new LatLng(myHome.lat, myHome.lng)
-    };
+    if (this._myHome !== null) {
+      this.mapOptions = {
+        ...this.mapOptions,
+        center: new LatLng(myHome.lat, myHome.lng)
+      };
+    }
   }
 
   @Input()

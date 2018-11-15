@@ -137,6 +137,7 @@ export class NewPlacetimeofferModalComponent {
         offeredFacility: this.selectedFacility,
         offeredFacilityId: this.selectedFacility.id,
         offeringTeamId: this.myTeamId,
+        status: 0
       };
 
       this.submitted.emit(placeTimeOffer);

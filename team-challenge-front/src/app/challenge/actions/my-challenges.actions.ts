@@ -1,6 +1,7 @@
 import {Action} from '@ngrx/store';
 import {Challenge, PlaceTimeOffer} from '../models/challenge';
 import {ApiError} from '../../core/models/error';
+import {Player} from '../../core/models/player';
 
 export enum MyChallengesActionTypes {
   LoadActiveChallenges = '[My Challenges] Load Active Challenges',
@@ -23,6 +24,10 @@ export enum MyChallengesActionTypes {
   LoadTheirHomeSuccess = '[My Challenges] Load Their Home Success',
   LoadTheirHomeFailure = '[My Challenges] Load Their Home Failure',
 
+  LoadTheirPlayers = '[My Challenges] Load Their Players',
+  LoadTheirPlayersSuccess = '[My Challenges] Load Their Players Success',
+  LoadTheirPlayersFailure = '[My Challenges] Load Their Players Failure',
+
   AddPlaceTimeOffer = '[My Challenges] Add Place Time Offer',
   AddPlaceTimeOfferSuccess = '[My Challenges] Add Place Time Offer Success',
   AddPlaceTimeOfferFailure = '[My Challenges] Add Place Time Offer Failure',
@@ -31,11 +36,9 @@ export enum MyChallengesActionTypes {
   CancelPlaceTimeOfferSuccess = '[My Challenges] Cancel Place Time Offer Success',
   CancelPlaceTimeOfferFailure = '[My Challenges] Cancel Place Time Offer Failure',
 
-
   RejectPlaceTimeOffer = '[My Challenges] Reject Place Time Offer',
   RejectPlaceTimeOfferSuccess = '[My Challenges] Reject Place Time Offer Success',
   RejectPlaceTimeOfferFailure = '[My Challenges] Reject Place Time Offer Failure',
-
 
   AcceptPlaceTimeOffer = '[My Challenges] Accept Place Time Offer',
   AcceptPlaceTimeOfferSuccess = '[My Challenges] Accept Place Time Offer Success',
@@ -147,6 +150,28 @@ export class LoadTheirHomeFailure implements Action {
 }
 
 
+export class LoadTheirPlayers implements Action {
+  readonly type = MyChallengesActionTypes.LoadTheirPlayers;
+
+  constructor(public payload: string) {
+  }
+}
+
+export class LoadTheirPlayersSuccess implements Action {
+  readonly type = MyChallengesActionTypes.LoadTheirPlayersSuccess;
+
+  constructor(public payload: Player[]) {
+  }
+}
+
+export class LoadTheirPlayersFailure implements Action {
+  readonly type = MyChallengesActionTypes.LoadTheirPlayersFailure;
+
+  constructor(public payload: ApiError) {
+  }
+}
+
+
 export class AddPlaceTimeOffer implements Action {
   readonly type = MyChallengesActionTypes.AddPlaceTimeOffer;
 
@@ -240,5 +265,6 @@ export type MyChallengesActionsUnion = LoadActiveChallenges | LoadActiveChalleng
   | AddPlaceTimeOffer | AddPlaceTimeOfferSuccess | AddPlaceTimeOfferFailure
   | CancelPlaceTimeOffer | CancelPlaceTimeOfferSuccess | CancelPlaceTimeOfferFailure
   | RejectPlaceTimeOffer | RejectPlaceTimeOfferSuccess | RejectPlaceTimeOfferFailure
-  | AcceptPlaceTimeOffer | AcceptPlaceTimeOfferSuccess | AcceptPlaceTimeOfferFailure;
+  | AcceptPlaceTimeOffer | AcceptPlaceTimeOfferSuccess | AcceptPlaceTimeOfferFailure
+  | LoadTheirPlayers | LoadTheirPlayersSuccess | LoadTheirPlayersFailure;
 

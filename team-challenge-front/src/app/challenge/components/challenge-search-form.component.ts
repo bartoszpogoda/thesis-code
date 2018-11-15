@@ -16,17 +16,17 @@ import {s} from '@angular/core/src/render3';
           <p>Dostosuj wartościowanie poszczególnych kryteriów z uwzględnieniem preferencji Twojej drużyny.</p>
 
           <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Różnica wieku </nz-form-label>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Różnica wieku</nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24">
               <div nz-row [nzGutter]="8">
-                <div nz-col [nzSm]="1" style="cursor:pointer;" (click)="onLockClicked(validateForm.controls.weightAgeDiff)">
-                  <i *ngIf="lockedSlider === validateForm.controls.weightAgeDiff || validateForm.controls.weightAgeDiff.value === 0"
+                <div nz-col [nzSm]="1" style="cursor:pointer;" (click)="onLockClicked(validateForm.get('weightAgeDiff'))">
+                  <i *ngIf="lockedSlider === validateForm.get('weightAgeDiff') || validateForm.get('weightAgeDiff').value === 0"
                      class="anticon anticon-lock"></i>
-                  <i *ngIf="!(lockedSlider === validateForm.controls.weightAgeDiff || validateForm.controls.weightAgeDiff.value === 0)"
+                  <i *ngIf="!(lockedSlider === validateForm.get('weightAgeDiff') || validateForm.get('weightAgeDiff').value === 0)"
                      class="anticon anticon-unlock"></i>
                 </div>
                 <div nz-col [nzSm]="22">
-                  <nz-slider [nzDisabled]="lockedSlider === validateForm.controls.weightAgeDiff"
+                  <nz-slider [nzDisabled]="lockedSlider === validateForm.get('weightAgeDiff')"
                              [nzTipFormatter]="formatter" [nzStep]="10" [nzMin]="0" [nzMax]="1000" formControlName="weightAgeDiff">
                   </nz-slider>
                 </div>
@@ -42,14 +42,14 @@ import {s} from '@angular/core/src/render3';
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Różnica poziomu umiejętności</nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24">
               <div nz-row [nzGutter]="8">
-                <div nz-col [nzSm]="1" style="cursor:pointer;" (click)="onLockClicked(validateForm.controls.weightSkillDiff)">
-                  <i *ngIf="lockedSlider === validateForm.controls.weightSkillDiff || validateForm.controls.weightSkillDiff.value === 0"
+                <div nz-col [nzSm]="1" style="cursor:pointer;" (click)="onLockClicked(validateForm.get('weightSkillDiff'))">
+                  <i *ngIf="lockedSlider === validateForm.get('weightSkillDiff') || validateForm.get('weightSkillDiff').value === 0"
                      class="anticon anticon-lock"></i>
-                  <i *ngIf="!(lockedSlider === validateForm.controls.weightSkillDiff || validateForm.controls.weightSkillDiff.value === 0)"
+                  <i *ngIf="!(lockedSlider === validateForm.get('weightSkillDiff') || validateForm.get('weightSkillDiff').value === 0)"
                      class="anticon anticon-unlock"></i>
                 </div>
                 <div nz-col [nzSm]="22">
-                  <nz-slider [nzDisabled]="lockedSlider === validateForm.controls.weightSkillDiff"  [nzTipFormatter]="formatter"
+                  <nz-slider [nzDisabled]="lockedSlider === validateForm.get('weightSkillDiff')"  [nzTipFormatter]="formatter"
                              [nzStep]="10" [nzMin]="0" [nzMax]="1000" formControlName="weightSkillDiff"></nz-slider>
                 </div>
                 <div nz-col [nzSm]="1">
@@ -64,14 +64,14 @@ import {s} from '@angular/core/src/render3';
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Odległość</nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24">
               <div nz-row [nzGutter]="8">
-                <div nz-col [nzSm]="1" style="cursor:pointer;" (click)="onLockClicked(validateForm.controls.weightDistance)">
-                  <i *ngIf="lockedSlider === validateForm.controls.weightDistance || validateForm.controls.weightDistance.value === 0"
+                <div nz-col [nzSm]="1" style="cursor:pointer;" (click)="onLockClicked(validateForm.get('weightDistance'))">
+                  <i *ngIf="lockedSlider === validateForm.get('weightDistance') || validateForm.get('weightDistance').value === 0"
                      class="anticon anticon-lock"></i>
-                  <i *ngIf="!(lockedSlider === validateForm.controls.weightDistance || validateForm.controls.weightDistance.value === 0)"
+                  <i *ngIf="!(lockedSlider === validateForm.get('weightDistance') || validateForm.get('weightDistance').value === 0)"
                      class="anticon anticon-unlock"></i>
                 </div>
                 <div nz-col [nzSm]="22">
-                  <nz-slider [nzDisabled]="lockedSlider === validateForm.controls.weightDistance" [nzTipFormatter]="formatter"
+                  <nz-slider [nzDisabled]="lockedSlider === validateForm.get('weightDistance')" [nzTipFormatter]="formatter"
                              [nzStep]="10" [nzMin]="0" [nzMax]="1000" formControlName="weightDistance"></nz-slider>
                 </div>
                 <div nz-col [nzSm]="1">

@@ -2,6 +2,7 @@ import {Challenge, PlaceTimeOffer} from '../models/challenge';
 import {MyTeamActionsUnion} from '../../core/actions/my-team.actions';
 import {AuthActionsUnion, AuthActionTypes} from '../../auth/actions/auth.actions';
 import {MyChallengesActionsUnion, MyChallengesActionTypes} from '../actions/my-challenges.actions';
+import {Player} from '../../core/models/player';
 
 
 export interface State {
@@ -10,6 +11,7 @@ export interface State {
   challenge: Challenge;
   placeTimeOffers: PlaceTimeOffer[];
   theirHome: Position;
+  theirPlayers: Player[];
 }
 
 const initialState: State = {
@@ -18,6 +20,7 @@ const initialState: State = {
   challenge: null,
   placeTimeOffers: [],
   theirHome: null,
+  theirPlayers: []
 };
 
 export function reducer(
@@ -72,6 +75,12 @@ export function reducer(
         theirHome: action.payload
       };
 
+    case MyChallengesActionTypes.LoadTheirPlayersSuccess:
+      return {
+        ...state,
+        theirPlayers: action.payload
+      };
+
     default:
       return state;
   }
@@ -82,3 +91,4 @@ export const getActivePlaceTimeOffers = (state: State) => state.activePlaceTimeO
 export const getChallenge = (state: State) => state.challenge;
 export const getPlaceTimeOffers = (state: State) => state.placeTimeOffers;
 export const getTheirHome = (state: State) => state.theirHome;
+export const getTheirPlayers = (state: State) => state.theirPlayers;

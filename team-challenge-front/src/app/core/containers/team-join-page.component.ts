@@ -12,18 +12,19 @@ import {selectPlayerInvitations} from '../selectors/my-player.selectors';
     <div class="spaces-sides">
     <app-breadcrumb [items]="items"></app-breadcrumb>
     <div class="content-container">
-      <h1>Dołącz do drużyny lub załóż własną</h1>
+      <ul nz-menu [nzMode]="'horizontal'" style="margin-bottom: 25px;">
+        <li nz-menu-item [nzSelected]="true"><i class="anticon anticon-user"></i> Zaproszenia do drużyn</li>
+        <li nz-menu-item>
+          <a href="#" routerLink="/team/new">Załóż drużynę</a>
+        </li>
+      </ul>
 
-      <h2>Zaproszenia do drużyn</h2>
       <p *ngIf="(teamInvitations$ | async).length === 0">Nie posiadasz żadnych zaproszeń.</p>
 
       <ng-container *ngFor="let invitation of (teamInvitations$ | async)">
         <app-received-invitation [teamInvitation]="invitation" (accepted)="onAccepted(invitation)"
         (declined)="onDeclined(invitation)"></app-received-invitation>
       </ng-container>
-      <nz-divider></nz-divider>
-
-      <h2 routerLink="/team/new">Załóż nową drużynę</h2>
     </div>
     </div>
   `

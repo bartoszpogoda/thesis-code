@@ -1,5 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {
@@ -23,7 +22,7 @@ import {Team} from '../../core/models/team';
         <p>Spraw aby Twoja drużyna wyróżniała się spośród innych.</p>
 
         <app-image-loader [uploadUrl]="'api/teams/' + (team$ | async).id + '/image'" (startedUpload)="onStartedUpload()"
-                          (uploaded)="onUploaded($event)"></app-image-loader>
+                          (uploaded)="onUploaded()"></app-image-loader>
 
         <button (click)="onButtonClicked()" nz-button [nzType]="(avatarUploaded$ | async) ? 'primary' : 'default'"
                 [nzLoading]="avatarUploading$ | async">

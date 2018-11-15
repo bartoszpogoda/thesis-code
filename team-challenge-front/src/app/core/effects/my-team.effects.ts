@@ -8,7 +8,7 @@ import {TeamService} from '../service/team.service';
 import {
   LoadCurrent,
   LoadCurrentFailure,
-  LoadCurrentSuccess, LoadHome, LoadHomeFailure, LoadHomeSuccess,
+  LoadCurrentSuccess, LoadHome, LoadHomeFailure, LoadHomeSuccess, LoadPlayers, LoadPlayersFailure, LoadPlayersSuccess,
   MyTeamActionTypes, UpdateIsManager
 } from '../actions/my-team.actions';
 import {
@@ -22,13 +22,15 @@ import {selectPlayerProfile} from '../selectors/my-player.selectors';
 import {NoAction} from '../actions/core.actions';
 import {toPayload} from '../util/functions';
 import {selectMyTeam} from '../selectors/my-team.selectors';
+import {AuthActionTypes, LoginSuccess} from '../../auth/actions/auth.actions';
 
 @Injectable()
 export class MyTeamEffects {
 
+
   @Effect()
   $loadPlayersTeamOnPlayerLoaded = this.actions$.pipe(
-    ofType<LoadCurrentPlayerSuccess>(PlayerActionTypes.LoadCurrentSuccess),
+    ofType<LoadCurrentSuccess>(PlayerActionTypes.LoadCurrentSuccess),
     withLatestFrom(this.store.pipe(select(selectPlayerProfile))),
     filter(([, player]) => player.teamId !== null),
     map(([, player]) => new LoadCurrent(player.teamId))
@@ -57,10 +59,11 @@ export class MyTeamEffects {
   );
 
   @Effect()
-  $loadHomeAfterTeamLoaded = this.actions$.pipe(
+  $loadHomeAndPlayersAfterTeamLoaded = this.actions$.pipe(
     ofType<LoadCurrentSuccess>(MyTeamActionTypes.LoadCurrentSuccess),
-    map(() => new LoadHome())
+    switchMap(() => [new LoadHome(), new LoadPlayers()])
   );
+
 
   @Effect()
   $loadHome = this.actions$.pipe(
@@ -73,6 +76,15 @@ export class MyTeamEffects {
   );
 
 
+  @Effect()
+  $loadPlayers = this.actions$.pipe(
+    ofType<LoadPlayers>(MyTeamActionTypes.LoadPlayers),
+    withLatestFrom(this.store.pipe(select(selectMyTeam))),
+    exhaustMap(([, myTeam]) => this.teamService.getPlayers(myTeam.id).pipe(
+      map(players => new LoadPlayersSuccess(players)),
+      catchError(err => of(new LoadPlayersFailure(err)))
+    ))
+  );
 
   // @Effect({dispatch: false})
   // $redirectToTeamViewAfterCreation = this.actions$.pipe(

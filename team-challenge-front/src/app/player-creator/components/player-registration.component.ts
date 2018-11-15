@@ -30,77 +30,20 @@ import {Region} from '../../core/models/region';
         </nz-form-control>
       </nz-form-item>
 
-      <nz-form-item>
-        <nz-form-label [nzOffset]="4"  [nzSm]="6" [nzXs]="24" nzRequired nzFor="description">
-          <span>
-            Poziom umiejętności
-          <nz-tooltip nzTitle="Postaraj się obiektywnie ocenić swoje umiejętności w skali 0-10">
-            <i nz-tooltip class="anticon anticon-question-circle-o"></i>
-          </nz-tooltip>
-          </span></nz-form-label>
-        <nz-form-control [nzSm]="6" [nzXs]="24">
-          <div nz-row [nzGutter]="8">
-            <div nz-col [nzSm]="23">
-              <!--[nzTipFormatter]="formatter"-->
-              <nz-slider  [nzMin]="0" [nzMax]="10" [nzMarks]="marks" formControlName="skill"></nz-slider>
-            </div>
-            <div nz-col [nzSm]="1">
-              {{validateForm.get('skill').value}}
-            </div>
-          </div>
-          <!--<nz-form-extra>Oceń swój poziom umiejętności</nz-form-extra>-->
-        </nz-form-control>
-      </nz-form-item>
-      
       <nz-form-item nz-row style="margin-bottom:8px;">
         <nz-form-control [nzSpan]="14" [nzOffset]="6">
-          <button nz-button nzType="primary">Utwórz profil</button>
+          <button nz-button nzType="primary">Dalej</button>
         </nz-form-control>
       </nz-form-item>
     </form>
   `, styles: [`
-      p {
-        margin-bottom: 0 !important;
-      }
+    p {
+      margin-bottom: 0 !important;
+    }
   `]
 })
 export class PlayerRegistrationComponent implements OnInit {
   validateForm: FormGroup;
-
-  marks: any = {
-    2: {
-      style: {
-        left: '22%'
-      },
-      label: '<strong>Niedzielny gracz</strong><p>Grasz od czasu do czasu</p>',
-    },
-  8: {
-    style: {
-      left: '79%',
-    },
-    label: '<strong>Klubowicz</strong><p>Grasz regularnie w klubie</p>',
-  }
-  };
-
-
-
-  formatter(value) {
-
-    const messages = {
-      1: 'Dopiero zaczynam',
-      2: 'Znam zasady',
-      3: 'Znam zasady',
-      4: 'Gram od czasu do czasu',
-      5: 'Gram regularnie',
-      6: 'Znam zasady',
-      7: 'Gram regularnie w klubie',
-      8: 'Znam zasady',
-      9: 'Znam zasady',
-      10: 'Znam zasady'
-    };
-
-    return messages[value] ? `${messages[value]}` : '';
-  }
 
   @Input()
   regions: Region[];
@@ -116,7 +59,6 @@ export class PlayerRegistrationComponent implements OnInit {
     if (this.validateForm.valid) {
       this.submitted.emit({
         height: this.validateForm.value.height,
-        skill: this.validateForm.value.skill,
         disciplineId: '3x3basket',
         regionId: this.validateForm.value.regionId
       });
@@ -129,7 +71,6 @@ export class PlayerRegistrationComponent implements OnInit {
   ngOnInit(): void {
     this.validateForm = this.fb.group({
       height            : [ null, [ Validators.required, Validators.pattern('[0-9]*'), Validators.min(100), Validators.max(230)] ],
-      skill: [0],
       regionId: [ null, [ Validators.required] ],
     });
   }

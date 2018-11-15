@@ -8,7 +8,8 @@ export enum PlayerCreatorActionTypes {
   RegisterSuccess = '[Player Creator] Register Success',
   RegisterFailure = '[Player Creator] Register Failure',
   UploadAvatar = '[Player Creator] Upload Avatar',
-  UploadAvatarSuccess = '[Player Creator] Upload Avatar Success', // TODO what if failure?
+  UploadAvatarSuccess = '[Player Creator] Upload Avatar Success',
+  BaseDateSubmitted = '[Player Creator] Base Data Submitted',
 }
 
 export class Register implements Action {
@@ -31,13 +32,16 @@ export class RegisterFailure implements Action {
 
 export class UploadAvatar implements Action {
   readonly type = PlayerCreatorActionTypes.UploadAvatar;
-
 }
 
 export class UploadAvatarSuccess implements Action {
   readonly type = PlayerCreatorActionTypes.UploadAvatarSuccess;
 }
 
+export class BaseDateSubmitted implements Action {
+  readonly type = PlayerCreatorActionTypes.BaseDateSubmitted;
+}
+
 export type PlayerCreatorActionsUnion = Register | RegisterSuccess | RegisterFailure
-  | UploadAvatar | UploadAvatarSuccess;
+  | UploadAvatar | UploadAvatarSuccess | BaseDateSubmitted;
 

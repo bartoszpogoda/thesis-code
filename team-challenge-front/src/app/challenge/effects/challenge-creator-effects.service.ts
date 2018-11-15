@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {catchError, exhaustMap, filter, map, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
-import {forkJoin, of} from 'rxjs';
+import {catchError, debounceTime, exhaustMap, filter, map, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
+import {forkJoin, Observable, of, timer} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {State} from '../reducers/index';
 import {Router} from '@angular/router';
@@ -42,8 +42,8 @@ export class ChallengeCreatorEffects {
     ofType<Search>(ChallengeCreatorActionTypes.Search),
     map(toPayload),
     exhaustMap((searchForm) =>
-      this.searchService.search(searchForm).pipe(
-        map(searchResult => new SearchSuccess(searchResult)),
+      forkJoin(this.searchService.search(searchForm), timer(1000)).pipe(
+        map(([searchResult, ]) => new SearchSuccess(searchResult)),
         catchError(err => of(new SearchFailure(err)))
       )
     )
