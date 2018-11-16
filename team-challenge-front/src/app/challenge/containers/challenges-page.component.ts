@@ -23,12 +23,12 @@ import {Router} from '@angular/router';
         <h2>Obecne wyzwania</h2>
 
         <div style="margin-bottom: 20px;">
-          <div nz-row *ngIf="(myActiveChallenges$ | async).length > 0" class="headers">
+          <div nz-row class="headers" nzGutter="16">
             <div nz-col nzXs="0" nzSm="2" class="container-vert-center"></div>
             <div nz-col nzXs="0" nzSm="4" class="container-vert-center">Nazwa drużyny</div>
             <div nz-col nzXs="0" nzSm="4" class="container-vert-center">Menedżer</div>
-            <div nz-col nzXs="0" nzSm="6" class="container-vert-center">Status</div>
-            <div nz-col nzXs="0" nzSm="3" class="container-vert-center">Miejsce</div>
+            <div nz-col nzXs="0" nzSm="4" class="container-vert-center">Status</div>
+            <div nz-col nzXs="0" nzSm="5" class="container-vert-center">Miejsce</div>
             <div nz-col nzXs="0" nzSm="3" class="container-vert-center">Data</div>
             <div nz-col nzXs="0" nzSm="2" class="container-vert-center"></div>
           </div>
@@ -39,18 +39,18 @@ import {Router} from '@angular/router';
             <nz-divider></nz-divider>
           </ng-container>
           <div *ngIf="(myActiveChallenges$ | async).length === 0">
-            <p>Brak aktywnych wyzwań</p>
+            <p style="margin-top: 15px;">Brak aktywnych wyzwań</p>
           </div>
         </div>
 
-        <h2>Poprzednie wyzwania</h2>
-        <p> Stronicowana lista wyzwań odrzuconych, zakończonych i anulowanych.</p>
+        <h2>Ostatnie wyzwania</h2>
+        <app-past-challenges></app-past-challenges>
       </div>
     </div>
   `, styles: [`
     
     .headers div[nz-col] {
-      padding-left: 3px;
+      padding-left: 11px;
     }
     
   `]

@@ -33,7 +33,7 @@ import {take} from 'rxjs/operators';
             Średni wiek
           </div>
           <div nz-col nzXs="0" nzSm="2" class="centered-header">
-            Średni poziom umiejętności (0-10)
+            Dopasowanie umiejętnościami
           </div>
           <div nz-col nzXs="0" nzSm="2" class="centered-header">
             Odległość

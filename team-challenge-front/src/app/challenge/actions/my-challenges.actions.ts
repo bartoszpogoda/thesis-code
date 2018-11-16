@@ -43,6 +43,15 @@ export enum MyChallengesActionTypes {
   AcceptPlaceTimeOffer = '[My Challenges] Accept Place Time Offer',
   AcceptPlaceTimeOfferSuccess = '[My Challenges] Accept Place Time Offer Success',
   AcceptPlaceTimeOfferFailure = '[My Challenges] Accept Place Time Offer Failure',
+
+  RejectChallenge = '[My Challenges] Reject Challenge',
+  RejectChallengeSuccess = '[My Challenges] Reject Challenge Success',
+  RejectChallengeFailure = '[My Challenges] Reject Challenge Failure',
+
+  CancelChallenge = '[My Challenges] Cancel Challenge',
+  CancelChallengeSuccess = '[My Challenges] Cancel Challenge Success',
+  CancelChallengeFailure = '[My Challenges] Cancel Challenge Failure',
+
 }
 
 export class LoadActiveChallenges implements Action {
@@ -256,6 +265,48 @@ export class AcceptPlaceTimeOfferFailure implements Action {
 }
 
 
+export class RejectChallenge implements Action {
+  readonly type = MyChallengesActionTypes.RejectChallenge;
+
+  constructor(public payload: string) {
+  }
+}
+
+export class RejectChallengeSuccess implements Action {
+  readonly type = MyChallengesActionTypes.RejectChallengeSuccess;
+
+  constructor(public payload: Challenge) {
+  }
+}
+
+export class RejectChallengeFailure implements Action {
+  readonly type = MyChallengesActionTypes.RejectChallengeFailure;
+
+  constructor(public payload: ApiError) {
+  }
+}
+
+export class CancelChallenge implements Action {
+  readonly type = MyChallengesActionTypes.CancelChallenge;
+
+  constructor(public payload: string) {
+  }
+}
+
+export class CancelChallengeSuccess implements Action {
+  readonly type = MyChallengesActionTypes.CancelChallengeSuccess;
+
+  constructor(public payload: Challenge) {
+  }
+}
+
+export class CancelChallengeFailure implements Action {
+  readonly type = MyChallengesActionTypes.CancelChallengeFailure;
+
+  constructor(public payload: ApiError) {
+  }
+}
+
 export type MyChallengesActionsUnion = LoadActiveChallenges | LoadActiveChallengesSuccess | LoadActiveChallengesFailure
   | LoadPlaceTimeOffersForActiveChallenges | LoadPlaceTimeOffersForActiveChallengesSuccess
   | LoadPlaceTimeOffersForActiveChallengesFailure
@@ -266,5 +317,7 @@ export type MyChallengesActionsUnion = LoadActiveChallenges | LoadActiveChalleng
   | CancelPlaceTimeOffer | CancelPlaceTimeOfferSuccess | CancelPlaceTimeOfferFailure
   | RejectPlaceTimeOffer | RejectPlaceTimeOfferSuccess | RejectPlaceTimeOfferFailure
   | AcceptPlaceTimeOffer | AcceptPlaceTimeOfferSuccess | AcceptPlaceTimeOfferFailure
-  | LoadTheirPlayers | LoadTheirPlayersSuccess | LoadTheirPlayersFailure;
+  | LoadTheirPlayers | LoadTheirPlayersSuccess | LoadTheirPlayersFailure
+  | RejectChallenge | RejectChallengeSuccess | RejectChallengeFailure
+  | CancelChallenge | CancelChallengeSuccess | CancelChallengeFailure;
 

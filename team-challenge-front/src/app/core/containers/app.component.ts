@@ -56,7 +56,7 @@ import {selectStep} from '../../challenge/selectors/challenge-creator.selectors'
               Powrót do tworzonego wyzwania
             </ng-container>
             <ng-container *ngIf="(challengeCreatorStep$ | async) === 0">
-              Rzuć wyzwanie
+              Szukaj rywali
             </ng-container>
           </button>
         </div>

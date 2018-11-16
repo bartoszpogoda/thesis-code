@@ -1,6 +1,7 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge;
 
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.model.ChallengeDto;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.placetimeoffer.PlaceTimeOfferStatus;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.ApiException;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.*;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.Player;
@@ -12,7 +13,9 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.user.User;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.user.UserService;
 import org.joda.time.DateTime;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,8 +112,11 @@ public class ChallengeService {
         User currentUser = userService.getCurrentUser().orElseThrow(AccessForbiddenException::new);
         boolean admin = currentUser.getAuthorities().contains(Authority.ADMIN);
 
+        // latest first sort
+        Pageable withSort = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "id");
+
         if(admin) {
-            return challengeRepository.findAll(challengeQuery(teamId, active, past), pageable);
+            return challengeRepository.findAll(challengeQuery(teamId, active, past), withSort);
         } else {
 
             if(teamId != null) {
@@ -120,7 +126,7 @@ public class ChallengeService {
                     throw new AccessForbiddenException();
                 }
 
-                return challengeRepository.findAll(challengeQuery(teamId, active, past), pageable);
+                return challengeRepository.findAll(challengeQuery(teamId, active, past), withSort);
 
             } else {
                 throw new AccessForbiddenException();
@@ -183,6 +189,7 @@ public class ChallengeService {
 
         // Check status
 
+        cancelMyOffersAndRejectTheirs(currentTeam, challenge);
         challenge.setStatus(ChallengeStatus.Rejected);
         return Optional.of(challenge);
     }
@@ -203,14 +210,25 @@ public class ChallengeService {
             throw new AccessForbiddenException();
         }
 
-        if(challenge.getChallengedTeam().equals(currentTeam)) {
-            throw new InvalidOperationException("You can't cancel challenges not created by your team.");
-        }
-
         // Check status
 
+        cancelMyOffersAndRejectTheirs(currentTeam, challenge);
         challenge.setStatus(ChallengeStatus.Canceled);
         return Optional.of(challenge);
+    }
+
+    private void cancelMyOffersAndRejectTheirs(Team currentTeam, Challenge challenge) {
+        // cancel my offers
+        challenge.getPlaceTimeOffers().stream()
+                .filter(pto -> pto.getOfferingTeam().equals(currentTeam))
+                .filter(pto -> pto.getStatus().equals(PlaceTimeOfferStatus.Pending))
+                .forEach(pto -> pto.setStatus(PlaceTimeOfferStatus.Cancelled));
+
+        // reject their offers
+        challenge.getPlaceTimeOffers().stream()
+                .filter(pto -> !pto.getOfferingTeam().equals(currentTeam))
+                .filter(pto -> pto.getStatus().equals(PlaceTimeOfferStatus.Pending))
+                .forEach(pto -> pto.setStatus(PlaceTimeOfferStatus.Rejected));
     }
 
 

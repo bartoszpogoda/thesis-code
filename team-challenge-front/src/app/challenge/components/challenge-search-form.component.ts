@@ -126,7 +126,13 @@ import {s} from '@angular/core/src/render3';
       </div>
 
     </form>
-  `
+  `, styles: [`
+    
+    i {
+      font-size: 1.3em;
+    }
+    
+  `]
 })
 export class ChallengeSearchFormComponent implements OnInit {
 

@@ -6,7 +6,7 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
   template: `
     <div class="app-bootstrap-container">
 
-      <img class="player-image" src="/assets/images/loading/player.png" />
+      <!--<img class="player-image" src="/assets/images/loading/player.png" />-->
       <div class="spinner">
         <div class="double-bounce1"></div>
         <div class="double-bounce2"></div>

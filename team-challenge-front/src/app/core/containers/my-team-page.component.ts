@@ -21,10 +21,10 @@ import {selectIsManager, selectMyTeam} from '../selectors/my-team.selectors';
             <li nz-submenu [nzDisabled]="!(isManager$ | async)">
               <span title><i class="anticon anticon-setting"></i>Zarządzanie</span>
               <ul>
-                <li (click)="currentTab = 2" nz-menu-item>Edycja danych</li>
-                <li (click)="currentTab = 3" nz-menu-item>Punkt  macierzysty</li>
-                <li (click)="currentTab = 4" nz-menu-item>Rekrutacja</li>
-                <li (click)="currentTab = 5" nz-menu-item>Usunięcie drużyny</li>
+                <li (click)="currentTab = 2" nz-menu-item><i class="anticon anticon-edit"></i>Edycja danych</li>
+                <li (click)="currentTab = 3" nz-menu-item><i class="anticon anticon-compass"></i>Punkt  macierzysty</li>
+                <li (click)="currentTab = 4" nz-menu-item><i class="anticon anticon-usergroup-add"></i>Rekrutacja</li>
+                <li (click)="currentTab = 5" nz-menu-item><i class="anticon anticon-delete"></i>Usunięcie drużyny</li>
               </ul>
             </li>
           </ul>

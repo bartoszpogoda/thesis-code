@@ -32,22 +32,22 @@ export interface Result {
 }
 
 export enum ChallengeStatus {
-  Pending = 'Pending',
-  Accepted = 'Accepted',
-  Rejected = 'Rejected',
-  Canceled = 'Canceled',
-  Finished = 'Finished'
+  Pending = 0,
+  Accepted = 1,
+  Rejected = 2,
+  Canceled = 3,
+  Finished = 4
 }
 
 export enum PlaceTimeOfferStatus {
-  Pending,
-  Accepted,
-  Rejected,
-  Cancelled
+  Pending = 0,
+  Accepted = 1,
+  Rejected = 2,
+  Cancelled = 3
 }
 
 export enum ResultStatus {
-  Reported,
-  Accepted,
-  Rejected
+  Reported = 0,
+  Accepted = 1,
+  Rejected = 2
 }

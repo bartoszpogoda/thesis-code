@@ -17,8 +17,8 @@ import {selectPlayerProfile} from '../selectors/my-player.selectors';
           <li nz-submenu>
             <span title><i class="anticon anticon-setting"></i>Zarządzanie</span>
             <ul>
-              <li (click)="currentTab = 1" nz-menu-item><i nz-icon type="mail"></i>Edycja profilu</li>
-              <li (click)="currentTab = 2" nz-menu-item><i nz-icon type="mail"></i>Usunięcie profilu</li>
+              <li (click)="currentTab = 1" nz-menu-item><i class="anticon anticon-edit"></i>Edycja profilu</li>
+              <li (click)="currentTab = 2" nz-menu-item><i class="anticon anticon-delete"></i>Usunięcie profilu</li>
             </ul>
           </li>
         </ul>

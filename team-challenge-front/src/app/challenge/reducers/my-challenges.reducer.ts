@@ -3,6 +3,8 @@ import {MyTeamActionsUnion} from '../../core/actions/my-team.actions';
 import {AuthActionsUnion, AuthActionTypes} from '../../auth/actions/auth.actions';
 import {MyChallengesActionsUnion, MyChallengesActionTypes} from '../actions/my-challenges.actions';
 import {Player} from '../../core/models/player';
+import {Page} from '../../core/models/page';
+import {Team} from '../../core/models/team';
 
 
 export interface State {

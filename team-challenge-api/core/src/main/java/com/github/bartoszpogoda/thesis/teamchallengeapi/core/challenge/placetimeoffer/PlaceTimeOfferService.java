@@ -27,6 +27,7 @@ public class PlaceTimeOfferService {
     private final ChallengeService challengeService;
     private final PlayerService playerService;
 
+    // TODO performing offer related actions should only be possible on challenges in Pending state.
 
     public Optional<PlaceTimeOffer> saveOffer(Team currentTeam, Challenge challenge, PlaceTimeOfferDto placeTimeOfferDto) throws ApiException {
 
@@ -77,6 +78,10 @@ public class PlaceTimeOfferService {
 
         if(!challenge.equals(placeTimeOffer.getChallenge())) {
             throw new PlaceTimeOfferNotFoundException();
+        }
+
+        if(!challenge.getStatus().equals(ChallengeStatus.Pending)) {
+            throw new InvalidOperationException("Negotiations are finished. Offers can not be accepted anymore.");
         }
 
         challenge.getPlaceTimeOffers().stream().filter(pto -> pto.getStatus().equals(PlaceTimeOfferStatus.Pending)).forEach(pto -> pto.setStatus(PlaceTimeOfferStatus.Rejected));

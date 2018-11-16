@@ -38,7 +38,13 @@ import {
   AcceptPlaceTimeOfferFailure,
   AddPlaceTimeOffer,
   AddPlaceTimeOfferSuccess,
-  AddPlaceTimeOfferFailure, LoadTheirPlayers, LoadTheirPlayersSuccess, LoadTheirPlayersFailure
+  AddPlaceTimeOfferFailure,
+  LoadTheirPlayers,
+  LoadTheirPlayersSuccess,
+  LoadTheirPlayersFailure,
+  CancelChallenge,
+  CancelChallengeSuccess,
+  CancelChallengeFailure, RejectChallenge, RejectChallengeSuccess, RejectChallengeFailure
 } from '../actions/my-challenges.actions';
 import {LoadCurrent, LoadCurrentSuccess, MyTeamActionTypes} from '../../core/actions/my-team.actions';
 import {
@@ -92,6 +98,13 @@ export class MyChallengesEffects {
     })
   );
 
+
+  @Effect()
+  $reloadChallengeAfterOfferAccepted = this.actions$.pipe(
+    ofType<AcceptPlaceTimeOfferSuccess>(MyChallengesActionTypes.AcceptPlaceTimeOfferSuccess),
+    withLatestFrom(this.store.pipe(select(selectChallenge))),
+    switchMap(([, challenge]) => [new LoadChallenge(challenge.id), new LoadActiveChallenges()])
+  );
 
   @Effect()
   $loadChallenge = this.actions$.pipe(
@@ -206,6 +219,43 @@ export class MyChallengesEffects {
   ).pipe(
     withLatestFrom(this.store.pipe(select(selectChallenge))),
     map(([, chall]) => new LoadPlaceTimeOffers(chall.id))
+  );
+
+
+  @Effect()
+  $reloadChallenge = merge(
+    this.actions$.pipe(ofType<CancelChallengeSuccess>((MyChallengesActionTypes.CancelChallengeSuccess))),
+    this.actions$.pipe(ofType<RejectChallengeSuccess>((MyChallengesActionTypes.RejectChallengeSuccess))),
+    this.actions$.pipe(ofType<AcceptPlaceTimeOfferSuccess>(MyChallengesActionTypes.AcceptPlaceTimeOfferSuccess)),
+  ).pipe(
+    withLatestFrom(this.store.pipe(select(selectChallenge))),
+    switchMap(([, challenge]) => [new LoadChallenge(challenge.id), new LoadActiveChallenges()])
+  );
+
+
+  @Effect()
+  $cancelChallenge = this.actions$.pipe(
+    ofType<CancelChallenge>(MyChallengesActionTypes.CancelChallenge),
+    map(toPayload),
+    exhaustMap((challengeId) =>
+      this.challengeService.cancelChallenge(challengeId).pipe(
+        map(challenge => new CancelChallengeSuccess(challenge)),
+        catchError(err => of(new CancelChallengeFailure(err)))
+      )
+    )
+  );
+
+
+  @Effect()
+  $rejectChallenge = this.actions$.pipe(
+    ofType<RejectChallenge>(MyChallengesActionTypes.RejectChallenge),
+    map(toPayload),
+    exhaustMap((challengeId) =>
+      this.challengeService.rejectChallenge(challengeId).pipe(
+        map(challenge => new RejectChallengeSuccess(challenge)),
+        catchError(err => of(new RejectChallengeFailure(err)))
+      )
+    )
   );
 
   constructor(

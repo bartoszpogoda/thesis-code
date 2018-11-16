@@ -55,4 +55,22 @@ export class ChallengeService {
   acceptPlaceTimeOffer(challengeId: string, id: string): Observable<PlaceTimeOffer> {
     return this.http.post<PlaceTimeOffer>('/api/challenges/' + challengeId + '/placetimeoffers/' + id + '/acceptance', {});
   }
+
+  rejectChallenge(challengeId: string): Observable<Challenge> {
+    return this.http.post<Challenge>('/api/challenges/' + challengeId + '/rejection', {});
+  }
+
+  cancelChallenge(challengeId: string): Observable<Challenge> {
+    return this.http.post<Challenge>('/api/challenges/' + challengeId + '/cancellation', {});
+  }
+
+  getPastChallengesPage(teamId: string, page: number = 0, size: number = 10): Observable<Page<Challenge>> {
+    const params = new HttpParams()
+      .set('page', '' + page)
+      .set('size', '' + size)
+      .set('past', 'true')
+      .set('teamId', teamId);
+
+    return this.http.get<Page<Challenge>>('/api/challenges', {params: params});
+  }
 }

@@ -10,19 +10,21 @@ import {months} from './my-place-time-offer.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div *ngIf="myTeam && challenge && placeTimeOffers"
-         nz-row style="padding-top: 18px; padding-bottom: 18px; cursor: pointer;" (click)="this.clicked.emit()">
-      <div nz-col nzXs="0" nzSm="2" class="container-vert-center"> </div>
+         nz-row style="padding-top: 18px; padding-bottom: 18px; cursor: pointer;" (click)="this.clicked.emit()" nzGutter="16">
+      <div nz-col nzXs="0" nzSm="2" class="container-vert-center" style="text-align: center; ">
+        <i class="anticon anticon-trophy" style="font-size: 1.4em;" ></i>
+      </div>
       <div nz-col nzXs="0" nzSm="4" class="container-vert-center">
         <h3 style="margin: 0;">{{getOtherTeamName()}}</h3>
       </div>
       <div nz-col nzXs="0" nzSm="4" class="container-vert-center">
         <h3 style="margin: 0;">{{getOtherTeamManagerName()}}</h3>
       </div>
-      <div nz-col nzXs="0" nzSm="6" class="container-vert-center">
+      <div nz-col nzXs="0" nzSm="4" class="container-vert-center">
         <nz-tag [nzColor]="colors[challenge.status]">{{statuses[challenge.status]}}</nz-tag>
         <nz-tag *ngIf="awaitsReaction()" [nzColor]="'gold'">Aktywne oferty od rywali</nz-tag>
       </div>
-      <div nz-col nzXs="0" nzSm="3" class="container-vert-center">
+      <div nz-col nzXs="0" nzSm="5" class="container-vert-center">
         <p *ngIf="getAcceptedPlace() !== null" style="margin: 0;">{{getAcceptedPlace()}}</p>
         <p *ngIf="getAcceptedPlace() == null" style="margin: 0;">Nie ustalono</p>
       </div>
@@ -52,7 +54,7 @@ export class ChallengeOnListComponent {
     'orange',
     'green',
     'red',
-    'white',
+    'purple',
     'blue'
   ];
 

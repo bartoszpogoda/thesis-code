@@ -170,7 +170,7 @@ export class ManagerEffects {
   @Effect({dispatch: false})
   $navigateBackToManagerPage = this.actions$.pipe(
     ofType<SetHomeSuccess>(ManagerActionTypes.SetHomeSuccess),
-    tap(() => this.router.navigate(['/team/manager']))
+    tap(() => this.router.navigate(['/team']))
   );
 
 

@@ -32,13 +32,15 @@ import {ChallengeOnListComponent} from './components/challenge-on-list.component
 import {FacilitiesEffects} from './effects/facilities.effects';
 import {PlacetimeofferPoolComponent} from './components/placetimeoffer-pool.component';
 import {TheirPlaceTimeOfferComponent} from './components/their-place-time-offer.component';
+import {PastChallengesComponent} from './containers/past-challenges.component';
+import {PastChallengesEffects} from './effects/past-challenges.effects';
 
 export const COMPONENTS = [
   ChallengeSearchFormComponent, MapTeamsFacilitiesComponent, MapTwoTeamsFacilitiesComponent,
   EntryPlacetimeofferPoolComponent, SearchResultEntryComponent, ChallengeCreatorOffersComponent,
   ChallengesPageComponent, ChallengeCreatorComparisonComponent, MyPlaceTimeOfferComponent,
   NewPlacetimeofferModalComponent, TeamComparisonEntryComponent, ChallengeCreatorSearchResultsComponent, FacilityComponent,
-  ChallengeOnListComponent, PlacetimeofferPoolComponent, TheirPlaceTimeOfferComponent
+  ChallengeOnListComponent, PlacetimeofferPoolComponent, TheirPlaceTimeOfferComponent, PastChallengesComponent
 ];
 
 export const PAGES = [
@@ -55,7 +57,7 @@ export const PAGES = [
     ReactiveFormsModule,
     NguiMapModule, ChartsModule,
     StoreModule.forFeature('challenge', reducers),
-    EffectsModule.forFeature([ChallengeCreatorEffects, MyChallengesEffects, FacilitiesEffects]),
+    EffectsModule.forFeature([ChallengeCreatorEffects, MyChallengesEffects, FacilitiesEffects, PastChallengesEffects]),
   ],
   declarations: [COMPONENTS, PAGES],
   exports: [COMPONENTS, PAGES],
