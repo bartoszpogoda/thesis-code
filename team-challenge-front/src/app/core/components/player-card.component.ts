@@ -6,7 +6,7 @@ import {Player} from '../models/player';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nz-card (click)="onCardClicked()" nzHoverable [nzCover]="coverTemplate">
-      <nz-card-meta [nzTitle]="player.fullName" [nzDescription]="'Wiek: ' + player.age"></nz-card-meta>
+      <nz-card-meta [nzTitle]="player.fullName" [nzDescription]="'Wiek: ' + player.age + ' Umiejętności: ' + player.skill"></nz-card-meta>
     </nz-card>
     <ng-template #coverTemplate>
       <img alt="example" [src]="getAvatarUrl()"/>

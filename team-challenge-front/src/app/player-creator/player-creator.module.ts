@@ -12,8 +12,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {PlayerCreatorRoutingModule} from './player-creator-routing.module';
 import {PlayerCreatorEffects} from './store/player-creator.effects';
 import {reducer} from './store/player-creator.reducer';
+import {PlayerSkillFormComponent} from './components/player-skill-form.component';
 
-export const COMPONENTS = [PlayerProfileCreatorPageComponent, PlayerRegistrationComponent, PlayerCreatorLoadPhotoComponent];
+export const COMPONENTS = [PlayerProfileCreatorPageComponent, PlayerRegistrationComponent, PlayerCreatorLoadPhotoComponent, PlayerSkillFormComponent];
 export const EXPORED_COMPONENTS = [];
 
 @NgModule({

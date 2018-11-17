@@ -4,7 +4,7 @@ import {Component} from '@angular/core';
   selector: 'app-footer',
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    Copyright ©{{currentYear}} Bartosz Pogoda
+    Wersja Prototypowa | Copyright ©{{currentYear}} Bartosz Pogoda
   `
 })
 export class FooterComponent {

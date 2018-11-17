@@ -30,7 +30,7 @@ export function reducer(
     case PlayerCreatorActionTypes.RegisterSuccess:
       return {
         ...state,
-        stage: 1
+        stage: 2
       };
 
     case PlayerCreatorActionTypes.UploadAvatar:
@@ -45,6 +45,12 @@ export function reducer(
         avatarUploading: false,
         avatarUploaded: true,
         buttonText: 'Pokaż profil'
+      };
+
+    case PlayerCreatorActionTypes.BaseDateSubmitted:
+      return {
+        ...state,
+        stage: 1
       };
 
     default:

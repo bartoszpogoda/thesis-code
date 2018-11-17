@@ -29,40 +29,18 @@ import {Region} from '../../core/models/region';
           </nz-form-explain>
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzOffset]="4" [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired>
-        <span>
-          Staż gry (lata)
-          <nz-tooltip nzTitle="Ile lat spędziłeś aktywnie grając w koszykówkę?">
-            <i nz-tooltip class="anticon anticon-question-circle-o"></i>
-          </nz-tooltip>
-        </span>
-        </nz-form-label>
-        <nz-form-control [nzSm]="6" [nzXs]="24">
-          <input nz-input id="yearsOfExperience" formControlName="yearsOfExperience">
-          <nz-form-explain *ngIf="validateForm.get('yearsOfExperience').dirty && validateForm.get('yearsOfExperience').errors">
-            <ng-container *ngIf="validateForm.get('yearsOfExperience').hasError('required')">
-              Określ swój staż gry w koszykówkę
-            </ng-container>
-            <ng-container *ngIf="validateForm.get('yearsOfExperience').hasError('min')">
-              Jeśli nie masz żadnego doświadczenia wprowadź liczbę 0
-            </ng-container>
-            <ng-container *ngIf="validateForm.get('yearsOfExperience').hasError('max')">
-              Wprowadź rzeczywiste doświadczenie
-            </ng-container>
-            <ng-container *ngIf="validateForm.get('yearsOfExperience').hasError('pattern')">
-              Wprowadź liczbę określającą twój staż gry w latach
-            </ng-container>
-          </nz-form-explain>
-        </nz-form-control>
-      </nz-form-item>
+
       <nz-form-item nz-row style="margin-bottom:8px;">
         <nz-form-control [nzSpan]="14" [nzOffset]="6">
-          <button nz-button nzType="primary">Utwórz profil</button>
+          <button nz-button nzType="primary">Dalej</button>
         </nz-form-control>
       </nz-form-item>
     </form>
-  `
+  `, styles: [`
+    p {
+      margin-bottom: 0 !important;
+    }
+  `]
 })
 export class PlayerRegistrationComponent implements OnInit {
   validateForm: FormGroup;
@@ -81,7 +59,6 @@ export class PlayerRegistrationComponent implements OnInit {
     if (this.validateForm.valid) {
       this.submitted.emit({
         height: this.validateForm.value.height,
-        yearsOfExperience: this.validateForm.value.yearsOfExperience,
         disciplineId: '3x3basket',
         regionId: this.validateForm.value.regionId
       });
@@ -94,7 +71,6 @@ export class PlayerRegistrationComponent implements OnInit {
   ngOnInit(): void {
     this.validateForm = this.fb.group({
       height            : [ null, [ Validators.required, Validators.pattern('[0-9]*'), Validators.min(100), Validators.max(230)] ],
-      yearsOfExperience : [ null, [ Validators.required, Validators.pattern('[0-9]*'), Validators.min(0), Validators.max(100)] ],
       regionId: [ null, [ Validators.required] ],
     });
   }

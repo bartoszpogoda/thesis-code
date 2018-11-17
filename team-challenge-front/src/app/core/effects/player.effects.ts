@@ -74,11 +74,13 @@ export class PlayerEffects {
   // );
 
 
-  // Bug, when "My team" panel starts loading when current player data wasnt set yet
   @Effect()
-  $loadTeamInvitations = this.actions$.pipe(
-    ofType<LoadTeamInvitations>(PlayerActionTypes.LoadTeamInvitations),
+  $loadTeamInvitations = combineLatest(
+    this.actions$.pipe(ofType<LoadTeamInvitations>(PlayerActionTypes.LoadTeamInvitations)),
+    this.actions$.pipe(ofType<LoadCurrentSuccess>(PlayerActionTypes.LoadCurrentSuccess))
+    ).pipe(
     withLatestFrom(this.store.pipe(select(selectPlayerProfile))),
+    filter(([, player]) => player !== null),
     exhaustMap(([, player]) =>
       this.teamInivitationService.getPlayerInvitations(player.id).pipe(
         map(invitations => new LoadTeamInvitationsSuccess(invitations)),

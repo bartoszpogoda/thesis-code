@@ -19,6 +19,11 @@ const routes: Routes = [
     canActivate: [LoggedInAuthGuard]
   },
   {
+    path: 'challenges',
+    loadChildren: './challenge/challenge.module#ChallengeModule',
+    canActivate: [LoggedInAuthGuard]
+  },
+  {
     path: '**',
     component: NotFoundPageComponent
   }

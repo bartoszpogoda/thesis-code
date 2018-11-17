@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {RegisterForm} from '../models/register';
 import * as AuthActions from '../actions/auth.actions';
+import {convert, LocalDateTime, nativeJs} from 'js-joda';
 
 
 @Component({
@@ -59,8 +60,8 @@ import * as AuthActions from '../actions/auth.actions';
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Data urodzenia</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24">
-          <nz-date-picker (ngModelChange)="onBirthdayDateChange($event)" nzFormat="yyyy/MM/dd"
-                          formControlName="birthdayDate"></nz-date-picker>
+          <nz-date-picker [nzDisabledDate]="disabledDate" (ngModelChange)="onBirthdayDateChange($event)" nzFormat="yyyy/MM/dd"
+                          formControlName="birthdayDate" [nzShowToday]="false"></nz-date-picker>
         </nz-form-control>
       </nz-form-item>
       <!--<nz-form-item nz-row style="margin-bottom:8px;">-->
@@ -114,12 +115,16 @@ export class RegisterFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    const initialDate = convert(LocalDateTime.now().minusYears(20)).toDate();
+
+
     this.validateForm = this.fb.group({
       email            : [ null, [ Validators.email ] ],
       password         : [ null, [ Validators.required ] ],
       checkPassword    : [ null, [ Validators.required, this.confirmationValidator ] ],
       fullName         : [ null, [ Validators.required ] ],
-      birthdayDate     : [ null ],
+      birthdayDate     : [ initialDate],
       // agree            : [ false ]
     });
   }
@@ -127,5 +132,12 @@ export class RegisterFormComponent implements OnInit {
   onBirthdayDateChange($event) {
     console.log($event);
     console.log(this.validateForm.value);
+  }
+
+
+  disabledDate = (current: Date) => {
+    const nowMinusTenYears = LocalDateTime.now().minusYears(10);
+
+    return LocalDateTime.from(nativeJs(current)).isAfter(nowMinusTenYears);
   }
 }

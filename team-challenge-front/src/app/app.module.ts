@@ -17,6 +17,12 @@ import {PlayerEffects} from './core/effects/player.effects';
 import {PlayerService} from './core/service/player.service';
 import {LoggedInAuthGuard} from './core/service/auth-guard.service';
 import {NguiMapModule} from '@ngui/map';
+import {CommunityModule} from './community/community.module';
+import {ChallengeModule} from './challenge/challenge.module';
+
+import { registerLocaleData } from '@angular/common';
+import pl from '@angular/common/locales/pl';
+registerLocaleData(pl);
 
 @NgModule({
   imports: [
@@ -40,6 +46,8 @@ import {NguiMapModule} from '@ngui/map';
     EffectsModule.forRoot([PlayerEffects]),
 
     CoreModule.forRoot(),
+
+    CommunityModule, ChallengeModule,
 
     NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyCyK7i7jhCaOVD9iA8D_bxDAy1-NoumZ1c'}),
 

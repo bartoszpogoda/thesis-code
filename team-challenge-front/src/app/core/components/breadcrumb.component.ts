@@ -5,7 +5,7 @@ import {BreadcrumbItem} from '../models/breadcrumb';
   selector: 'app-breadcrumb',
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <nz-affix [nzOffsetTop]="64">
+    <nz-affix *ngIf="!empty" [nzOffsetTop]="64">
       <nz-breadcrumb>
         <nz-breadcrumb-item *ngFor="let item of items">
           <a *ngIf="item.link" [routerLink]="[item.link]">{{item.title}}</a>
@@ -13,6 +13,7 @@ import {BreadcrumbItem} from '../models/breadcrumb';
         </nz-breadcrumb-item>
       </nz-breadcrumb>
     </nz-affix>
+    <div *ngIf="empty" style="height: 25px;"></div>
 
   `,
   styles: [`
@@ -24,4 +25,6 @@ import {BreadcrumbItem} from '../models/breadcrumb';
 })
 export class BreadcrumbComponent {
   @Input() items: BreadcrumbItem[];
+
+  @Input() empty: boolean;
 }

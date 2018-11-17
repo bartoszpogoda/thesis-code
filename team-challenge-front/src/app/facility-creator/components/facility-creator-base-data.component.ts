@@ -111,7 +111,7 @@ export class FacilityCreatorBaseDataComponent implements OnInit {
   ngOnInit(): void {
     this.validateForm = this.fb.group({
       name            : [ this.builder.name, [ Validators.required, Validators.minLength(3), Validators.maxLength(30)] ],
-      address: [this.builder.address],
+      address: [this.builder.address, [ Validators.required, Validators.minLength(2), Validators.maxLength(32)]],
       regionId: [this.fixedRegionId],
       playingSpots: [this.builder.playingSpots]
     });

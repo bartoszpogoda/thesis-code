@@ -10,9 +10,6 @@
 
     <modules>
         <module>core</module>
-        <module>app</module>
-        <module>discipline-3x3basket</module>
-        <module>matchmaking</module>
     </modules>
 
 </project>

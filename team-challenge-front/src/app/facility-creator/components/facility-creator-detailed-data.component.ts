@@ -34,7 +34,7 @@ import {FacilityCreationForm} from '../../core/models/facility';
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Description</nz-form-label>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Opis</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24">
           <textarea rows="4" nz-input formControlName="description"></textarea>
         </nz-form-control>

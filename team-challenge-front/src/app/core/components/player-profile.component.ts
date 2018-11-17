@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Player} from '../models/player';
+import {getFrequencyDescription, getSkillDescription, Player} from '../models/player';
 
 @Component({
   selector: 'app-player-profile',
@@ -12,7 +12,8 @@ import {Player} from '../models/player';
         <h1>{{player.fullName}}</h1>
         <p>Wiek: {{player.age}}</p>
         <p>Wzrost: {{player.height}}</p>
-        <p>Staż gry: {{player.yearsOfExperience}} years</p>
+        <p>Umiejętności: {{getSkillDescription(player.skill)}}</p>
+        <p>Częstość gry: {{getFrequencyDescription(player.skill)}}</p>
         <p>Drużyna: {{player.teamName}}</p>
       </div>
     </div>
@@ -22,6 +23,10 @@ export class PlayerProfileComponent {
 
   @Input()
   player: Player;
+
+  getSkillDescription = getSkillDescription;
+
+  getFrequencyDescription = getFrequencyDescription;
 
   constructor() { }
 

@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
-import {Position} from '../models/position';
-import {Facility} from '../models/facility';
 import MapOptions = google.maps.MapOptions;
 import LatLng = google.maps.LatLng;
+import {Position} from '../models/position';
+import {Facility} from '../models/facility';
 
 @Component({
   selector: 'app-region-facility-picker',
@@ -71,7 +71,7 @@ export class RegionFacilityPickerComponent {
   mapOptions: MapOptions = {
     center: new LatLng(0.5, 0.5),
     streetViewControl: false,
-    minZoom: 10
+    minZoom: 10,
   };
 
   onMapClick(ev) {

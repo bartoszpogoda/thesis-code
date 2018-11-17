@@ -22,7 +22,7 @@ public class ExceptionResponse {
     private String message;
     private String details;
 
-    public static ExceptionResponse fromAbstractException(AbstractException exception) {
+    public static ExceptionResponse fromAbstractException(ApiException exception) {
 
         HttpStatus status = getHttpStatusAnnotation(exception)
                                     .map(ResponseStatus::value)
@@ -37,7 +37,7 @@ public class ExceptionResponse {
                 .build();
     }
 
-    private static Optional<ResponseStatus> getHttpStatusAnnotation(AbstractException exception) {
+    private static Optional<ResponseStatus> getHttpStatusAnnotation(ApiException exception) {
         return Optional.ofNullable(exception.getClass().getAnnotation(ResponseStatus.class));
     }
 

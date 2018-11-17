@@ -24,8 +24,6 @@ import {MyTeamEffects} from './effects/my-team.effects';
 import {ManagerEffects} from './effects/manager.effects';
 import {ImageLoaderComponent} from './components/image-loader.component';
 import {TeamCardComponent} from './components/team-card.component';
-import {TeamCreatorEffects} from '../team-creator/store/team-creator.effects';
-import {PlayerCreatorEffects} from '../player-creator/store/player-creator.effects';
 import {PlayerEffects} from './effects/player.effects';
 import {CoreRoutingModule} from './core-routing.module';
 import {PlayerService} from './service/player.service';
@@ -36,23 +34,31 @@ import {MyTeamPageComponent} from './containers/my-team-page.component';
 import {TeamJoinPageComponent} from './containers/team-join-page.component';
 import {ReceivedInvitationComponent} from './components/received-invitation.component';
 import {TeamDisplayComponent} from './components/team-display.component';
-import {TeamManagerPageComponent} from './containers/team-manager-page.component';
 import {TeamRecruitmentPageComponent} from './containers/team-recruitment-page.component';
 import {SentInvitationComponent} from './components/sent-invitation.component';
 import {PlayerCardComponent} from './components/player-card.component';
 import {PointPickerComponent} from './components/point-picker.component';
 import {TeamManagerHomePageComponent} from './containers/team-manager-home-page.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NguiMapModule} from '@ngui/map';
 import {TeamJoinRedirectGuard} from './guard/team-join-redirect-guard';
 import {IsManagerGuard} from './guard/is-manager.guard';
 import {RegionService} from './service/region.service';
 import {CoreEffects} from './effects/core.effects';
 import {TeamInvitationService} from './service/team-invitation.service';
-import {RegionFacilityPickerComponent} from './components/region-facility-picker.component';
 import {FacilityService} from './service/facility.service';
 import {TeamRecruitmentComponent} from './containers/team-recruitment.component';
-import {ChallengesPageComponent} from './containers/challenges-page.component';
+import {PrototypeNotificationComponent} from './components/prototype-notification.component';
+import {RegionFacilityPickerComponent} from './components/region-facility-picker.component';
+import {FancyLoadingComponent} from './components/fancy-loading.component';
+import {PlayerHorizontalCardComponent} from './components/player-horizontal-card.component';
+import {MyTeamPlayersComponent} from './containers/my-team-players.component';
+import {MyTeamProfileComponent} from './containers/my-team-profile.component';
+import {MyTeamEditDataComponent} from './containers/my-team-edit-data.component';
+import {MyTeamManagerRemoveComponent} from './containers/my-team-manager-remove.component';
+import {TeamProfileComponent} from './components/team-profile.component';
+import {MyPlayerEditProfileComponent} from './containers/my-player-edit-profile.component';
+import {MyPlayerRemoveProfileComponent} from './containers/my-player-remove-profile.component';
 
 export const COMPONENTS = [
   AppComponent,
@@ -67,20 +73,19 @@ export const COMPONENTS = [
   NavbarLoginComponent,
   ProgressComponent,
   ImageLoaderComponent,
-  TeamCardComponent,
-  MyPlayerPageComponent,
-  PlayerProfileComponent,
-  RegionFacilityPickerComponent,
+  TeamCardComponent, MyTeamPlayersComponent,
+  MyPlayerPageComponent, TeamProfileComponent, MyPlayerEditProfileComponent, MyPlayerRemoveProfileComponent,
+  PlayerProfileComponent, MyTeamProfileComponent, MyTeamEditDataComponent, MyTeamManagerRemoveComponent,
+  FancyLoadingComponent, PlayerHorizontalCardComponent,
   TeamRecruitmentComponent,
-  ChallengesPageComponent,
   MyTeamPageComponent, TeamJoinPageComponent, ReceivedInvitationComponent, TeamDisplayComponent,
-  TeamManagerPageComponent, TeamRecruitmentPageComponent, SentInvitationComponent, PlayerCardComponent,
-  PointPickerComponent, TeamManagerHomePageComponent,
+  TeamRecruitmentPageComponent, SentInvitationComponent, PlayerCardComponent,
+  PointPickerComponent, TeamManagerHomePageComponent, PrototypeNotificationComponent, RegionFacilityPickerComponent
 ];
 
 @NgModule({
   imports: [CommonModule, RouterModule, NgZorroAntdModule, AuthModule, CoreRoutingModule,
-    NguiMapModule, ReactiveFormsModule,
+    NguiMapModule, ReactiveFormsModule, FormsModule,
     NgProgressModule.forRoot(),
     EffectsModule.forFeature([MyTeamEffects, ManagerEffects, PlayerEffects, CoreEffects])],
   declarations: COMPONENTS,
@@ -90,7 +95,8 @@ export const COMPONENTS = [
     useClass: ErrorInterceptor,
     multi: true,
   }, { provide: NZ_MESSAGE_CONFIG, useValue: { nzDuration: 5000 }},
-    TeamService, PlayerService, RegionService, PlayerCreatorGuard, TeamJoinRedirectGuard, IsManagerGuard, TeamInvitationService, FacilityService]
+    TeamService, PlayerService, RegionService, PlayerCreatorGuard, TeamJoinRedirectGuard,
+    IsManagerGuard, TeamInvitationService, FacilityService]
 })
 export class CoreModule {
   static forRoot() {
