@@ -3,7 +3,9 @@ export interface Preferences {
   weightAgeDiff: number;
   weightDistance: number;
   weightSkillDiff: number;
-  friendly: boolean;
+  fairPlay: boolean;
+  playAgain: boolean;
+  bigActivity: boolean;
 }
 
 export interface SearchForm {

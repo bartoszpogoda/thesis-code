@@ -4,14 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.placetimeoffer.PlaceTimeOffer;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.result.Result;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.Team;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "Challenges")

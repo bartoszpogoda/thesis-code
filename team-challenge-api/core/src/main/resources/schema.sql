@@ -162,9 +162,8 @@ CREATE TABLE TeamReviews (
   ReviewedTeamID VARCHAR(64) NOT NULL,
   ReviewDate DATETIME NOT NULL,
 
-  FairPlayLevel TINYINT UNSIGNED, /* 1 - 10 */
+  FairPlayLevel TINYINT UNSIGNED, /* 0 - 5 */
   PlayAgain BIT,
-  BlackList BIT,
 
   FOREIGN KEY (ChallengeID) REFERENCES Challenges(ChallengeID),
   FOREIGN KEY (ReviewingTeamID) REFERENCES Teams(TeamID),

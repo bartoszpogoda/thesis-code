@@ -28,10 +28,12 @@ const initialState: State = {
   searchForm: {
     searchingTeamId: null,
     preferences: {
-      friendly: false,
       weightAgeDiff: 0.34,
       weightSkillDiff: 0.33,
-      weightDistance: 0.33
+      weightDistance: 0.33,
+      fairPlay: false,
+      playAgain: false,
+      bigActivity: false
     }
   },
   result: null,

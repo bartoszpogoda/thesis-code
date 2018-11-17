@@ -93,7 +93,7 @@ public class MatchmakingService {
 
         // pref to Configuration
         WeightConfiguration configuration = new WeightConfiguration(pref.getWeightAgeDiff(),
-                pref.getWeightDistance(), pref.getWeightSkillDiff(), pref.isFriendly());
+                pref.getWeightDistance(), pref.getWeightSkillDiff(), pref.isFairPlay(), pref.isPlayAgain(), pref.isBigActivity());
 
         List<ScoredTeam> result = new ArrayList<>();
 

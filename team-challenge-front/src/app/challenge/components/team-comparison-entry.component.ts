@@ -27,6 +27,20 @@ import {Player} from '../../core/models/player';
       <p>Odległość: {{getNumericCriteria(comparedTeamScore, 'DISTANCE').original.toPrecision(2)}}km</p>
     </div>
 
+
+    <div class="section">
+      <h3>Średni wiek</h3>
+      <p *ngIf="getNumericCriteria(comparedTeamScore, 'AGE').original > 0"> 
+        Starsi średnio o {{getNumericCriteria(comparedTeamScore, 'AGE').original.toPrecision(2)}} lat
+      </p>
+      <p *ngIf="getNumericCriteria(comparedTeamScore, 'AGE').original.toPrecision(2) === '0'">
+        W tym samym wieku
+      </p>
+      <p *ngIf="getNumericCriteria(comparedTeamScore, 'AGE').original < 0">
+        Młodsi średnio o {{Math.abs(getNumericCriteria(comparedTeamScore, 'AGE').original).toPrecision(2)}} lat
+      </p>
+    </div>
+
     <div class="section">
       <h3>Menedżer</h3>
 
@@ -111,6 +125,8 @@ export class TeamComparisonEntryComponent {
   challenge = new EventEmitter<Team>();
 
   affixFixed = false;
+
+  Math = Math;
 
   getNumericCriteria(scoredTeam: ScoredTeam, type: NumericCriteriaType): NumericCriteria {
     const filtered = scoredTeam.criteria.numericCriteria.filter(crit => crit.type === type);

@@ -12,7 +12,7 @@ import {
   selectIsChallengeRejectable,
   selectMyActiveChallenges,
   selectMyTeamOffers,
-  selectPlaceTimeOffers,
+  selectPlaceTimeOffers, selectReview,
   selectTheirHome,
   selectTheirTeamOffers
 } from '../selectors/my-challenges.selectors';
@@ -28,14 +28,16 @@ import {
   CancelPlaceTimeOffer,
   LoadChallenge,
   LoadPlaceTimeOffers,
-  LoadTheirHome, LoadTheirPlayers, RejectChallenge, RejectPlaceTimeOffer, SaveResult
+  LoadTheirHome, LoadTheirPlayers, RejectChallenge, RejectPlaceTimeOffer, SaveResult, SaveReview
 } from '../actions/my-challenges.actions';
 import {Team} from '../../core/models/team';
-import {selectMyTeam, selectMyTeamHome, selectMyTeamRegion} from '../../core/selectors/my-team.selectors';
+import {selectIsManager, selectMyTeam, selectMyTeamHome, selectMyTeamRegion} from '../../core/selectors/my-team.selectors';
 import {Position} from '../../core/models/position';
 import {Region} from '../../core/models/region';
 import {selectFacilities} from '../reducers/index';
 import {Player} from '../../core/models/player';
+import {TeamReview} from '../models/review';
+import {challengeStatusColors, challengeStatusLabels} from '../models/challenge';
 
 @Component({
   selector: 'app-my-challenge-page',
@@ -45,13 +47,17 @@ import {Player} from '../../core/models/player';
       <div class="content-container">
         <nz-affix [nzOffsetTop]="117">
         <ul nz-menu [nzMode]="'horizontal'" style="margin-bottom: 25px;">
-          <li nz-menu-item (click)="onGeneralTabClicked()" [nzSelected]="true"><i class="anticon anticon-play-circle-o"></i> Ogólne informacje</li>
-          <li nz-menu-item (click)="onPlayersTabClicked()"><i class="anticon anticon-team"></i> Zawodnicy</li>
-          <li nz-menu-item  (click)="onChatTabClicked()"><i class="anticon anticon-message"></i> Czat</li>
-           <li nz-menu-item (click)="onNegotiationsTabClicked()"><i class="anticon anticon-schedule"></i> Negocjacje <nz-tag *ngIf="(challengeStatus$ | async) == 0" [nzColor]="'orange'">W toku</nz-tag></li>
-          <li *ngIf="(challengeResult$ | async) != null" nz-menu-item (click)="onResultTabClicked()"><i class="anticon anticon-trophy"></i>
+          <li nz-menu-item (click)="currentTab = 0" [nzSelected]="true"><i class="anticon anticon-play-circle-o"></i> Ogólne informacje</li>
+          <li nz-menu-item (click)="currentTab = 1"><i class="anticon anticon-team"></i> Zawodnicy</li>
+          <li nz-menu-item  (click)="currentTab = 2"><i class="anticon anticon-message"></i> Czat</li>
+           <li nz-menu-item (click)="currentTab = 3"><i class="anticon anticon-schedule"></i> Negocjacje <nz-tag *ngIf="(challengeStatus$ | async) == 0" [nzColor]="'orange'">W toku</nz-tag></li>
+          <li *ngIf="(challengeResult$ | async) != null" nz-menu-item (click)="currentTab = 4"><i class="anticon anticon-trophy"></i>
             Wynik
             <nz-tag *ngIf="(hasResultsToConfirm$ | async)" [nzColor]="'orange'">Oczekuje na potwierdzenie</nz-tag>
+          </li>
+          <li *ngIf="(challengeStatus$ | async) === ChallengeStatus.Finished" nz-menu-item (click)="currentTab = 5"><i class="anticon anticon-form"></i>
+            Ocena rywali
+            <!--<nz-tag *ngIf="(hasResultsToConfirm$ | async)" [nzColor]="'orange'">Oczekuje</nz-tag>-->
           </li>
 
         </ul>
@@ -93,6 +99,21 @@ import {Player} from '../../core/models/player';
           </div>
         </div>
 
+          <div nz-row style="text-align: center;">
+            <div nz-col nzSm="9"></div>
+            <div nz-col nzSm="6"><h2>Status spotkania</h2></div>
+            <div nz-col nzSm="9"></div>
+          </div>
+          <div nz-row style="text-align: center;">
+            <div nz-col nzSm="9"></div>
+            <div nz-col nzSm="6">
+              <nz-tag *ngIf="challenge$ | async" class="tag-with-margin" [nzColor]="challengeStatusColors[(challenge$ | async).status]">
+              {{challengeStatusLabels[(challenge$ | async).status]}}
+            </nz-tag>
+            </div>
+            <div nz-col nzSm="9"></div>
+          </div>
+          
         <div class="block">
           <div nz-row style="text-align: center;">
             <div nz-col nzSm="9"></div>
@@ -107,6 +128,8 @@ import {Player} from '../../core/models/player';
             </div>
             <div nz-col nzSm="9"></div>
           </div>
+
+          
           <div nz-row style="text-align: center;">
             <div nz-col nzSm="9"></div>
             <div nz-col nzSm="6"><h2>Miejsce spotkania</h2></div>
@@ -122,7 +145,7 @@ import {Player} from '../../core/models/player';
           </div>
         </div>
 
-          <div style="text-align: center;">
+          <div style="text-align: center;" *ngIf="isManager$ | async">
           <div style="display: inline-block; margin: 0 auto;">
             <button *ngIf="isChallengeCancellable$ | async" (click)="onCancelChallenge()" nz-button>
               Anuluj wyzwanie
@@ -149,13 +172,13 @@ import {Player} from '../../core/models/player';
             <div nz-col nzSm="5"></div>
           </div>
             <div nz-row>
-              <div nz-col nzSm="3"></div>
-              <div nz-col nzSm="8">
+              <div nz-col nzSm="1"></div>
+              <div nz-col nzSm="10">
                 <app-player-horizontal-card *ngFor="let player of (challengingTeamPlayers$ | async)"
-                                            [player]="player" [alignRight]="true" [team]="(challenge$ | async)?.challengingTeam"></app-player-horizontal-card>
+                                            [player]="player" [team]="(challenge$ | async)?.challengingTeam"></app-player-horizontal-card>
               </div>
               <div nz-col nzSm="2"></div>
-              <div nz-col nzSm="8">
+              <div nz-col nzSm="10">
                 <app-player-horizontal-card *ngFor="let player of (challengedTeamPlayers$ | async)"
                                             [player]="player" [team]="(challenge$ | async)?.challengedTeam"></app-player-horizontal-card>
               </div>
@@ -173,10 +196,10 @@ import {Player} from '../../core/models/player';
                 Negocjacje terminu oraz miejsca spotkania kończą się w momencie zaakceptowania przez jednego z menedżerów oferty drugiej strony.
               </p>
               <app-placetimeoffer-pool [theirTeamOffers]="theirTeamOffers$ | async" [myTeamOffers]="myTeamOffers$ | async"
-                                       [myHome]="myHome$ | async" [theirHome]="theirHome$ | async"
+                                       [myHome]="myHome$ | async" [theirHome]="theirHome$ | async" [isManager]="isManager$ | async"
                                        (canceled)="onCancelled($event)" (accepted)="onAccepted($event)" (rejected)="onRejected($event)">
 
-                <app-new-placetimeoffer-modal *ngIf="(challengeStatus$ | async) == 0" [center]="(region$ | async)?.center"
+                <app-new-placetimeoffer-modal *ngIf="(challengeStatus$ | async) == 0 && (isManager$ | async)" [center]="(region$ | async)?.center"
                                               [myHome]="myHome$ | async" [theirHome]="theirHome$ | async"
                                               [facilities]="facilities$ | async" (submitted)="newOfferSubmitted($event)">
                 </app-new-placetimeoffer-modal>
@@ -187,6 +210,11 @@ import {Player} from '../../core/models/player';
 
         <ng-container *ngIf="currentTab === 4">
           <app-my-challenge-result></app-my-challenge-result>
+        </ng-container>
+
+        <ng-container *ngIf="currentTab === 5">
+          <app-review-creator *ngIf="(review$ | async) == null"[challenge]="challenge$ | async" (submitted)="onReviewSubmitted($event)"></app-review-creator>
+          <app-review *ngIf="(review$ | async) != null" [review]="review$ | async"></app-review>
         </ng-container>
 
       </div>
@@ -218,15 +246,20 @@ export class MyChallengePageComponent implements OnInit, OnDestroy {
 
   ChallengeStatus = ChallengeStatus;
 
+  challengeStatusColors = challengeStatusColors;
+  challengeStatusLabels = challengeStatusLabels;
+
   challenge$: Observable<Challenge>;
   facilities$: Observable<Facility[]>;
   placeTimeOffers$: Observable<PlaceTimeOffer[]>;
   myTeam$: Observable<Team>;
+  isManager$: Observable<boolean>;
   myHome$: Observable<Position>;
   region$: Observable<Region>;
   theirHome$: Observable<Position>;
   challengeStatus$: Observable<ChallengeStatus>;
   confirmedResult$: Observable<Result>;
+
 
   challengingTeamPlayers$: Observable<Player[]>;
   challengedTeamPlayers$: Observable<Player[]>;
@@ -244,6 +277,7 @@ export class MyChallengePageComponent implements OnInit, OnDestroy {
   challengePlaceName$: Observable<boolean>;
   challengeTime$: Observable<boolean>;
   challengeResult$: Observable<Result>;
+  review$: Observable<TeamReview>;
 
   unsubscribe$ = new Subject();
 
@@ -275,6 +309,9 @@ export class MyChallengePageComponent implements OnInit, OnDestroy {
 
     this.hostTeamPoints$ = this.store.pipe(select(selectHostTeamPoints));
     this.guestTeamPoints$ = this.store.pipe(select(selectGuestTeamPoints));
+    this.review$ = this.store.pipe(select(selectReview));
+
+    this.isManager$ = this.store.pipe(select(selectIsManager));
 
     combineLatest(this.challenge$, this.myTeam$).pipe(
       takeUntil(this.unsubscribe$),
@@ -328,24 +365,11 @@ export class MyChallengePageComponent implements OnInit, OnDestroy {
     this.store.dispatch(new AddPlaceTimeOffer(offer));
   }
 
-  onGeneralTabClicked() {
-    this.currentTab = 0;
-  }
-
-  onChatTabClicked() {
-    this.currentTab = 2;
-  }
-
-  onPlayersTabClicked() {
-    this.currentTab = 1;
-  }
-
-  onNegotiationsTabClicked() {
-    this.currentTab = 3;
-  }
-
-  onResultTabClicked() {
-    this.currentTab = 4;
+  onReviewSubmitted(review: TeamReview) {
+    this.store.dispatch(new SaveReview({
+      challengeId: review.challengeId,
+      review: review
+    }));
   }
 
   onCancelChallenge() {

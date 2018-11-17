@@ -2,6 +2,7 @@ import {Action} from '@ngrx/store';
 import {Challenge, PlaceTimeOffer, Result} from '../models/challenge';
 import {ApiError} from '../../core/models/error';
 import {Player} from '../../core/models/player';
+import {TeamReview} from '../models/review';
 
 export enum MyChallengesActionTypes {
   LoadActiveChallenges = '[My Challenges] Load Active Challenges',
@@ -67,6 +68,14 @@ export enum MyChallengesActionTypes {
   RejectResult = '[My Challenge] Reject Result',
   RejectResultSuccess = '[My Challenge] Reject Result Success',
   RejectResultFailure = '[My Challenge] Reject Result Failure',
+
+  LoadReview = '[My Challenge] Load Review',
+  LoadReviewSuccess = '[My Challenge] Load Review Success',
+  LoadReviewFailure = '[My Challenge] Load Review Failure',
+
+  SaveReview = '[My Challenge] Save Review',
+  SaveReviewSuccess = '[My Challenge] Save Review Success',
+  SaveReviewFailure = '[My Challenge] Save Review Failure',
 
 }
 
@@ -387,6 +396,7 @@ export class ConfirmResultFailure implements Action {
   }
 }
 
+
 export class RejectResult implements Action {
   readonly type = MyChallengesActionTypes.RejectResult;
 
@@ -408,6 +418,49 @@ export class RejectResultFailure implements Action {
   }
 }
 
+
+export class SaveReview implements Action {
+  readonly type = MyChallengesActionTypes.SaveReview;
+
+  constructor(public payload: {challengeId: string, review: TeamReview}) {
+  }
+}
+
+export class SaveReviewSuccess implements Action {
+  readonly type = MyChallengesActionTypes.SaveReviewSuccess;
+
+  constructor(public payload: TeamReview) {
+  }
+}
+
+export class SaveReviewFailure implements Action {
+  readonly type = MyChallengesActionTypes.SaveReviewFailure;
+
+  constructor(public payload: ApiError) {
+  }
+}
+
+export class LoadReview implements Action {
+  readonly type = MyChallengesActionTypes.LoadReview;
+
+  constructor(public payload: string) {
+  }
+}
+
+export class LoadReviewSuccess implements Action {
+  readonly type = MyChallengesActionTypes.LoadReviewSuccess;
+
+  constructor(public payload: TeamReview) {
+  }
+}
+
+export class LoadReviewFailure implements Action {
+  readonly type = MyChallengesActionTypes.LoadReviewFailure;
+
+  constructor(public payload: ApiError) {
+  }
+}
+
 export type MyChallengesActionsUnion = LoadActiveChallenges | LoadActiveChallengesSuccess | LoadActiveChallengesFailure
   | LoadPlaceTimeOffersForActiveChallenges | LoadPlaceTimeOffersForActiveChallengesSuccess
   | LoadPlaceTimeOffersForActiveChallengesFailure
@@ -424,5 +477,7 @@ export type MyChallengesActionsUnion = LoadActiveChallenges | LoadActiveChalleng
   | LoadResult | LoadResultSuccess | LoadResultFailure
   | SaveResult | SaveResultSuccess | SaveResultFailure
   | ConfirmResult | ConfirmResultSuccess | ConfirmResultFailure
-  | RejectResult | RejectResultSuccess | RejectResultFailure;
+  | RejectResult | RejectResultSuccess | RejectResultFailure
+  | LoadReview | LoadReviewSuccess | LoadReviewFailure
+  | SaveReview | SaveReviewSuccess | SaveResultFailure;
 

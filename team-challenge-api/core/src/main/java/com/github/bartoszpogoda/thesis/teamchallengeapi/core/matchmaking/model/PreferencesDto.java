@@ -9,6 +9,7 @@ public class PreferencesDto {
     private double weightDistance;
     private double weightSkillDiff;
 
-    private boolean friendly;
-    // TODO friendly etc.
+    private boolean fairPlay;
+    private boolean playAgain;
+    private boolean bigActivity;
 }

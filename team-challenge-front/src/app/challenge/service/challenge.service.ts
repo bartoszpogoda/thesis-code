@@ -6,6 +6,7 @@ import {Team} from '../../core/models/team';
 import {Page} from '../../core/models/page';
 import {Player} from '../../core/models/player';
 import {map} from 'rxjs/operators';
+import {TeamReview} from '../models/review';
 
 @Injectable()
 export class ChallengeService {
@@ -89,4 +90,13 @@ export class ChallengeService {
   rejectResult(challengeId: string): Observable<Result> {
     return this.http.post<Result>('/api/challenges/' + challengeId + '/result/confirmation', {});
   }
+
+  saveReview(challengeId: string, review: TeamReview) {
+    return this.http.post<TeamReview>('/api/challenges/' + challengeId + '/review', review);
+  }
+
+  getReview(challengeId: string) {
+    return this.http.get<TeamReview>('/api/challenges/' + challengeId + '/review');
+  }
+
 }

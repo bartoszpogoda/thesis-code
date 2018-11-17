@@ -37,13 +37,16 @@ import {PastChallengesEffects} from './effects/past-challenges.effects';
 import {ResultModalComponent} from './components/result-modal.component';
 import {MyChallengeResultComponent} from './containers/my-challenge-result.component';
 import {ResultComponent} from './components/result.component';
+import {ReviewCreatorComponent} from './components/review-creator.component';
+import {ReviewComponent} from './components/review.component';
 
 export const COMPONENTS = [
   ChallengeSearchFormComponent, MapTeamsFacilitiesComponent, MapTwoTeamsFacilitiesComponent,
   EntryPlacetimeofferPoolComponent, SearchResultEntryComponent, ChallengeCreatorOffersComponent, ResultComponent,
   ChallengesPageComponent, ChallengeCreatorComparisonComponent, MyPlaceTimeOfferComponent, MyChallengeResultComponent,
   NewPlacetimeofferModalComponent, TeamComparisonEntryComponent, ChallengeCreatorSearchResultsComponent, FacilityComponent,
-  ChallengeOnListComponent, PlacetimeofferPoolComponent, TheirPlaceTimeOfferComponent, PastChallengesComponent, ResultModalComponent
+  ChallengeOnListComponent, PlacetimeofferPoolComponent, TheirPlaceTimeOfferComponent, PastChallengesComponent, ResultModalComponent,
+  ReviewCreatorComponent, ReviewComponent
 ];
 
 export const PAGES = [

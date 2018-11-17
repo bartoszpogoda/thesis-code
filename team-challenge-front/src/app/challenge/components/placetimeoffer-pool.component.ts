@@ -21,7 +21,8 @@ import {Position} from '../../core/models/position';
                 <div nz-col nzSm="24">
                   <div class="pool-container">
                     <div class="place-time-offer" *ngFor="let offer of myTeamOffers">
-                      <app-my-placetimeoffer [offer]="offer" (canceled)="onCanceled(offer)" [highlightedFacility]="selectedFacility">
+                      <app-my-placetimeoffer [offer]="offer" (canceled)="onCanceled(offer)" [highlightedFacility]="selectedFacility"
+                                             [isManager]="isManager">
                       </app-my-placetimeoffer>
                     </div>
                     <div class="place-time-offer">
@@ -39,7 +40,7 @@ import {Position} from '../../core/models/position';
                   <div class="pool-container">
                     <div class="place-time-offer" *ngFor="let offer of theirTeamOffers">
                       <app-their-placetimeoffer [offer]="offer" (accepted)="onAccepted(offer)" (rejected)="onRejected(offer)"
-                                                [highlightedFacility]="selectedFacility">
+                                                [highlightedFacility]="selectedFacility" [isManager]="isManager">
                       </app-their-placetimeoffer>
                     </div>
                   </div>
@@ -83,6 +84,9 @@ export class PlacetimeofferPoolComponent {
   _myHome: Position;
 
   selectedFacility: Facility;
+
+  @Input()
+  isManager: boolean;
 
   @Input()
   set myHome(myHome: Position) {

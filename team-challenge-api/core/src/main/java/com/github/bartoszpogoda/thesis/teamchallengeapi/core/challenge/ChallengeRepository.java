@@ -12,4 +12,7 @@ public interface ChallengeRepository extends CrudRepository<Challenge, String>, 
 
     List<Challenge> findAllByChallengingTeamAndChallengedTeam(Team challengingTeam, Team challengedTeam);
 
+    List<Challenge> findAllByChallengingTeamAndStatus(Team challengingTeam, ChallengeStatus status);
+
+    List<Challenge> findAllByChallengedTeamAndStatus(Team challengedTeam, ChallengeStatus status);
 }

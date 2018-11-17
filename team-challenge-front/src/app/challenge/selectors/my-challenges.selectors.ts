@@ -231,6 +231,11 @@ export const selectChallengeTime = createSelector(
 );
 
 
+export const selectReview = createSelector(
+  selectMyChallengesState,
+  fromMyChallenges.getReview
+);
+
 
 
 

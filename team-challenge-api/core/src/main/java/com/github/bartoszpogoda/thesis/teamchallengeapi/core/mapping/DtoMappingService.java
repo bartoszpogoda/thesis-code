@@ -26,6 +26,8 @@ import com.github.bartoszpogoda.thesis.teamchallengeapi.core.position.Position;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.position.model.PositionDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.region.Region;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.region.model.RegionDto;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.review.TeamReview;
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.review.model.TeamReviewDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.Team;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.model.TeamDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.teaminvitation.TeamInvitation;
@@ -171,6 +173,12 @@ public class DtoMappingService {
         scoredTeamDto.setCriteria(mapToDto(scoredTeam.getCriteria()));
 
         return scoredTeamDto;
+    }
+
+    public TeamReviewDto mapToDto(TeamReview teamReview) {
+        TeamReviewDto teamReviewDto = modelMapper.map(teamReview, TeamReviewDto.class);
+
+        return teamReviewDto;
     }
 
 

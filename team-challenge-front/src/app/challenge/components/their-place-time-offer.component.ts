@@ -26,7 +26,7 @@ import {Facility} from '../../core/models/facility';
         <strong>Data: </strong>{{getDate()}}<br />
         <strong>Czas: </strong>{{getTime()}}
       </p>
-      <div class="actions">
+      <div class="actions" *ngIf="isManager">
         <nz-button-group>
           <button (click)="this.rejected.emit()" *ngIf="_offer.status === 0" nz-button nzType="default">Odrzuć</button>
           <button (click)="this.accepted.emit()" *ngIf="_offer.status === 0" nz-button nzType="primary">Przyjmij</button>
@@ -50,6 +50,9 @@ export class TheirPlaceTimeOfferComponent {
 
   @Input()
   highlightedFacility: Facility;
+
+  @Input()
+  isManager: boolean;
 
   @Output()
   accepted = new EventEmitter();

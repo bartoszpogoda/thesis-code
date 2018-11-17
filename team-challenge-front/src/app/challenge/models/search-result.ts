@@ -27,5 +27,5 @@ export interface BooleanCriteria {
 }
 
 export type NumericCriteriaType = 'AGE' | 'DISTANCE' | 'SKILL';
-export type BooleanCriteriaType = 'FRIENDLY';
+export type BooleanCriteriaType = 'FAIRPLAY' | 'PLAYAGAIN' | 'BIGACTIVITY';
 

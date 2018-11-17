@@ -51,3 +51,19 @@ export enum ResultStatus {
   Accepted = 1,
   Rejected = 2
 }
+
+export const challengeStatusColors = [
+  'orange',
+  'green',
+  'red',
+  'purple',
+  'blue'
+];
+
+export const challengeStatusLabels = [
+  'W trakcie negocjacji',
+  'Zaakceptowane',
+  'Odrzucone',
+  'Anulowane',
+  'Zakończone'
+];

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {NumericCriteriaType, ScoredTeam} from '../models/search-result';
+import {BooleanCriteriaType, NumericCriteriaType, ScoredTeam} from '../models/search-result';
 
 
 @Component({
@@ -17,7 +17,9 @@ import {NumericCriteriaType, ScoredTeam} from '../models/search-result';
         <h3 style="margin: 0;">{{scoredTeam.team.name}}</h3>
       </div>
       <div nz-col nzXs="0" nzSm="5" class="container-vert-center">
-        <nz-tag [nzColor]="'green'">Fair play </nz-tag>
+        <nz-tag *ngIf="hasTag('FAIRPLAY')" [nzColor]="'green'">Fair play </nz-tag>
+        <nz-tag *ngIf="hasTag('PLAYAGAIN')" [nzColor]="'geekblue'">Zagraj ponownie </nz-tag>
+        <nz-tag *ngIf="hasTag('BIGACTIVITY')" [nzColor]="'cyan'">Duża aktywność </nz-tag>
       </div>
       <div nz-col nzXs="0" nzSm="2" class="centered-col">
         <nz-progress [nzPercent]="getNumericCriteriaValue('AGE')"
@@ -104,6 +106,12 @@ export class SearchResultEntryComponent {
 
   checked: boolean;
 
+
+  hasTag(type: BooleanCriteriaType) {
+    const filtered = this.scoredTeam.criteria.booleanCriteria.filter(crit => crit.type === type);
+
+    return filtered.length >= 0 ? filtered[0].value : false;
+  }
 
   getNumericCriteria(type: NumericCriteriaType) {
     const filtered = this.scoredTeam.criteria.numericCriteria.filter(crit => crit.type === type);

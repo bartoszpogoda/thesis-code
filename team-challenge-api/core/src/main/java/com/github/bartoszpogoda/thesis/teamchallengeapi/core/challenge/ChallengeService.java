@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ChallengeService {
@@ -231,6 +232,22 @@ public class ChallengeService {
                 .forEach(pto -> pto.setStatus(PlaceTimeOfferStatus.Rejected));
     }
 
+    public List<Challenge> getListOfFinishedChallenges(Team memberTeam) {
+
+        return Stream.concat(
+                this.challengeRepository.findAllByChallengedTeamAndStatus(memberTeam, ChallengeStatus.Finished).stream(),
+                this.challengeRepository.findAllByChallengingTeamAndStatus(memberTeam, ChallengeStatus.Finished).stream()
+                ).distinct().collect(Collectors.toList());
+    }
+
+    public boolean isTeamInChallenge(Challenge challenge, Team currentTeam) {
+        return challenge.getChallengedTeam().equals(currentTeam) || challenge.getChallengingTeam().equals(currentTeam);
+    }
+
+    public Team getOtherTeam(Challenge challenge, Team oneOfTheTeams) {
+        return challenge.getChallengedTeam().equals(oneOfTheTeams) ? challenge.getChallengingTeam()
+                : challenge.getChallengedTeam();
+    }
 
     public ChallengeService(TeamService teamService, PlayerService playerService, ChallengeRepository challengeRepository, UserService userService) {
         this.teamService = teamService;

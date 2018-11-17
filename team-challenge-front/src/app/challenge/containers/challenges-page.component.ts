@@ -6,7 +6,7 @@ import {Challenge, PlaceTimeOffer} from '../models/challenge';
 import {selectMyActiveChallenges, selectMyActivePlaceTimeOffers} from '../selectors/my-challenges.selectors';
 import {LoadActiveChallenges} from '../actions/my-challenges.actions';
 import {Team} from '../../core/models/team';
-import {selectMyTeam} from '../../core/selectors/my-team.selectors';
+import {selectIsMyTeamReadyForChallenge, selectMyTeam} from '../../core/selectors/my-team.selectors';
 import {Router} from '@angular/router';
 
 @Component({
@@ -16,7 +16,7 @@ import {Router} from '@angular/router';
       <app-breadcrumb [items]="items"></app-breadcrumb>
       <div class="content-container">
         <div nz-row nzGutter="16">
-          <button (click)="onSearchClicked()" nz-button nzType="primary" style="margin-bottom: 20px;">
+          <button *ngIf="isMyTeamReadyForChallenge$ | async"(click)="onSearchClicked()" nz-button nzType="primary" style="margin-bottom: 20px;">
             <i class="anticon anticon-search"></i> Nowe wyzwanie
           </button>
         </div>
@@ -66,11 +66,13 @@ export class ChallengesPageComponent implements OnInit {
   myActiveChallenges$: Observable<Challenge[]>;
   myActivePlaceTimeOffers$: Observable<PlaceTimeOffer[][]>;
   myTeam$: Observable<Team>;
+  isMyTeamReadyForChallenge$: Observable<boolean>;
 
   constructor(private store: Store<fromRoot.State>, private router: Router) {
     this.myActiveChallenges$ = this.store.pipe(select(selectMyActiveChallenges));
     this.myActivePlaceTimeOffers$ = this.store.pipe(select(selectMyActivePlaceTimeOffers));
     this.myTeam$ = this.store.pipe(select(selectMyTeam));
+    this.isMyTeamReadyForChallenge$ = this.store.pipe(select(selectIsMyTeamReadyForChallenge));
   }
 
   ngOnInit(): void {

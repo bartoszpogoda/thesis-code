@@ -58,7 +58,14 @@ import {
   ConfirmResultFailure,
   ConfirmResult,
   RejectResult,
-  RejectResultSuccess, RejectResultFailure
+  RejectResultSuccess,
+  RejectResultFailure,
+  SaveReview,
+  SaveReviewSuccess,
+  SaveReviewFailure,
+  LoadReview,
+  LoadReviewSuccess,
+  LoadReviewFailure
 } from '../actions/my-challenges.actions';
 import {LoadCurrent, LoadCurrentSuccess, MyTeamActionTypes} from '../../core/actions/my-team.actions';
 import {
@@ -243,6 +250,7 @@ export class MyChallengesEffects {
     this.actions$.pipe(ofType<CancelChallengeSuccess>((MyChallengesActionTypes.CancelChallengeSuccess))),
     this.actions$.pipe(ofType<RejectChallengeSuccess>((MyChallengesActionTypes.RejectChallengeSuccess))),
     this.actions$.pipe(ofType<AcceptPlaceTimeOfferSuccess>(MyChallengesActionTypes.AcceptPlaceTimeOfferSuccess)),
+    this.actions$.pipe(ofType<ConfirmResultSuccess>(MyChallengesActionTypes.ConfirmResultSuccess))
   ).pipe(
     withLatestFrom(this.store.pipe(select(selectChallenge))),
     switchMap(([, challenge]) => [new LoadChallenge(challenge.id), new LoadActiveChallenges()])
@@ -307,6 +315,14 @@ export class MyChallengesEffects {
     map((challenge) => new LoadResult(challenge.id))
   );
 
+  @Effect()
+  $reloadReview = this.actions$.pipe(
+    ofType<LoadChallengeSuccess>(MyChallengesActionTypes.LoadChallengeSuccess),
+    map(toPayload),
+    filter(challenge => challenge.status === ChallengeStatus.Finished),
+    map((challenge) => new LoadReview(challenge.id))
+  );
+
   @Effect({dispatch: false})
   $saveResultSuccess = successMessageEffect<SaveResultSuccess>(this.actions$, this.message,
     MyChallengesActionTypes.SaveResultSuccess,
@@ -347,6 +363,37 @@ export class MyChallengesEffects {
   $rejectResultSuccess = successMessageEffect<RejectResultSuccess>(this.actions$, this.message,
     MyChallengesActionTypes.RejectResultSuccess,
     'Wynik został odrzucony.'
+  );
+
+  @Effect()
+  $saveReview = this.actions$.pipe(
+    ofType<SaveReview>(MyChallengesActionTypes.SaveReview),
+    map(toPayload),
+    exhaustMap((payload) =>
+      this.challengeService.saveReview(payload.challengeId, payload.review).pipe(
+        map(savedReview => new SaveReviewSuccess(savedReview)),
+        catchError(err => of(new SaveReviewFailure(err)))
+      )
+    )
+  );
+
+
+  @Effect({dispatch: false})
+  $saveReviewSuccess = successMessageEffect<SaveReviewSuccess>(this.actions$, this.message,
+    MyChallengesActionTypes.SaveReviewSuccess,
+    'Ocena przeciwników została zapisana.'
+  );
+
+  @Effect()
+  $loadReview = this.actions$.pipe(
+    ofType<LoadReview>(MyChallengesActionTypes.LoadReview),
+    map(toPayload),
+    exhaustMap((challengeId) =>
+      this.challengeService.getReview(challengeId).pipe(
+        map(result => new LoadReviewSuccess(result)),
+        catchError(err => of(new LoadReviewFailure(err)))
+      )
+    )
   );
 
   constructor(

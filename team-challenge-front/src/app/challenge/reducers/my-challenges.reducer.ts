@@ -5,6 +5,7 @@ import {MyChallengesActionsUnion, MyChallengesActionTypes} from '../actions/my-c
 import {Player} from '../../core/models/player';
 import {Page} from '../../core/models/page';
 import {Team} from '../../core/models/team';
+import {TeamReview} from '../models/review';
 
 
 export interface State {
@@ -16,6 +17,8 @@ export interface State {
   theirPlayers: Player[];
   result: Result;
   resultLoading: boolean;
+  review: TeamReview;
+  reviewLoading: boolean;
 }
 
 const initialState: State = {
@@ -27,6 +30,8 @@ const initialState: State = {
   theirPlayers: [],
   result: null,
   resultLoading: false,
+  review: null,
+  reviewLoading: false,
 };
 
 export function reducer(
@@ -111,11 +116,37 @@ export function reducer(
         resultLoading: false,
       };
 
-  case MyChallengesActionTypes.SaveResultSuccess:
-    return {
-      ...state,
-      result: action.payload
-    };
+    case MyChallengesActionTypes.SaveResultSuccess:
+      return {
+        ...state,
+        result: action.payload
+      };
+
+    case MyChallengesActionTypes.LoadReview:
+      return {
+        ...state,
+        review: null,
+        reviewLoading: true,
+      };
+
+    case MyChallengesActionTypes.LoadReviewSuccess:
+      return {
+        ...state,
+        review: action.payload,
+        reviewLoading: false,
+      };
+
+    case MyChallengesActionTypes.LoadReviewFailure:
+      return {
+        ...state,
+        reviewLoading: false,
+      };
+
+    case MyChallengesActionTypes.SaveReviewSuccess:
+      return {
+        ...state,
+        review: action.payload
+      };
 
     default:
       return state;
@@ -130,4 +161,6 @@ export const getTheirHome = (state: State) => state.theirHome;
 export const getTheirPlayers = (state: State) => state.theirPlayers;
 export const getResult = (state: State) => state.result;
 export const getResultLoading = (state: State) => state.resultLoading;
+export const getReview = (state: State) => state.review;
+export const getReviewLoading = (state: State) => state.reviewLoading;
 

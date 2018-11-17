@@ -3,6 +3,7 @@ import {Team} from '../../core/models/team';
 import {Challenge, PlaceTimeOffer, PlaceTimeOfferStatus, Result} from '../models/challenge';
 import {LocalDateTime, ZonedDateTime} from 'js-joda';
 import {months} from './my-place-time-offer.component';
+import {challengeStatusColors, challengeStatusLabels} from '../models/challenge';
 
 
 @Component({
@@ -21,7 +22,9 @@ import {months} from './my-place-time-offer.component';
         <h3 style="margin: 0;">{{getOtherTeamManagerName()}}</h3>
       </div>
       <div nz-col nzXs="0" nzSm="4" class="container-vert-center">
-        <nz-tag class="tag-with-margin" [nzColor]="colors[challenge.status]">{{statuses[challenge.status]}}</nz-tag>
+        <nz-tag class="tag-with-margin" [nzColor]="challengeStatusColors[challenge.status]">
+          {{challengeStatusLabels[challenge.status]}}
+        </nz-tag>
         <nz-tag class="tag-with-margin" *ngIf="awaitsReaction()" [nzColor]="'gold'">Aktywne oferty od rywali</nz-tag>
       </div>
       <div nz-col nzXs="0" nzSm="5" class="container-vert-center">
@@ -53,21 +56,8 @@ export class ChallengeOnListComponent {
   @Output()
   clicked = new EventEmitter();
 
-  colors = [
-    'orange',
-    'green',
-    'red',
-    'purple',
-    'blue'
-  ];
-
-  statuses = [
-    'W trakcie negocjacji',
-    'Zaakceptowane',
-    'Odrzucone',
-    'Anulowane',
-    'Zakończone'
-  ];
+  challengeStatusColors = challengeStatusColors;
+  challengeStatusLabels = challengeStatusLabels;
 
   getOtherTeamName() {
     return this.isMyTeamChallenged() ? this.challenge.challengingTeam.name : this.challenge.challengedTeam.name;

@@ -32,7 +32,7 @@ import {Facility} from '../../core/models/facility';
         <strong>Data: </strong>{{getDate()}}<br />
         <strong>Czas: </strong>{{getTime()}}
       </p>
-      <div class="actions">
+      <div class="actions" *ngIf="isManager">
         <button (click)="this.canceled.emit()" *ngIf="_offer.status === 0" nz-button nzType="default">Anuluj</button>
       </div>
     </div>
@@ -52,6 +52,9 @@ export class MyPlaceTimeOfferComponent {
     this._offer = offer;
     this.timeLDT = ZonedDateTime.parse(offer.offeredDate);
   }
+
+  @Input()
+  isManager: boolean;
 
   @Output()
   canceled = new EventEmitter();

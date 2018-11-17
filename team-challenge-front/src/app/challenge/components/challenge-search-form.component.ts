@@ -49,7 +49,7 @@ import {s} from '@angular/core/src/render3';
                      class="anticon anticon-unlock"></i>
                 </div>
                 <div nz-col [nzSm]="22">
-                  <nz-slider [nzDisabled]="lockedSlider === validateForm.get('weightSkillDiff')"  [nzTipFormatter]="formatter"
+                  <nz-slider [nzDisabled]="lockedSlider === validateForm.get('weightSkillDiff')" [nzTipFormatter]="formatter"
                              [nzStep]="10" [nzMin]="0" [nzMax]="1000" formControlName="weightSkillDiff"></nz-slider>
                 </div>
                 <div nz-col [nzSm]="1">
@@ -86,31 +86,44 @@ import {s} from '@angular/core/src/render3';
         </div>
         <div nz-col nzXs="0" nzSm="6">
           <h2>Dodatkowe preferencje</h2>
-          <p>Drużyny posiadające daną cechę (lub spełniające warunek) znajdą się wyżej w wynikach wyszukiwania.</p>
+          <p>Drużyny oznaczone wybranymi tagami będą dodatkowo promowane w wynikach wyszukiwania.</p>
 
           <nz-form-item>
-            <nz-form-label [nzSm]="12" [nzXs]="24" nzFor="friendly">
+            <nz-form-label [nzSm]="12" [nzXs]="24" nzFor="fairPlay">
               <span>
-            Przyjaźni
+            <nz-tag [nzColor]="'green'">Fair play </nz-tag>
             <i class="anticon anticon-question-circle-o" nz-tooltip nzPlacement="bottom"
-               nzTitle="Promowanie drużyn często ocenianych jako przyjazne"></i>
+               nzTitle="Dodatkowe promowanie drużyn wysoko ocenianych pod względem poziomu Fair-Play"></i>
           </span>
             </nz-form-label>
-            <nz-form-control [nzSm]="6" [nzXs]="24" style="text-align: left;">
-              <nz-switch formControlName="friendly"></nz-switch>
+            <nz-form-control [nzSm]="6" [nzXs]="12" style="text-align: left;">
+              <nz-switch formControlName="fairPlay"></nz-switch>
             </nz-form-control>
           </nz-form-item>
 
           <nz-form-item>
             <nz-form-label [nzSm]="12" [nzXs]="24" nzFor="playAgain">
               <span>
-            Rewanż
+            <nz-tag [nzColor]="'geekblue'">Zagraj ponownie </nz-tag>
             <i class="anticon anticon-question-circle-o" nz-tooltip nzPlacement="bottom"
-               nzTitle="Promowanie starych przeciwników, dla których została zadeklarowana chęć ponownej gry"></i>
+               nzTitle="Dodatkowe promowanie drużyn, dla których zadeklarowałeś chęć ponownego spotkania po ostatnim meczu."></i>
           </span>
             </nz-form-label>
             <nz-form-control [nzSm]="6" [nzXs]="24" style="text-align: left;">
               <nz-switch formControlName="playAgain"></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="12" [nzXs]="24" nzFor="bigActivity">
+              <span>
+            <nz-tag [nzColor]="'cyan'">Duża aktywność </nz-tag>
+            <i class="anticon anticon-question-circle-o" nz-tooltip nzPlacement="bottom"
+               nzTitle="Dodatkowe promowanie drużyn, które w ciągu ostatniego miesiąca rozegrały co najmniej 3 spotkania."></i>
+          </span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="6" [nzXs]="24" style="text-align: left;">
+              <nz-switch formControlName="bigActivity"></nz-switch>
             </nz-form-control>
           </nz-form-item>
 
@@ -127,11 +140,11 @@ import {s} from '@angular/core/src/render3';
 
     </form>
   `, styles: [`
-    
+
     i {
       font-size: 1.3em;
     }
-    
+
   `]
 })
 export class ChallengeSearchFormComponent implements OnInit {
@@ -166,7 +179,9 @@ export class ChallengeSearchFormComponent implements OnInit {
           weightAgeDiff: this.validateForm.controls.weightAgeDiff.value / 1000,
           weightSkillDiff: this.validateForm.controls.weightSkillDiff.value / 1000,
           weightDistance: this.validateForm.controls.weightDistance.value / 1000,
-          friendly: this.validateForm.controls.friendly.value
+          fairPlay: this.validateForm.controls.fairPlay.value,
+          playAgain: this.validateForm.controls.playAgain.value,
+          bigActivity: this.validateForm.controls.bigActivity.value,
         }
       };
 
@@ -182,8 +197,9 @@ export class ChallengeSearchFormComponent implements OnInit {
       weightAgeDiff: [this.builder.preferences.weightAgeDiff * 1000],
       weightDistance: [this.builder.preferences.weightDistance * 1000],
       weightSkillDiff: [this.builder.preferences.weightSkillDiff * 1000],
-      friendly: [this.builder.preferences.friendly],
-      playAgain: [false]
+      fairPlay: [this.builder.preferences.fairPlay],
+      playAgain: [this.builder.preferences.playAgain],
+      bigActivity: [this.builder.preferences.bigActivity],
     });
 
     const slider1 = this.validateForm.controls.weightAgeDiff;
@@ -205,7 +221,7 @@ export class ChallengeSearchFormComponent implements OnInit {
     return val => {
       signal = !signal;
 
-      if (sliderA.value === 0  && this.lockedSlider !== sliderB || this.lockedSlider === sliderA) {
+      if (sliderA.value === 0 && this.lockedSlider !== sliderB || this.lockedSlider === sliderA) {
         sliderB.setValue(1000 - val - sliderA.value, {emitEvent: false});
       } else if (sliderA.value === 0 && this.lockedSlider === sliderB) {
         if (1000 - val - sliderB.value < 0) {
@@ -226,13 +242,13 @@ export class ChallengeSearchFormComponent implements OnInit {
         const left = 1000 - val;
 
         if (signal) {
-          let a = (proportion * left) / ( 1 + proportion);
+          let a = (proportion * left) / (1 + proportion);
           a = Math.round(a);
 
           sliderA.setValue(a, {emitEvent: false});
           sliderB.setValue(left - a, {emitEvent: false});
         } else {
-          let b = (left) / ( 1 + proportion);
+          let b = (left) / (1 + proportion);
           b = Math.round(b);
 
           sliderB.setValue(b, {emitEvent: false});

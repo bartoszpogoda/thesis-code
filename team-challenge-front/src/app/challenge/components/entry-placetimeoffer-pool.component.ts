@@ -29,7 +29,8 @@ import {Position} from '../../core/models/position';
         <div nz-col nzSm="16">
           <div class="pool-container">
             <div class="place-time-offer" *ngFor="let offer of placeTimeOffers">
-              <app-my-placetimeoffer [offer]="offer" (canceled)="onCanceled(offer)" [highlightedFacility]="selectedFacility">
+              <app-my-placetimeoffer [offer]="offer" (canceled)="onCanceled(offer)" [highlightedFacility]="selectedFacility" 
+                                     [isManager]="true">
               </app-my-placetimeoffer>
             </div>
             <div class="place-time-offer">
