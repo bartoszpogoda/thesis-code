@@ -3,14 +3,13 @@ package com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.result;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.Challenge;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.ChallengeService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.ChallengeStatus;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.placetimeoffer.PlaceTimeOffer;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.placetimeoffer.PlaceTimeOfferStatus;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.challenge.result.model.ResultDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.ApiException;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.*;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.Player;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.PlayerService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.team.Team;
+import io.netty.util.internal.StringUtil;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +41,10 @@ public class ResultService {
 
         if(challenge.getStatus() != ChallengeStatus.Accepted) {
             throw new InvalidOperationException("Can't save result for challenge not in progress");
+        }
+
+        if(!form.getWinnerPoints().equals(form.getLoserPoints()) && StringUtil.isNullOrEmpty(form.getWinnerTeamId())) {
+            throw new InvalidOperationException("Winner team id can not be empty when result is not a draw.");
         }
 
         return this.saveResult(currentTeam, challenge, form);

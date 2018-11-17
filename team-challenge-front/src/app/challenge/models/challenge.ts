@@ -23,10 +23,10 @@ export interface PlaceTimeOffer {
 
 export interface Result {
   id?: string;
-  winnerTeamId: string;
+  winnerTeamId?: string;
   winnerPoints: number;
   loserPoints: number;
-  reportingTeamId: string;
+  reportingTeamId?: string;
   reportedDate?: string;
   status?: ResultStatus;
 }

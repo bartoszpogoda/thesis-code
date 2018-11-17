@@ -5,6 +5,7 @@ import {ManagerActionTypes} from '../actions/manager.actions';
 import {CommunityTeamsActionTypes} from '../../community/actions/community-teams.actions';
 import {PlayerCreatorActionTypes} from '../../player-creator/store/player-creator.actions';
 import {FacilityCreatorActionTypes} from '../../facility-creator/store/facility-creator.actions';
+import {MyChallengesActionTypes} from '../../challenge/actions/my-challenges.actions';
 
 const START_PENDING_ACTION_TYPES: any[] = [
   PlayerActionTypes.LoadCurrent,
@@ -19,7 +20,8 @@ const START_PENDING_ACTION_TYPES: any[] = [
   ManagerActionTypes.LoadTeamInvitations,
   CommunityTeamsActionTypes.LoadPage,
   CommunityTeamsActionTypes.LoadTeam,
-  FacilityCreatorActionTypes.CreateFacility
+  FacilityCreatorActionTypes.CreateFacility,
+  MyChallengesActionTypes.SaveResult
 ];
 const FINISH_PENDING_ACTION_TYPES: any[] = [
   PlayerActionTypes.LoadCurrentSuccess,
@@ -48,6 +50,8 @@ const FINISH_PENDING_ACTION_TYPES: any[] = [
   CommunityTeamsActionTypes.LoadTeamFailure,
   FacilityCreatorActionTypes.CreateFacilitySuccess,
   FacilityCreatorActionTypes.CreateFacilityFailure,
+  MyChallengesActionTypes.SaveResultSuccess,
+  MyChallengesActionTypes.SaveResultFailure
 ];
 
 export interface State {

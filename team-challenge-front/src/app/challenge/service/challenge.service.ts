@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {Challenge, ChallengeStatus, PlaceTimeOffer} from '../models/challenge';
+import {Challenge, ChallengeStatus, PlaceTimeOffer, Result} from '../models/challenge';
 import {Team} from '../../core/models/team';
 import {Page} from '../../core/models/page';
 import {Player} from '../../core/models/player';
@@ -72,5 +72,21 @@ export class ChallengeService {
       .set('teamId', teamId);
 
     return this.http.get<Page<Challenge>>('/api/challenges', {params: params});
+  }
+
+  getResult(challengeId: string): Observable<Result> {
+    return this.http.get<Result>('/api/challenges/' + challengeId + '/result');
+  }
+
+  saveResult(challengeId: string, result: Result): Observable<Result> {
+    return this.http.post<Result>('/api/challenges/' + challengeId + '/result', result);
+  }
+
+  confirmResult(challengeId: string): Observable<Result> {
+    return this.http.post<Result>('/api/challenges/' + challengeId + '/result/confirmation', {});
+  }
+
+  rejectResult(challengeId: string): Observable<Result> {
+    return this.http.post<Result>('/api/challenges/' + challengeId + '/result/confirmation', {});
   }
 }

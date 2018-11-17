@@ -2,7 +2,7 @@ import * as fromMyChallenges from '../reducers/my-challenges.reducer';
 import {createSelector} from '@ngrx/store';
 import {selectMyChallengesState} from '../reducers';
 import {selectMyTeam, selectMyTeamPlayers} from '../../core/selectors/my-team.selectors';
-import {ChallengeStatus, PlaceTimeOfferStatus} from '../models/challenge';
+import {ChallengeStatus, PlaceTimeOfferStatus, ResultStatus} from '../models/challenge';
 import {ZonedDateTime} from 'js-joda';
 import {months} from '../components/my-place-time-offer.component';
 
@@ -131,19 +131,58 @@ export const selectIsChallengeRejectable = createSelector(
   }
 );
 
+export const selectChallengeResult = createSelector(
+  selectMyChallengesState,
+  fromMyChallenges.getResult
+);
+
+export const selectChallengeResultLoading = createSelector(
+  selectMyChallengesState,
+  fromMyChallenges.getResultLoading
+);
+
 export const selectIsChallengeReadyForResults = createSelector(
   selectChallengeStatus,
-  (status) => {
-    // TODO implement
-    return false;
+  selectChallengeResult,
+  selectChallengeResultLoading,
+  (status, result, loading) => {
+    return status === ChallengeStatus.Accepted && result == null && !loading;
   }
 );
 
 export const selectChallengeHasResultToConfirm = createSelector(
   selectChallengeStatus,
-  (status) => {
-    // TODO implement
-    return false;
+  selectChallengeResult,
+  selectMyTeam,
+  (status, result, myTeam) => {
+
+    console.log('to confirm');
+    console.log(status);
+    console.log(result);
+    console.log(myTeam);
+
+    return status === ChallengeStatus.Accepted && result != null && result.reportingTeamId !== myTeam.id;
+  }
+);
+
+export const selectChallengeConfirmedResult = createSelector(
+  selectChallengeResult,
+  (result) => result !== null && result.status === ResultStatus.Accepted ? result : null
+);
+
+export const selectHostTeamPoints = createSelector(
+  selectChallenge,
+  selectChallengeResult,
+  (challenge, result) => {
+    return challenge.challengingTeamId === result.winnerTeamId ? result.winnerPoints : result.loserPoints;
+  }
+);
+
+export const selectGuestTeamPoints = createSelector(
+  selectChallenge,
+  selectChallengeResult,
+  (challenge, result) => {
+    return challenge.challengedTeamId === result.winnerTeamId ? result.winnerPoints : result.loserPoints;
   }
 );
 
@@ -153,7 +192,14 @@ export const selectAcceptedOffer = createSelector(
     const filtered = placeTimeOffers.filter(offer => offer.status === PlaceTimeOfferStatus.Accepted);
     return filtered.length > 0 ? filtered[0] : null;
   }
-)
+);
+
+export const selectTeamReportingResult = createSelector(
+  selectChallenge,
+  selectChallengeResult,
+  (challenge, result) => result.reportingTeamId === challenge.challengingTeamId ?
+    challenge.challengingTeamId : challenge.challengedTeam
+);
 
 export const selectChallengePlaceName = createSelector(
   selectAcceptedOffer,

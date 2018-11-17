@@ -21,19 +21,22 @@ import {EnterPage, LoadPage} from '../actions/past-challenges.actions';
 @Component({
   selector: 'app-past-challenges',
   template: `
-    <ng-container *ngFor="let challenge of (challenges$ | async); let i = index" >
-
-      <nz-divider *ngIf="i == 0"></nz-divider>
-      <app-challenge-on-list [myTeam]="myTeam$ | async"
-                             [challenge]="challenge" [placeTimeOffers]="(placeTimeOffers$ | async)[i]"
-                             (clicked)="onChallengeClicked(challenge)">
-      </app-challenge-on-list>
-      <nz-divider></nz-divider>
-
-    </ng-container>
+    <ng-container *ngIf="(challenges$ | async).length > 0">
+      <h2>Ostatnie wyzwania</h2>
+      <ng-container *ngFor="let challenge of (challenges$ | async); let i = index" >
   
-    <nz-pagination [nzPageIndex]="(currentPage$ | async) + 1" [nzTotal]="totalPages$ | async"
-                   [nzPageSize]="pageSize$ | async" (nzPageIndexChange)="onPageIndexChanged($event)"></nz-pagination>
+        <nz-divider *ngIf="i == 0"></nz-divider>
+        <app-challenge-on-list [myTeam]="myTeam$ | async"
+                               [challenge]="challenge" [placeTimeOffers]="(placeTimeOffers$ | async)[i]"
+                               (clicked)="onChallengeClicked(challenge)">
+        </app-challenge-on-list>
+        <nz-divider></nz-divider>
+  
+      </ng-container>
+  
+      <nz-pagination [nzPageIndex]="(currentPage$ | async) + 1" [nzTotal]="totalPages$ | async"
+                     [nzPageSize]="pageSize$ | async" (nzPageIndexChange)="onPageIndexChanged($event)"></nz-pagination>
+    </ng-container>
   `, styles: [`
       nz-divider {
         margin: 0 !important;

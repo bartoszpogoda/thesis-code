@@ -34,13 +34,16 @@ import {PlacetimeofferPoolComponent} from './components/placetimeoffer-pool.comp
 import {TheirPlaceTimeOfferComponent} from './components/their-place-time-offer.component';
 import {PastChallengesComponent} from './containers/past-challenges.component';
 import {PastChallengesEffects} from './effects/past-challenges.effects';
+import {ResultModalComponent} from './components/result-modal.component';
+import {MyChallengeResultComponent} from './containers/my-challenge-result.component';
+import {ResultComponent} from './components/result.component';
 
 export const COMPONENTS = [
   ChallengeSearchFormComponent, MapTeamsFacilitiesComponent, MapTwoTeamsFacilitiesComponent,
-  EntryPlacetimeofferPoolComponent, SearchResultEntryComponent, ChallengeCreatorOffersComponent,
-  ChallengesPageComponent, ChallengeCreatorComparisonComponent, MyPlaceTimeOfferComponent,
+  EntryPlacetimeofferPoolComponent, SearchResultEntryComponent, ChallengeCreatorOffersComponent, ResultComponent,
+  ChallengesPageComponent, ChallengeCreatorComparisonComponent, MyPlaceTimeOfferComponent, MyChallengeResultComponent,
   NewPlacetimeofferModalComponent, TeamComparisonEntryComponent, ChallengeCreatorSearchResultsComponent, FacilityComponent,
-  ChallengeOnListComponent, PlacetimeofferPoolComponent, TheirPlaceTimeOfferComponent, PastChallengesComponent
+  ChallengeOnListComponent, PlacetimeofferPoolComponent, TheirPlaceTimeOfferComponent, PastChallengesComponent, ResultModalComponent
 ];
 
 export const PAGES = [

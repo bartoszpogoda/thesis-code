@@ -2,13 +2,13 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../reducers/index';
 import {combineLatest, Observable, Subject, Subscription} from 'rxjs';
-import {Challenge, ChallengeStatus, PlaceTimeOffer, PlaceTimeOfferStatus} from '../models/challenge';
+import {Challenge, ChallengeStatus, PlaceTimeOffer, PlaceTimeOfferStatus, Result} from '../models/challenge';
 import {
-  selectChallenge,
-  selectChallengedTeamPlayers, selectChallengePlaceName,
+  selectChallenge, selectChallengeConfirmedResult,
+  selectChallengedTeamPlayers, selectChallengeHasResultToConfirm, selectChallengePlaceName, selectChallengeResult,
   selectChallengeStatus, selectChallengeTime,
-  selectChallengingTeamPlayers,
-  selectIsChallengeCancellable,
+  selectChallengingTeamPlayers, selectGuestTeamPoints, selectHostTeamPoints,
+  selectIsChallengeCancellable, selectIsChallengeReadyForResults,
   selectIsChallengeRejectable,
   selectMyActiveChallenges,
   selectMyTeamOffers,
@@ -28,7 +28,7 @@ import {
   CancelPlaceTimeOffer,
   LoadChallenge,
   LoadPlaceTimeOffers,
-  LoadTheirHome, LoadTheirPlayers, RejectChallenge, RejectPlaceTimeOffer
+  LoadTheirHome, LoadTheirPlayers, RejectChallenge, RejectPlaceTimeOffer, SaveResult
 } from '../actions/my-challenges.actions';
 import {Team} from '../../core/models/team';
 import {selectMyTeam, selectMyTeamHome, selectMyTeamRegion} from '../../core/selectors/my-team.selectors';
@@ -45,10 +45,15 @@ import {Player} from '../../core/models/player';
       <div class="content-container">
         <nz-affix [nzOffsetTop]="117">
         <ul nz-menu [nzMode]="'horizontal'" style="margin-bottom: 25px;">
-          <li nz-menu-item (click)="onGeneralTabClicked()" [nzSelected]="true"><i class="anticon anticon-trophy"></i> Ogólne informacje</li>
+          <li nz-menu-item (click)="onGeneralTabClicked()" [nzSelected]="true"><i class="anticon anticon-play-circle-o"></i> Ogólne informacje</li>
           <li nz-menu-item (click)="onPlayersTabClicked()"><i class="anticon anticon-team"></i> Zawodnicy</li>
           <li nz-menu-item  (click)="onChatTabClicked()"><i class="anticon anticon-message"></i> Czat</li>
            <li nz-menu-item (click)="onNegotiationsTabClicked()"><i class="anticon anticon-schedule"></i> Negocjacje <nz-tag *ngIf="(challengeStatus$ | async) == 0" [nzColor]="'orange'">W toku</nz-tag></li>
+          <li *ngIf="(challengeResult$ | async) != null" nz-menu-item (click)="onResultTabClicked()"><i class="anticon anticon-trophy"></i>
+            Wynik
+            <nz-tag *ngIf="(hasResultsToConfirm$ | async)" [nzColor]="'orange'">Oczekuje na potwierdzenie</nz-tag>
+          </li>
+
         </ul>
         </nz-affix>
 
@@ -78,7 +83,7 @@ import {Player} from '../../core/models/player';
             <div nz-col nzSm="1"><img src="/assets/images/home/avatar.png"></div>
             <div nz-col nzSm="1"><img src="/assets/images/home/avatar.png"></div>
             <div nz-col nzSm="2"><img src="/assets/images/home/avatar.png"></div>
-            <div nz-col nzSm="2"><h1>0 : 0</h1></div>
+            <div nz-col nzSm="2"><h1 *ngIf="confirmedResult$ | async">{{(hostTeamPoints$ | async)}} : {{(guestTeamPoints$ | async)}}</h1></div>
             <div nz-col nzSm="2"><img src="/assets/images/home/avatar.png"></div>
             <div nz-col nzSm="1"><img src="/assets/images/home/avatar.png"></div>
             <div nz-col nzSm="1"><img src="/assets/images/home/avatar.png"></div>
@@ -125,15 +130,12 @@ import {Player} from '../../core/models/player';
             <button *ngIf="isChallengeRejectable$ | async"(click)="onRejectChallenge()"  nz-button>
               Odrzuć wyzwanie
             </button>
-            <button *ngIf="(challengeStatus$ | async) === ChallengeStatus.Accepted" nz-button>
-              Wprowadź wynik
-            </button>
-            <!--<button nz-button>-->
-              <!--Potwierdź wynik-->
-            <!--</button>-->
-            <!--<button nz-button>-->
-              <!--Odrzuć wynik-->
-            <!--</button>-->
+            <app-result-modal style="display: inline-block;"
+                              *ngIf="readyForResults$ | async"
+                              [hostTeam]="(challenge$ | async)?.challengingTeam"
+                              [guestTeam]="(challenge$ | async)?.challengedTeam"
+                              (submitted)="onResultSubmitted($event)">
+            </app-result-modal>
           </div>
           </div>
         </ng-container>
@@ -164,7 +166,7 @@ import {Player} from '../../core/models/player';
         <ng-container *ngIf="currentTab === 2">
           <app-prototype-notification [inline]="true" [unavailable]="true"></app-prototype-notification>
         </ng-container>
-        
+
         <ng-container *ngIf="currentTab === 3">
             <ng-container *ngIf="(myHome$ | async)">
               <p>
@@ -181,6 +183,10 @@ import {Player} from '../../core/models/player';
 
               </app-placetimeoffer-pool>
             </ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="currentTab === 4">
+          <app-my-challenge-result></app-my-challenge-result>
         </ng-container>
 
       </div>
@@ -220,17 +226,24 @@ export class MyChallengePageComponent implements OnInit, OnDestroy {
   region$: Observable<Region>;
   theirHome$: Observable<Position>;
   challengeStatus$: Observable<ChallengeStatus>;
+  confirmedResult$: Observable<Result>;
 
   challengingTeamPlayers$: Observable<Player[]>;
   challengedTeamPlayers$: Observable<Player[]>;
 
   isChallengeCancellable$: Observable<boolean>;
   isChallengeRejectable$: Observable<boolean>;
+  readyForResults$: Observable<boolean>;
+  hasResultsToConfirm$: Observable<boolean>;
+
+  hostTeamPoints$: Observable<number>;
+  guestTeamPoints$: Observable<number>;
 
   myTeamOffers$: Observable<PlaceTimeOffer[]>;
   theirTeamOffers$: Observable<PlaceTimeOffer[]>;
   challengePlaceName$: Observable<boolean>;
   challengeTime$: Observable<boolean>;
+  challengeResult$: Observable<Result>;
 
   unsubscribe$ = new Subject();
 
@@ -255,6 +268,13 @@ export class MyChallengePageComponent implements OnInit, OnDestroy {
 
     this.challengeTime$ = this.store.pipe(select(selectChallengeTime));
     this.challengePlaceName$ = this.store.pipe(select(selectChallengePlaceName));
+    this.challengeResult$ = this.store.pipe(select(selectChallengeResult));
+    this.readyForResults$ = this.store.pipe(select(selectIsChallengeReadyForResults));
+    this.hasResultsToConfirm$ = this.store.pipe(select(selectChallengeHasResultToConfirm));
+    this.confirmedResult$ = this.store.pipe(select(selectChallengeConfirmedResult));
+
+    this.hostTeamPoints$ = this.store.pipe(select(selectHostTeamPoints));
+    this.guestTeamPoints$ = this.store.pipe(select(selectGuestTeamPoints));
 
     combineLatest(this.challenge$, this.myTeam$).pipe(
       takeUntil(this.unsubscribe$),
@@ -324,12 +344,20 @@ export class MyChallengePageComponent implements OnInit, OnDestroy {
     this.currentTab = 3;
   }
 
+  onResultTabClicked() {
+    this.currentTab = 4;
+  }
+
   onCancelChallenge() {
     this.challenge$.pipe(take(1)).subscribe(challenge => this.store.dispatch(new CancelChallenge(challenge.id)));
   }
 
   onRejectChallenge() {
     this.challenge$.pipe(take(1)).subscribe(challenge => this.store.dispatch(new RejectChallenge(challenge.id)));
+  }
+
+  onResultSubmitted(result: Result) {
+    this.store.dispatch(new SaveResult(result));
   }
 
 }

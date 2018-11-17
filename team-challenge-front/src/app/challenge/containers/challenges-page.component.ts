@@ -43,7 +43,6 @@ import {Router} from '@angular/router';
           </div>
         </div>
 
-        <h2>Ostatnie wyzwania</h2>
         <app-past-challenges></app-past-challenges>
       </div>
     </div>
@@ -52,7 +51,11 @@ import {Router} from '@angular/router';
     .headers div[nz-col] {
       padding-left: 11px;
     }
-    
+
+    nz-divider {
+      margin: 0 !important;
+    }
+
   `]
 })
 export class ChallengesPageComponent implements OnInit {

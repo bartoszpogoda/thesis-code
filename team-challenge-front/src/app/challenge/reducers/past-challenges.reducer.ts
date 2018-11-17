@@ -1,5 +1,5 @@
 import {Page} from '../../core/models/page';
-import {Challenge, PlaceTimeOffer} from '../models/challenge';
+import {Challenge, PlaceTimeOffer, Result} from '../models/challenge';
 import {PastChallengesActionsUnion, PastChallengesActionTypes} from '../actions/past-challenges.actions';
 import {MyChallengesActionTypes} from '../actions/my-challenges.actions';
 
@@ -11,6 +11,7 @@ export interface State {
   pageSize: number;
   loading: boolean;
   placeTimeOffers: PlaceTimeOffer[][];
+  results: Result[];
 }
 
 const initialState: State = {
@@ -19,7 +20,8 @@ const initialState: State = {
   total: 0,
   pageSize: 0,
   loading: false,
-  placeTimeOffers: []
+  placeTimeOffers: [],
+  results: []
 };
 
 export function reducer(

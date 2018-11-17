@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {Challenge, PlaceTimeOffer} from '../models/challenge';
+import {Challenge, PlaceTimeOffer, Result} from '../models/challenge';
 import {ApiError} from '../../core/models/error';
 import {Player} from '../../core/models/player';
 
@@ -51,6 +51,22 @@ export enum MyChallengesActionTypes {
   CancelChallenge = '[My Challenges] Cancel Challenge',
   CancelChallengeSuccess = '[My Challenges] Cancel Challenge Success',
   CancelChallengeFailure = '[My Challenges] Cancel Challenge Failure',
+
+  LoadResult = '[My Challenge] Load Result',
+  LoadResultSuccess = '[My Challenge] Load Result Success',
+  LoadResultFailure = '[My Challenge] Load Result Failure',
+
+  SaveResult = '[My Challenge] Save Result',
+  SaveResultSuccess = '[My Challenge] Save Result Success',
+  SaveResultFailure = '[My Challenge] Save Result Failure',
+
+  ConfirmResult = '[My Challenge] Confirm Result',
+  ConfirmResultSuccess = '[My Challenge] Confirm Result Success',
+  ConfirmResultFailure = '[My Challenge] Confirm Result Failure',
+
+  RejectResult = '[My Challenge] Reject Result',
+  RejectResultSuccess = '[My Challenge] Reject Result Success',
+  RejectResultFailure = '[My Challenge] Reject Result Failure',
 
 }
 
@@ -307,6 +323,91 @@ export class CancelChallengeFailure implements Action {
   }
 }
 
+
+export class LoadResult implements Action {
+  readonly type = MyChallengesActionTypes.LoadResult;
+
+  constructor(public payload: string) {
+  }
+}
+
+export class LoadResultSuccess implements Action {
+  readonly type = MyChallengesActionTypes.LoadResultSuccess;
+
+  constructor(public payload: Result) {
+  }
+}
+
+export class LoadResultFailure implements Action {
+  readonly type = MyChallengesActionTypes.LoadResultFailure;
+
+  constructor(public payload: ApiError) {
+  }
+}
+
+export class SaveResult implements Action {
+  readonly type = MyChallengesActionTypes.SaveResult;
+
+  constructor(public payload: Result) {
+  }
+}
+
+export class SaveResultSuccess implements Action {
+  readonly type = MyChallengesActionTypes.SaveResultSuccess;
+
+  constructor(public payload: Result) {
+  }
+}
+
+export class SaveResultFailure implements Action {
+  readonly type = MyChallengesActionTypes.SaveResultFailure;
+
+  constructor(public payload: ApiError) {
+  }
+}
+
+export class ConfirmResult implements Action {
+  readonly type = MyChallengesActionTypes.ConfirmResult;
+
+  constructor(public payload: string) {
+  }
+}
+
+export class ConfirmResultSuccess implements Action {
+  readonly type = MyChallengesActionTypes.ConfirmResultSuccess;
+
+  constructor(public payload: Result) {
+  }
+}
+
+export class ConfirmResultFailure implements Action {
+  readonly type = MyChallengesActionTypes.ConfirmResultFailure;
+
+  constructor(public payload: ApiError) {
+  }
+}
+
+export class RejectResult implements Action {
+  readonly type = MyChallengesActionTypes.RejectResult;
+
+  constructor(public payload: string) {
+  }
+}
+
+export class RejectResultSuccess implements Action {
+  readonly type = MyChallengesActionTypes.RejectResultSuccess;
+
+  constructor(public payload: Result) {
+  }
+}
+
+export class RejectResultFailure implements Action {
+  readonly type = MyChallengesActionTypes.RejectResultFailure;
+
+  constructor(public payload: ApiError) {
+  }
+}
+
 export type MyChallengesActionsUnion = LoadActiveChallenges | LoadActiveChallengesSuccess | LoadActiveChallengesFailure
   | LoadPlaceTimeOffersForActiveChallenges | LoadPlaceTimeOffersForActiveChallengesSuccess
   | LoadPlaceTimeOffersForActiveChallengesFailure
@@ -319,5 +420,9 @@ export type MyChallengesActionsUnion = LoadActiveChallenges | LoadActiveChalleng
   | AcceptPlaceTimeOffer | AcceptPlaceTimeOfferSuccess | AcceptPlaceTimeOfferFailure
   | LoadTheirPlayers | LoadTheirPlayersSuccess | LoadTheirPlayersFailure
   | RejectChallenge | RejectChallengeSuccess | RejectChallengeFailure
-  | CancelChallenge | CancelChallengeSuccess | CancelChallengeFailure;
+  | CancelChallenge | CancelChallengeSuccess | CancelChallengeFailure
+  | LoadResult | LoadResultSuccess | LoadResultFailure
+  | SaveResult | SaveResultSuccess | SaveResultFailure
+  | ConfirmResult | ConfirmResultSuccess | ConfirmResultFailure
+  | RejectResult | RejectResultSuccess | RejectResultFailure;
 

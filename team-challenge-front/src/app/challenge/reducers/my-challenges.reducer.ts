@@ -1,4 +1,4 @@
-import {Challenge, PlaceTimeOffer} from '../models/challenge';
+import {Challenge, PlaceTimeOffer, Result} from '../models/challenge';
 import {MyTeamActionsUnion} from '../../core/actions/my-team.actions';
 import {AuthActionsUnion, AuthActionTypes} from '../../auth/actions/auth.actions';
 import {MyChallengesActionsUnion, MyChallengesActionTypes} from '../actions/my-challenges.actions';
@@ -14,6 +14,8 @@ export interface State {
   placeTimeOffers: PlaceTimeOffer[];
   theirHome: Position;
   theirPlayers: Player[];
+  result: Result;
+  resultLoading: boolean;
 }
 
 const initialState: State = {
@@ -22,7 +24,9 @@ const initialState: State = {
   challenge: null,
   placeTimeOffers: [],
   theirHome: null,
-  theirPlayers: []
+  theirPlayers: [],
+  result: null,
+  resultLoading: false,
 };
 
 export function reducer(
@@ -51,7 +55,11 @@ export function reducer(
     case MyChallengesActionTypes.LoadChallenge:
       return {
         ...state,
-        challenge: null
+        challenge: null,
+        result: null,
+        placeTimeOffers: [],
+        theirHome: null,
+        theirPlayers: []
       };
 
     case MyChallengesActionTypes.LoadPlaceTimeOffers:
@@ -83,6 +91,32 @@ export function reducer(
         theirPlayers: action.payload
       };
 
+    case MyChallengesActionTypes.LoadResult:
+      return {
+        ...state,
+        result: null,
+        resultLoading: true,
+      };
+
+    case MyChallengesActionTypes.LoadResultSuccess:
+      return {
+        ...state,
+        result: action.payload,
+        resultLoading: false,
+      };
+
+    case MyChallengesActionTypes.LoadResultFailure:
+      return {
+        ...state,
+        resultLoading: false,
+      };
+
+  case MyChallengesActionTypes.SaveResultSuccess:
+    return {
+      ...state,
+      result: action.payload
+    };
+
     default:
       return state;
   }
@@ -94,3 +128,6 @@ export const getChallenge = (state: State) => state.challenge;
 export const getPlaceTimeOffers = (state: State) => state.placeTimeOffers;
 export const getTheirHome = (state: State) => state.theirHome;
 export const getTheirPlayers = (state: State) => state.theirPlayers;
+export const getResult = (state: State) => state.result;
+export const getResultLoading = (state: State) => state.resultLoading;
+

@@ -44,7 +44,21 @@ import {
   LoadTheirPlayersFailure,
   CancelChallenge,
   CancelChallengeSuccess,
-  CancelChallengeFailure, RejectChallenge, RejectChallengeSuccess, RejectChallengeFailure
+  CancelChallengeFailure,
+  RejectChallenge,
+  RejectChallengeSuccess,
+  RejectChallengeFailure,
+  SaveResultSuccess,
+  SaveResult,
+  SaveResultFailure,
+  LoadResult,
+  LoadResultFailure,
+  LoadResultSuccess,
+  ConfirmResultSuccess,
+  ConfirmResultFailure,
+  ConfirmResult,
+  RejectResult,
+  RejectResultSuccess, RejectResultFailure
 } from '../actions/my-challenges.actions';
 import {LoadCurrent, LoadCurrentSuccess, MyTeamActionTypes} from '../../core/actions/my-team.actions';
 import {
@@ -56,8 +70,10 @@ import {
 } from '../actions/challenge-creator.actions';
 import {selectEntryPlaceTimeOffers, selectSelected} from '../selectors/challenge-creator.selectors';
 import {selectChallenge, selectMyActiveChallenges} from '../selectors/my-challenges.selectors';
-import {toPayload} from '../../core/util/functions';
+import {successMessageEffect, toPayload} from '../../core/util/functions';
 import {Position} from '../../core/models/position';
+import {ManagerActionTypes, SetHomeSuccess} from '../../core/actions/manager.actions';
+import {ChallengeStatus} from '../models/challenge';
 
 @Injectable()
 export class MyChallengesEffects {
@@ -256,6 +272,81 @@ export class MyChallengesEffects {
         catchError(err => of(new RejectChallengeFailure(err)))
       )
     )
+  );
+
+  @Effect()
+  $saveResult = this.actions$.pipe(
+    ofType<SaveResult>(MyChallengesActionTypes.SaveResult),
+    map(toPayload),
+    withLatestFrom(this.store.pipe(select(selectChallenge))),
+    exhaustMap(([result, challenge]) =>
+      this.challengeService.saveResult(challenge.id, result).pipe(
+        map(savedResult => new SaveResultSuccess(savedResult)),
+        catchError(err => of(new SaveResultFailure(err)))
+      )
+    )
+  );
+
+  @Effect()
+  $loadResult = this.actions$.pipe(
+    ofType<LoadResult>(MyChallengesActionTypes.LoadResult),
+    map(toPayload),
+    exhaustMap((challengeId) =>
+      this.challengeService.getResult(challengeId).pipe(
+        map(result => new LoadResultSuccess(result)),
+        catchError(err => of(new LoadResultFailure(err)))
+      )
+    )
+  );
+
+  @Effect()
+  $reloadResult = this.actions$.pipe(
+    ofType<LoadChallengeSuccess>(MyChallengesActionTypes.LoadChallengeSuccess),
+    map(toPayload),
+    filter(challenge => challenge.status === ChallengeStatus.Accepted || challenge.status === ChallengeStatus.Finished),
+    map((challenge) => new LoadResult(challenge.id))
+  );
+
+  @Effect({dispatch: false})
+  $saveResultSuccess = successMessageEffect<SaveResultSuccess>(this.actions$, this.message,
+    MyChallengesActionTypes.SaveResultSuccess,
+    'Wynik został wprowadzony.'
+  );
+
+  @Effect()
+  $confirmResult = this.actions$.pipe(
+    ofType<ConfirmResult>(MyChallengesActionTypes.ConfirmResult),
+    map(toPayload),
+    exhaustMap((challengeId) =>
+      this.challengeService.confirmResult(challengeId).pipe(
+        map(changedResult => new ConfirmResultSuccess(changedResult)),
+        catchError(err => of(new ConfirmResultFailure(err)))
+      )
+    )
+  );
+
+  @Effect({dispatch: false})
+  $confirmResultSuccess = successMessageEffect<ConfirmResultSuccess>(this.actions$, this.message,
+    MyChallengesActionTypes.ConfirmResultSuccess,
+    'Wynik został potwierdzony.'
+  );
+
+  @Effect()
+  $rejectResult = this.actions$.pipe(
+    ofType<RejectResult>(MyChallengesActionTypes.RejectResult),
+    map(toPayload),
+    exhaustMap((challengeId) =>
+      this.challengeService.rejectResult(challengeId).pipe(
+        map(changedResult => new RejectResultSuccess(changedResult)),
+        catchError(err => of(new RejectResultFailure(err)))
+      )
+    )
+  );
+
+  @Effect({dispatch: false})
+  $rejectResultSuccess = successMessageEffect<RejectResultSuccess>(this.actions$, this.message,
+    MyChallengesActionTypes.RejectResultSuccess,
+    'Wynik został odrzucony.'
   );
 
   constructor(

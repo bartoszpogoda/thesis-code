@@ -13,9 +13,44 @@ import {Position} from '../../core/models/position';
 
       <div class="block">
         <div nz-row nzGutter="16">
-          <div nz-col nzSm="24">
+
+          <div nz-col nzSm="16">
+            <div class="block">
+              <h2>Wasze oferty</h2>
+              <div nz-row nzGutter="16">
+                <div nz-col nzSm="24">
+                  <div class="pool-container">
+                    <div class="place-time-offer" *ngFor="let offer of myTeamOffers">
+                      <app-my-placetimeoffer [offer]="offer" (canceled)="onCanceled(offer)" [highlightedFacility]="selectedFacility">
+                      </app-my-placetimeoffer>
+                    </div>
+                    <div class="place-time-offer">
+                      <ng-content></ng-content>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="block">
+              <h2>Oferty rywali</h2>
+              <div nz-row nzGutter="16">
+                <div nz-col nzSm="24">
+                  <div class="pool-container">
+                    <div class="place-time-offer" *ngFor="let offer of theirTeamOffers">
+                      <app-their-placetimeoffer [offer]="offer" (accepted)="onAccepted(offer)" (rejected)="onRejected(offer)"
+                                                [highlightedFacility]="selectedFacility">
+                      </app-their-placetimeoffer>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div nz-col nzSm="8">
             <div class="map-container">
-              <ngui-map [options]="mapOptions" [center]="" [style.height.px]="200" (mapClick)="onMapClick()">
+              <ngui-map [options]="mapOptions" [center]="" [style.height.px]="500" (mapClick)="onMapClick()">
                 <marker *ngFor="let offer of getOngoingOffers()" [position]="offer.offeredFacility.position"
                         (click)="onOfferClicked($event, offer)" [icon]="getBasketIcon()">
                 </marker>
@@ -31,37 +66,7 @@ import {Position} from '../../core/models/position';
         </div>
       </div>
 
-      <div class="block">
-        <h2>Wasze oferty</h2>
-        <div nz-row nzGutter="16">
-          <div nz-col nzSm="24">
-            <div class="pool-container">
-              <div class="place-time-offer" *ngFor="let offer of myTeamOffers">
-                <app-my-placetimeoffer [offer]="offer" (canceled)="onCanceled(offer)" [highlightedFacility]="selectedFacility">
-                </app-my-placetimeoffer>
-              </div>
-              <div class="place-time-offer">
-                <ng-content></ng-content>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="block">
-        <h2>Oferty rywali</h2>
-        <div nz-row nzGutter="16">
-          <div nz-col nzSm="24">
-            <div class="pool-container">
-              <div class="place-time-offer" *ngFor="let offer of theirTeamOffers">
-                <app-their-placetimeoffer [offer]="offer" (accepted)="onAccepted(offer)" (rejected)="onRejected(offer)"
-                                          [highlightedFacility]="selectedFacility">
-                </app-their-placetimeoffer>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      
 
 
     </div>

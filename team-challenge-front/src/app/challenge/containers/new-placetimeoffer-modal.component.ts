@@ -10,12 +10,10 @@ import {LocalDate, LocalDateTime, nativeJs, ZonedDateTime, ZoneId, ZoneOffset} f
   selector: 'app-new-placetimeoffer-modal',
   template: `
 
-    <div style="text-align: center">
-      <button nz-button nzType="dashed" style="height: 182px; width: 200px;"
-              nzSize="large" nzBlock (click)="showModal()"><i class="anticon anticon-plus"></i>
-        Nowa oferta
-      </button>
-    </div>
+    <button nz-button nzType="dashed" style="height: 182px; width: 200px;"
+            nzSize="large" nzBlock (click)="showModal()"><i class="anticon anticon-plus"></i>
+      Nowa oferta
+    </button>
     <nz-modal [(nzVisible)]="isVisible" nzTitle="Nowa oferta" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()"
               (nzOnOk)="handleOk()" nzWidth="700px">
 

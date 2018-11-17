@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {Team} from '../../core/models/team';
-import {Challenge, PlaceTimeOffer, PlaceTimeOfferStatus} from '../models/challenge';
+import {Challenge, PlaceTimeOffer, PlaceTimeOfferStatus, Result} from '../models/challenge';
 import {LocalDateTime, ZonedDateTime} from 'js-joda';
 import {months} from './my-place-time-offer.component';
 
@@ -21,8 +21,8 @@ import {months} from './my-place-time-offer.component';
         <h3 style="margin: 0;">{{getOtherTeamManagerName()}}</h3>
       </div>
       <div nz-col nzXs="0" nzSm="4" class="container-vert-center">
-        <nz-tag [nzColor]="colors[challenge.status]">{{statuses[challenge.status]}}</nz-tag>
-        <nz-tag *ngIf="awaitsReaction()" [nzColor]="'gold'">Aktywne oferty od rywali</nz-tag>
+        <nz-tag class="tag-with-margin" [nzColor]="colors[challenge.status]">{{statuses[challenge.status]}}</nz-tag>
+        <nz-tag class="tag-with-margin" *ngIf="awaitsReaction()" [nzColor]="'gold'">Aktywne oferty od rywali</nz-tag>
       </div>
       <div nz-col nzXs="0" nzSm="5" class="container-vert-center">
         <p *ngIf="getAcceptedPlace() !== null" style="margin: 0;">{{getAcceptedPlace()}}</p>
@@ -43,6 +43,9 @@ export class ChallengeOnListComponent {
 
   @Input()
   placeTimeOffers: PlaceTimeOffer[];
+
+  @Input()
+  result: Result;
 
   @Input()
   myTeam: Team;
