@@ -6,7 +6,6 @@ import {OutputEmitter} from '@angular/compiler/src/output/abstract_emitter';
   selector: 'app-received-invitation',
   template: `
     <nz-card class="invitation-card">
-      (Todo: styling)
       <strong (click)="onClickedTeam()">{{teamInvitation.teamName}}</strong>
       <nz-button-group style="float: right;">
         <button (click)="onAccepted()" nz-button nzType="primary">Dołącz</button>

@@ -15,7 +15,7 @@ import {Facility} from '../../core/models/facility';
       <strong>Oświetlenie: </strong>{{facility.lighting === true ? 'Tak' : 'Nie'}} <br />
       <strong>Nawierzchnia: </strong>{{facility.surfaceType}} <br />
       <strong>Miejsca do gry: </strong>{{facility.playingSpots}} <br />
-      <strong>Koszt: </strong>{{facility.tokenPrice}} <i class="anticon anticon-pay-circle"></i><br />
+      <!--<strong>Koszt: </strong>{{facility.tokenPrice}} <i class="anticon anticon-pay-circle"></i><br />-->
     </div>
   `
 })

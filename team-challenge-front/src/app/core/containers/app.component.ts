@@ -63,7 +63,7 @@ import {selectStep} from '../../challenge/selectors/challenge-creator.selectors'
         <!--<app-login *ngIf="!(loggedIn$ | async)"></app-login>-->
         <app-navbar-login class="onlyDesktop" *ngIf="!(loggedIn$ | async)"></app-navbar-login>
         <ul *ngIf="loggedIn$ | async" nz-menu class="onlyDesktop" [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 64px;">
-          <nz-badge class="avatar-badge" (click)="toggleNotificationPanel()" [nzCount]="5" style="margin-right: 24px;">
+          <nz-badge class="avatar-badge" (click)="toggleNotificationPanel()" [nzCount]="0" style="margin-right: 24px;">
             <span class="avatar-username">{{(decodedToken$ | async).fullName}}</span>
             <!-- TODO extract dumb component -->
             <nz-avatar [nzSize]="'large'" [nzSrc]="this.avatarUrl$ | async"></nz-avatar> <!--nzIcon="anticon anticon-user"-->

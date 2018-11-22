@@ -45,7 +45,7 @@ import {TeamInvitation} from '../models/team-invitation';
             <tr>
               <th>Nazwa</th>
               <th>Wiek</th>
-              <th><span>Staż</span></th>
+              <th><span>Umiejętności</span></th>
               <th style="width:200px!important">Akcja</th>
             </tr>
             </thead>
@@ -53,7 +53,7 @@ import {TeamInvitation} from '../models/team-invitation';
             <tr *ngFor="let data of ajaxTable.data">
               <td>{{data.player.fullName}}</td>
               <td>{{data.player.age}}</td>
-              <td>{{data.player.yearsOfExperience}}</td>
+              <td>{{data.player.skill}}</td>
               <td>
                 <ng-container *ngIf="data.invited">Zaproszony</ng-container>
                 <ng-container *ngIf="!data.invited"><a (click)="invite(data.player.id)">Zaproś</a></ng-container>
