@@ -24,20 +24,21 @@ import {Player} from '../../core/models/player';
 
     <div class="section">
       <h3>Dystans</h3>
-      <p>Odległość: {{getNumericCriteria(comparedTeamScore, 'DISTANCE').original.toPrecision(2)}}km</p>
+      <p>Odległość: {{getNumericCriteria(comparedTeamScore, 'DISTANCE').difference.toPrecision(2)}}km</p>
     </div>
 
 
     <div class="section">
       <h3>Średni wiek</h3>
-      <p *ngIf="getNumericCriteria(comparedTeamScore, 'AGE').original > 0"> 
-        Starsi średnio o {{getNumericCriteria(comparedTeamScore, 'AGE').original.toPrecision(2)}} lat
+      <p>{{getNumericCriteria(comparedTeamScore, 'AGE').origin.toPrecision(2)}} lat</p>
+      <p *ngIf="getNumericCriteria(comparedTeamScore, 'AGE').difference > 0"> 
+        Starsi średnio o {{getNumericCriteria(comparedTeamScore, 'AGE').difference.toPrecision(2)}} lat
       </p>
-      <p *ngIf="getNumericCriteria(comparedTeamScore, 'AGE').original.toPrecision(2) === '0'">
+      <p *ngIf="getNumericCriteria(comparedTeamScore, 'AGE').difference.toPrecision(2) === '0'">
         W tym samym wieku
       </p>
-      <p *ngIf="getNumericCriteria(comparedTeamScore, 'AGE').original < 0">
-        Młodsi średnio o {{Math.abs(getNumericCriteria(comparedTeamScore, 'AGE').original).toPrecision(2)}} lat
+      <p *ngIf="getNumericCriteria(comparedTeamScore, 'AGE').difference < 0">
+        Młodsi średnio o {{Math.abs(getNumericCriteria(comparedTeamScore, 'AGE').difference).toPrecision(2)}} lat
       </p>
     </div>
 

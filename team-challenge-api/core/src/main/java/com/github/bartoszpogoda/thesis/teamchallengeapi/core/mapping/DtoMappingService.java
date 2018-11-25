@@ -150,7 +150,8 @@ public class DtoMappingService {
     private NumericCriteriaDto mapNumericCriteria(NormalizedCriterion<NumericCriterion> criteria) {
         NumericCriteriaDto numericCriteriaDto = new NumericCriteriaDto();
 
-        numericCriteriaDto.setOriginal(criteria.getOriginalCriteria().getValue());
+        numericCriteriaDto.setDifference(criteria.getOriginalCriteria().getValue());
+        numericCriteriaDto.setOrigin(criteria.getOriginalCriteria().getOrigin());
         numericCriteriaDto.setNormalized(criteria.getNormalizedValue());
         numericCriteriaDto.setType(criteria.getOriginalCriteria().getType().toString());
 

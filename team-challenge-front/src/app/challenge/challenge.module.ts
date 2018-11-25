@@ -39,6 +39,7 @@ import {MyChallengeResultComponent} from './containers/my-challenge-result.compo
 import {ResultComponent} from './components/result.component';
 import {ReviewCreatorComponent} from './components/review-creator.component';
 import {ReviewComponent} from './components/review.component';
+import {SearchFormHelpModalComponent} from './components/search-form-help-modal.component';
 
 export const COMPONENTS = [
   ChallengeSearchFormComponent, MapTeamsFacilitiesComponent, MapTwoTeamsFacilitiesComponent,
@@ -46,7 +47,7 @@ export const COMPONENTS = [
   ChallengesPageComponent, ChallengeCreatorComparisonComponent, MyPlaceTimeOfferComponent, MyChallengeResultComponent,
   NewPlacetimeofferModalComponent, TeamComparisonEntryComponent, ChallengeCreatorSearchResultsComponent, FacilityComponent,
   ChallengeOnListComponent, PlacetimeofferPoolComponent, TheirPlaceTimeOfferComponent, PastChallengesComponent, ResultModalComponent,
-  ReviewCreatorComponent, ReviewComponent
+  ReviewCreatorComponent, ReviewComponent, SearchFormHelpModalComponent
 ];
 
 export const PAGES = [

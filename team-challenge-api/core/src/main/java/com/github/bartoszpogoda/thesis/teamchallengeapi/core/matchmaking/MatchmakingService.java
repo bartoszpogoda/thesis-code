@@ -84,7 +84,6 @@ public class MatchmakingService {
      *
      */
     public SearchResult search(PreferencesDto pref, String hostTeamId) throws ApiException {
-        // TODO check access
 
         Team hostTeam = teamService.findById(hostTeamId).orElseThrow(TeamNotFoundException::new);
         List<Team> teams = teamService.getTeamsReadyForMatchmaking(hostTeam.getDisciplineId(), hostTeam.getRegionId());
@@ -93,20 +92,21 @@ public class MatchmakingService {
 
         // pref to Configuration
         WeightConfiguration configuration = new WeightConfiguration(pref.getWeightAgeDiff(),
-                pref.getWeightDistance(), pref.getWeightSkillDiff(), pref.isFairPlay(), pref.isPlayAgain(), pref.isBigActivity());
+                pref.getWeightDistance(), pref.getWeightSkillDiff(), pref.isFairPlay(), pref.isPlayAgain(),
+                pref.isBigActivity());
 
         List<ScoredTeam> result = new ArrayList<>();
 
         for(Team otherTeam : teams) {
             Criteria criteria = calculateNormalizedCriteria(hostTeam, otherTeam);
 
-            List<WeightedCriteria<NumericCriterion>> numericCriterionWeights
+            List<WeightedCriteria<NumericCriterion>> numericWeightedCriteria
                     = weighteningService.weight(configuration, criteria.getNormalizedNumericCriteria());
-            List<WeightedCriteria<BooleanCriterion>> booleanCriterionWeights
+            List<WeightedCriteria<BooleanCriterion>> booleanWeightedCriteria
                     = weighteningService.weight(configuration, criteria.getNormalizedBooleanCriteria());
 
-            double totalScore = this.weightedCriteriaAggregator.aggregate(Stream.concat(numericCriterionWeights.stream(),
-                    booleanCriterionWeights. stream()));
+            double totalScore = this.weightedCriteriaAggregator.aggregate(
+                    Stream.concat(numericWeightedCriteria.stream(), booleanWeightedCriteria. stream()));
 
             result.add(new ScoredTeam(otherTeam, totalScore, criteria));
         }

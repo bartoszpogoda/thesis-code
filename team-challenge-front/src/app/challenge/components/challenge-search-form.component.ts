@@ -12,12 +12,15 @@ import {s} from '@angular/core/src/render3';
 
       <div nz-row nzGutter="16">
         <div nz-col nzXs="0" nzSm="18">
-          <h2>Dostosuj wagi poszczególnych kryteriów</h2>
-          <p>Dostosuj wartościowanie poszczególnych kryteriów z uwzględnieniem preferencji Twojej drużyny.</p>
+          <h2 style="display: inline-block;">Rozdysponuj punkty preferencji pomiędzy poszczególne cechy</h2><app-search-form-help-modal></app-search-form-help-modal>
+          <p>Do dyspozycji masz 100 PP. </p>
 
+          <div nz-row nzGutter="16" style="text-align: center;" >
+            <h3>Rówieśnicy</h3>
+          </div>
           <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Różnica wieku</nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24">
+            <nz-form-label [nzSm]="3" [nzXs]="24" nzFor="description"><img src="/assets/images/icon_age_no.png"></nz-form-label>
+            <nz-form-control [nzSm]="18" [nzXs]="24">
               <div nz-row [nzGutter]="8">
                 <div nz-col [nzSm]="1" style="cursor:pointer;" (click)="onLockClicked(validateForm.get('weightAgeDiff'))">
                   <i *ngIf="lockedSlider === validateForm.get('weightAgeDiff') || validateForm.get('weightAgeDiff').value === 0"
@@ -25,22 +28,26 @@ import {s} from '@angular/core/src/render3';
                   <i *ngIf="!(lockedSlider === validateForm.get('weightAgeDiff') || validateForm.get('weightAgeDiff').value === 0)"
                      class="anticon anticon-unlock"></i>
                 </div>
-                <div nz-col [nzSm]="22">
+                <div nz-col [nzSm]="21">
                   <nz-slider [nzDisabled]="lockedSlider === validateForm.get('weightAgeDiff')"
                              [nzTipFormatter]="formatter" [nzStep]="10" [nzMin]="0" [nzMax]="1000" formControlName="weightAgeDiff">
                   </nz-slider>
                 </div>
-                <div nz-col [nzSm]="1">
-                  {{ Math.round(validateForm.get('weightAgeDiff').value / 10) }}%
+                <div nz-col [nzSm]="2">
+                  {{ Math.round(validateForm.get('weightAgeDiff').value / 10) }} PP
                 </div>
               </div>
-              <nz-form-extra>Jeśli zależy Ci na grze z rówieśnikami</nz-form-extra>
+              <nz-form-extra>Przydziel więcej punktów jeżeli zależy Wam na grze z rówieśnikami</nz-form-extra>
             </nz-form-control>
+            <div nz-col [nzSm]="3" [nzXs]="24"><img src="/assets/images/icon_age.png"></div>
           </nz-form-item>
 
+          <div nz-row nzGutter="16" style="text-align: center;" >
+            <h3>Podobni doświadczeniem</h3>
+          </div>
           <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Różnica poziomu umiejętności</nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24">
+            <nz-form-label [nzSm]="3" [nzXs]="24" nzFor="description"><img src="/assets/images/icon_skill_no.png"></nz-form-label>
+            <nz-form-control [nzSm]="18" [nzXs]="24">
               <div nz-row [nzGutter]="8">
                 <div nz-col [nzSm]="1" style="cursor:pointer;" (click)="onLockClicked(validateForm.get('weightSkillDiff'))">
                   <i *ngIf="lockedSlider === validateForm.get('weightSkillDiff') || validateForm.get('weightSkillDiff').value === 0"
@@ -48,21 +55,26 @@ import {s} from '@angular/core/src/render3';
                   <i *ngIf="!(lockedSlider === validateForm.get('weightSkillDiff') || validateForm.get('weightSkillDiff').value === 0)"
                      class="anticon anticon-unlock"></i>
                 </div>
-                <div nz-col [nzSm]="22">
+                <div nz-col [nzSm]="21">
                   <nz-slider [nzDisabled]="lockedSlider === validateForm.get('weightSkillDiff')" [nzTipFormatter]="formatter"
                              [nzStep]="10" [nzMin]="0" [nzMax]="1000" formControlName="weightSkillDiff"></nz-slider>
                 </div>
-                <div nz-col [nzSm]="1">
-                  {{ Math.round(validateForm.get('weightSkillDiff').value / 10) }}%
+                <div nz-col [nzSm]="2">
+                  {{ Math.round(validateForm.get('weightSkillDiff').value / 10) }} PP
                 </div>
               </div>
-              <nz-form-extra>Jeśli zależy Ci na grze z osobami o podobnym doświadczeniu</nz-form-extra>
+              <nz-form-extra>Przydziel więcej punktów jeżeli zależy Wam na grze z osobami o podobnym doświadczeniu</nz-form-extra>
             </nz-form-control>
+            <div nz-col [nzSm]="3" [nzXs]="24"><img src="/assets/images/icon_skill.png"></div>
           </nz-form-item>
 
+
+          <div nz-row nzGutter="16" style="text-align: center;" >
+            <h3>Sąsiedzi</h3>
+          </div>
           <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Odległość</nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24">
+            <nz-form-label [nzSm]="3" [nzXs]="24" nzFor="description"><img src="/assets/images/icon_dist_no.png"></nz-form-label>
+            <nz-form-control [nzSm]="18" [nzXs]="24">
               <div nz-row [nzGutter]="8">
                 <div nz-col [nzSm]="1" style="cursor:pointer;" (click)="onLockClicked(validateForm.get('weightDistance'))">
                   <i *ngIf="lockedSlider === validateForm.get('weightDistance') || validateForm.get('weightDistance').value === 0"
@@ -70,16 +82,17 @@ import {s} from '@angular/core/src/render3';
                   <i *ngIf="!(lockedSlider === validateForm.get('weightDistance') || validateForm.get('weightDistance').value === 0)"
                      class="anticon anticon-unlock"></i>
                 </div>
-                <div nz-col [nzSm]="22">
+                <div nz-col [nzSm]="21">
                   <nz-slider [nzDisabled]="lockedSlider === validateForm.get('weightDistance')" [nzTipFormatter]="formatter"
                              [nzStep]="10" [nzMin]="0" [nzMax]="1000" formControlName="weightDistance"></nz-slider>
                 </div>
-                <div nz-col [nzSm]="1">
-                  {{ Math.round(validateForm.get('weightDistance').value / 10) }}%
+                <div nz-col [nzSm]="2">
+                  {{ Math.round(validateForm.get('weightDistance').value / 10) }} PP
                 </div>
               </div>
-              <nz-form-extra>Jeśli szukasz przeciwników w swojej okolicy</nz-form-extra>
+              <nz-form-extra>Przydziel więcej punktów jeżeli zależy Wam na grze z przeciwnikami w okolicy</nz-form-extra>
             </nz-form-control>
+            <div nz-col [nzSm]="3" [nzXs]="24"><img src="/assets/images/icon_dist.png"></div>
           </nz-form-item>
 
 
@@ -162,7 +175,7 @@ export class ChallengeSearchFormComponent implements OnInit {
   lockedSlider: AbstractControl;
 
   formatter(value) {
-    return Math.round(value / 10) + `%`;
+    return Math.round(value / 10) + ` PP`;
   }
 
   submitForm(): void {

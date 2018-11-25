@@ -131,25 +131,36 @@ export class SearchResultEntryComponent {
 
   provideTextAge() {
     return () => {
-      const diff = Math.round(this.getNumericCriteria('AGE').original);
+      const origin = Math.round(this.getNumericCriteria('AGE').origin);
 
-      if (diff === 0) {
-        return '✓';
-      } else if (diff < 0 && diff > -5) {
-        return diff + ' lata';
-      } else if (diff < 0) {
-        return diff + ' lat';
-      } else if (diff > 0 && diff < 5) {
-        return '+' + diff + ' lata';
+      if (origin <= 21) {
+        return origin + ' lat';
       } else {
-        return '+' + diff + ' lat';
+        if (origin / 10 > 1 && origin / 10 < 5) {
+          return origin + ' lata';
+        } else {
+          return origin + ' lat';
+        }
       }
+
+
+      // if (diff === 0) {
+      //   return '✓';
+      // } else if (diff < 0 && diff > -5) {
+      //   return diff + ' lata';
+      // } else if (diff < 0) {
+      //   return diff + ' lat';
+      // } else if (diff > 0 && diff < 5) {
+      //   return '+' + diff + ' lata';
+      // } else {
+      //   return '+' + diff + ' lat';
+      // }
     };
   }
 
   provideTextDistance() {
     return () => {
-      const dist = this.getNumericCriteria('DISTANCE').original;
+      const dist = this.getNumericCriteria('DISTANCE').difference;
 
       if (dist >= 10) {
         return dist.toFixed(0) + 'km';

@@ -18,7 +18,8 @@ export interface Criteria {
 export interface NumericCriteria {
   type: NumericCriteriaType;
   normalized: number;
-  original: number;
+  origin: number;
+  difference: number;
 }
 
 export interface BooleanCriteria {

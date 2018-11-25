@@ -75,7 +75,7 @@ public class CriteriaGeneratorService {
         double sumBest3OtherTeam = otherTeam.getPlayers().stream()
                 .mapToDouble(Player::getSkill).sorted().limit(3).sum();
 
-        return new SkillCriterion(sumBest3OtherTeam - sumBest3HostTeam);
+        return new SkillCriterion(sumBest3OtherTeam - sumBest3HostTeam, sumBest3OtherTeam);
     }
 
 

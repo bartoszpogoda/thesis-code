@@ -141,6 +141,14 @@ export class PlayerEffects {
     )
   );
 
+  @Effect({dispatch: false})
+  $navigateToCreatorIfNoProfile = this.actions$.pipe(
+    ofType<LoadCurrentFailure>(PlayerActionTypes.LoadCurrentFailure),
+    tap(() => {
+      this.router.navigate(['/player/new']);
+    })
+  );
+
   constructor(
     private actions$: Actions,
     private store: Store<State>,

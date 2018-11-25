@@ -82,10 +82,10 @@ export class PlayerSkillFormComponent implements OnInit {
       label: '<strong>Okazjonalnie</strong>',
     },
     1: {
-      label: '<strong>Parę razy tygodniowo</strong>',
+      label: '<strong>Parę razy miesięcznie</strong>',
     },
     2: {
-      label: '<strong>Parę razy miesięcznie</strong>'
+      label: '<strong>Parę razy tygodniowo</strong>'
     }
   };
 

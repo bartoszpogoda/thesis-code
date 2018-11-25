@@ -10,7 +10,7 @@ public class AgeCriterion extends NumericCriterion {
     private double otherTeamAvgAge;
 
     public AgeCriterion(double ageDifference, double hostTeamAvgAge, double otherTeamAvgAge) {
-        super(CriterionType.AGE, ageDifference);
+        super(CriterionType.AGE, ageDifference, otherTeamAvgAge);
 
         this.hostTeamAvgAge = hostTeamAvgAge;
         this.otherTeamAvgAge = otherTeamAvgAge;
