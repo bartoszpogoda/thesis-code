@@ -1,7 +1,7 @@
 package com.github.bartoszpogoda.thesis.teamchallengeapi.core.team;
 
+import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.ApiException;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.exception.impl.*;
-import com.github.bartoszpogoda.thesis.teamchallengeapi.core.image.dto.ImagePathDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.mapping.DtoMappingService;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.player.model.PlayerDto;
 import com.github.bartoszpogoda.thesis.teamchallengeapi.core.position.Position;
@@ -24,8 +24,8 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.github.bartoszpogoda.thesis.teamchallengeapi.core.util.ResponseUtil.createLocationByAddingIdToCurentRequest;
@@ -39,8 +39,7 @@ public class TeamResource {
     private DtoMappingService mappingService;
 
     @PostMapping
-    public ResponseEntity<TeamDto> createTeam(@RequestBody @Valid TeamCreationForm teamCreationForm)
-            throws UnknownDisciplineException, UnknownRegionException, PlayerAlreadyInTeamException, PlayerNotFoundException, InternalServerException {
+    public ResponseEntity<TeamDto> createTeam(@RequestBody @Valid TeamCreationForm teamCreationForm) throws ApiException {
 
         return teamService.createTeamForCurrentPlayer(teamCreationForm)
                 .map(mappingService::mapToDto)

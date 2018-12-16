@@ -20,11 +20,11 @@ public class Team {
     @Column(name = "TeamID")
     private String id;
 
-    @OneToOne(fetch = FetchType.EAGER) // TODO for now eager to rethink
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ManagerID")
     private Player manager;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL) // TODO for now eager to rethink
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<Player> players;
 
     @OneToOne
